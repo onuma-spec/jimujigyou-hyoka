@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>事務事業優先度評価ツール — 自治体を選ぶ</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;color:#1f2937;min-height:100vh}
+    #app{max-width:600px;margin:0 auto;padding:20px 12px}
+    .hd{background:#1e40af;color:#fff;padding:16px 18px;border-radius:8px;margin-bottom:20px}
+    .hd h1{font-size:1.15rem;font-weight:700}
+    .hd .sub{font-size:.8rem;opacity:.8;margin-top:4px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:18px;margin-bottom:16px}
+    .card h2{font-size:.95rem;font-weight:700;color:#374151;margin-bottom:12px}
+    .sel-row{display:flex;flex-direction:column;gap:10px}
+    .sel-group{display:flex;flex-direction:column;gap:4px}
+    .sel-group label{font-size:.8rem;color:#6b7280;font-weight:600}
+    select{width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:.95rem;color:#1f2937;background:#fff;cursor:pointer}
+    select:focus{outline:none;border-color:#1e40af}
+    select:disabled{background:#f9fafb;color:#9ca3af;cursor:not-allowed}
+    .muni-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin-top:16px}
+    .muni-name{font-size:1.2rem;font-weight:700;color:#1e40af;margin-bottom:4px}
+    .muni-meta{font-size:.82rem;color:#6b7280;margin-bottom:12px}
+    .muni-meta span{margin-right:12px}
+    .muni-source{font-size:.78rem;color:#9ca3af;margin-bottom:14px}
+    .muni-source a{color:#6b7280}
+    .btn{display:block;width:100%;padding:12px;border:none;border-radius:6px;cursor:pointer;font-size:1rem;font-weight:700;text-align:center;text-decoration:none;transition:opacity .15s}
+    .btn:hover{opacity:.85}
+    .btn-p{background:#1e40af;color:#fff}
+    .note{font-size:.78rem;color:#9ca3af;text-align:center;margin-top:20px;line-height:1.7}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="hd">
+    <h1>🏛 事務事業優先度評価ツール</h1>
+    <div class="sub">自治体を選んで、評価ツールを開く</div>
+  </div>
+
+  <div class="card">
+    <h2>自治体を選ぶ</h2>
+    <div class="sel-row">
+      <div class="sel-group">
+        <label for="sel-pref">都道府県</label>
+        <select id="sel-pref" onchange="onPrefChange()">
+          <option value="">— 選んでください —</option>
+        </select>
+      </div>
+      <div class="sel-group">
+        <label for="sel-muni">市区町村</label>
+        <select id="sel-muni" onchange="onMuniChange()" disabled>
+          <option value="">— 都道府県を先に選んでください —</option>
+        </select>
+      </div>
+    </div>
+    <div id="muni-card" class="hidden"></div>
+  </div>
+
+  <p class="note">
+    このツールは各自治体の事務事業評価データをもとに、<br>
+    住民が事業の優先度を評価するための試作ツールです。
+  </p>
+</div>
+<script>
+const MUNICIPALITIES = [
+  {
+    pref:         '兵庫県',
+    name:         '西宮市',
+    year:         '令和7年度',
+    count:        450,
+    file:         'nishinomiya_index.html',
+    source_url:   'https://www.nishi.or.jp/shisei/gyoseikeiei/gyoseihyoka/hyokakekka.html',
+    source_label: '令和7年度事務事業評価結果報告書｜西宮市',
+  },
+  {
+    pref:         '埼玉県',
+    name:         '北本市',
+    year:         '令和6年度',
+    count:        451,
+    file:         'kitamoto_index.html',
+    source_url:   'https://www.city.kitamoto.lg.jp/soshiki/seisakusuisinbu/seisakusuisin/gyomu/hyouka/r6jimujigyouhyouka/18439.html',
+    source_label: '令和6年度事務事業評価シート｜北本市',
+  },
+];
+
+const prefs = [...new Set(MUNICIPALITIES.map(m => m.pref))].sort((a, b) => a.localeCompare(b, 'ja'));
+
+const selPref = document.getElementById('sel-pref');
+const selMuni = document.getElementById('sel-muni');
+const muniCard = document.getElementById('muni-card');
+
+prefs.forEach(p => {
+  const opt = document.createElement('option');
+  opt.value = p; opt.textContent = p;
+  selPref.appendChild(opt);
+});
+
+function onPrefChange() {
+  const pref = selPref.value;
+  muniCard.classList.add('hidden');
+  if (!pref) {
+    selMuni.innerHTML = '<option value="">— 都道府県を先に選んでください —</option>';
+    selMuni.disabled = true;
+    return;
+  }
+  const munis = MUNICIPALITIES.filter(m => m.pref === pref);
+  selMuni.innerHTML = '<option value="">— 選んでください —</option>';
+  munis.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.name; opt.textContent = m.name;
+    selMuni.appendChild(opt);
+  });
+  selMuni.disabled = false;
+}
+
+function onMuniChange() {
+  const pref = selPref.value;
+  const name = selMuni.value;
+  muniCard.classList.add('hidden');
+  if (!name) return;
+  const m = MUNICIPALITIES.find(m => m.pref === pref && m.name === name);
+  if (!m) return;
+  muniCard.innerHTML = `
+    <div class="muni-card">
+      <div class="muni-name">🏛 ${m.name}</div>
+      <div class="muni-meta">
+        <span>${m.pref}</span><span>${m.year}</span><span>${m.count}事業</span>
+      </div>
+      <div class="muni-source">出典：<a href="${m.source_url}" target="_blank">${m.source_label}</a></div>
+      <a href="${m.file}" class="btn btn-p">このツールを開く →</a>
+    </div>
+  `;
+  muniCard.classList.remove('hidden');
+}
+</script>
+</body>
+</html>
