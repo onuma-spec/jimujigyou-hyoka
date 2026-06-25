@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>湖西市 事務事業優先度評価ツール</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;color:#1f2937;min-height:100vh}
+#app{max-width:780px;margin:0 auto;padding:12px}
+
+.hd{background:#1e40af;color:#fff;padding:14px 16px;border-radius:8px;margin-bottom:12px}
+.hd h1{font-size:1.1rem;font-weight:700}
+.hd .sub{font-size:.8rem;opacity:.8;margin-top:3px}
+
+.sbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.sb{padding:4px 10px;border-radius:20px;font-size:.8rem;font-weight:600}
+.sb-k{background:#dcfce7;color:#16a34a}
+.sb-h{background:#fee2e2;color:#dc2626}
+.sb-f{background:#fef3c7;color:#d97706}
+.sb-u{background:#f3f4f6;color:#6b7280}
+
+.card{background:#fff;border-radius:8px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+.frow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.frow select{flex:1;min-width:130px;padding:7px 8px;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem;background:#fff}
+.fresult{font-size:.95rem;font-weight:600;color:#1e40af;margin-bottom:10px}
+
+.batch{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px;margin-bottom:12px}
+.batch h3{font-size:.85rem;color:#1e40af;margin-bottom:8px}
+.bbtns{display:flex;gap:8px;flex-wrap:wrap}
+
+.btn{padding:9px 18px;border:none;border-radius:6px;cursor:pointer;font-size:.9rem;font-weight:600;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-p{background:#1e40af;color:#fff}
+.btn-k{background:#22c55e;color:#fff}
+.btn-h{background:#ef4444;color:#fff}
+.btn-f{background:#f59e0b;color:#fff}
+.btn-o{background:#fff;border:1px solid #d1d5db;color:#374151}
+.btn-sm{padding:6px 12px;font-size:.8rem}
+
+.pbwrap{background:#e5e7eb;border-radius:4px;height:6px;margin-bottom:12px}
+.pbfill{background:#1e40af;height:100%;border-radius:4px;transition:width .3s}
+
+.ecard{background:#fff;border-radius:8px;padding:18px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.1);border-left:4px solid #e5e7eb;transition:border-color .2s}
+.ecard.rk{border-left-color:#22c55e}
+.ecard.rh{border-left-color:#ef4444}
+.ecard.rf{border-left-color:#f59e0b}
+
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.72rem;font-weight:600}
+.troot-法定義務あり{background:#dbeafe;color:#1d4ed8}
+.troot-裁量{background:#fef3c7;color:#92400e}
+.troot-不明{background:#f3f4f6;color:#6b7280}
+.tcls{background:#f3e8ff;color:#7c3aed}
+.tev{background:#f0fdf4;color:#15803d}
+
+.emeta{font-size:.8rem;color:#6b7280;margin-bottom:6px}
+.ename{font-size:1.15rem;font-weight:700;color:#111827;margin-bottom:6px;line-height:1.3}
+.ebudget{font-size:.9rem;margin-bottom:10px}
+.ebudget .amt{font-weight:700;font-size:1.05rem;color:#1e40af}
+.ebudget .bdg-lbl{font-size:.78rem;color:#6b7280;margin-right:4px}
+.edesc h4{font-size:.8rem;color:#6b7280;margin-bottom:4px}
+.edesc p{font-size:.88rem;line-height:1.65;color:#374151;margin-bottom:10px}
+.edetail{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.edi{background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;padding:3px 8px;font-size:.8rem}
+.edi label{color:#9ca3af;margin-right:3px}
+
+.rbtns{display:flex;gap:10px;margin:16px 0}
+.rbtn{flex:1;padding:12px 6px;border:2px solid #e5e7eb;border-radius:8px;cursor:pointer;font-size:.9rem;font-weight:700;background:#f9fafb;color:#374151;text-align:center;transition:all .15s;line-height:1.4}
+.rbtn:hover{border-color:#9ca3af}
+.rbtn small{display:block;font-size:.7rem;font-weight:400;margin-top:2px;opacity:.8}
+.rbtn.ak{background:#22c55e;color:#fff;border-color:#22c55e}
+.rbtn.ah{background:#ef4444;color:#fff;border-color:#ef4444}
+.rbtn.af{background:#f59e0b;color:#fff;border-color:#f59e0b}
+
+.nav{display:flex;justify-content:space-between;align-items:center}
+.cpos{font-size:.85rem;color:#6b7280}
+
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kbox{background:#fff;border-radius:8px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.kbox .klbl{font-size:.75rem;color:#6b7280;margin-bottom:6px}
+.kbox .knum{font-size:1.7rem;font-weight:700}
+.kbox .kbdg{font-size:.85rem;font-weight:600;margin-top:3px}
+.kh .knum,.kh .kbdg{color:#dc2626}
+.kf .knum,.kf .kbdg{color:#d97706}
+.kk .knum,.kk .kbdg{color:#059669}
+.ku .knum,.ku .kbdg{color:#6b7280}
+
+.ssec{background:#fff;border-radius:8px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.ssec summary{padding:12px 16px;cursor:pointer;font-weight:600;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;user-select:none}
+.ssec summary:hover{background:#f9fafb}
+.ssec summary::after{content:'▶';font-size:.75rem;color:#9ca3af;transition:transform .2s}
+.ssec[open] summary::after{transform:rotate(90deg)}
+.stbl{width:100%;border-collapse:collapse;font-size:.82rem}
+.stbl th{background:#f3f4f6;padding:7px 10px;text-align:left;font-weight:600;white-space:nowrap}
+.stbl td{padding:7px 10px;border-top:1px solid #e5e7eb;vertical-align:middle}
+.stbl tr:hover td{background:#fafafa}
+
+.note{font-size:.75rem;color:#9ca3af;margin-top:12px;line-height:1.6}
+.nstrip{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.nstrip h2{font-size:1rem;font-weight:700;flex:1;text-align:center}
+.done-msg{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:16px;text-align:center;margin-bottom:12px}
+.done-msg h3{color:#065f46;font-size:1rem;margin-bottom:8px}
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+.tag-item{display:flex;flex-direction:column;gap:3px}
+.tag-lbl{font-size:.68rem;color:#9ca3af;font-weight:500;letter-spacing:.02em}
+.field-lbl{font-size:.78rem;color:#9ca3af;margin-right:3px}
+
+@media(max-width:560px){
+  .kgrid{grid-template-columns:repeat(2,1fr)}
+  .rbtns{flex-direction:column}
+  .bbtns{flex-direction:column}
+  .frow select{min-width:100%}
+}
+@media print{
+  .no-print{display:none!important}
+  .nstrip button{display:none!important}
+  body{background:#fff}
+  #app{padding:0;max-width:100%}
+  .ssec{box-shadow:none;border:1px solid #e5e7eb}
+  details>div{display:block!important}
+  .kbox{box-shadow:none;border:1px solid #e5e7eb}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const LABELS = {"bureau": "担当部", "dept": "担当課", "cls": "事業類型", "budget_col": "R6決算(千円)", "next_col": "R8年度予定(千円)", "tool_title": "湖西市 事務事業優先度評価ツール", "card_title": "湖西市 令和7年度 事務事業評価", "summary_title": "湖西市 令和7年度 事務事業優先度評価結果", "output_file": "kosai_index.html", "no_col": "事業番号", "csv_filename": "湖西市_令和7年度_事務事業優先度評価結果.csv", "source_url": "https://www.city.kosai.shizuoka.jp/soshikiichiran/kikakuseisakuka/gyomuannai/5/2/17411.html"};
+const EVENTS = [{"no":1,"name":"議会運営費","bureau":"議会事務局","dept":"議会事務局","budget":30735,"next_budget":31998,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"条例","law":"湖西市議会基本条例","desc":"①庶務に関する事項（議会費の予算、決算。　儀式、接待、交際。慶弔。　議場管理。議長会。議員互助。議員共済。）②議事に関する事項（議事日程。本会議議事。議会選挙。会議録調製、保管。議会傍聴。常任委員会。特別委員会。委員会の記録調製、保管。議決、決定の通知及び報告。）③調査に関する事項（条例等制定、改廃。請願、陳情及び決議、意見書等。議員の調査研究。議会広報の発行。図書室の整備、管理。）"},{"no":2,"name":"庁舎維持管理費","bureau":"企画部","dept":"資産経営課","budget":63711,"next_budget":54731,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"庁舎の施設及び機器の管理、修繕及び改修。"},{"no":3,"name":"車両維持管理費","bureau":"企画部","dept":"資産経営課","budget":19535,"next_budget":22754,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"車両の車検及び点検とこれらに伴う部品交換修繕。"},{"no":4,"name":"文書・行政管理費","bureau":"総務部","dept":"総務課","budget":17084,"next_budget":19100,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"広報等の自衛官募集事務の一部を行う。顧問弁護士を置き、諸問題や紛争を早期、円滑に解決する。国の行政に関する相談を受ける行政相談委員の活動について便宜を図る。条例等の制定改廃に伴う例規審査・資料作成において、必要な情報を収集できる環境を整える。"},{"no":5,"name":"人事・研修費","bureau":"総務部","dept":"総務課","budget":69094,"next_budget":91000,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"全体事業内容】　　　　　人事業務に基づく事務経費等の一般諸経費等【本年度事業の内容】　　職員採用、職員安全衛生管理、福利厚生関係、市単独・合同研修、自己啓発研修等【効果の見込】○　法の遵守と職員の職場における安全と健康の確保○　快適な職場環境の形成等の促進○　職員の能力資質向上、合同研修による人事交流による組織力の向上を図る。"},{"no":6,"name":"広報推進事業","bureau":"企画部","dept":"秘書広報課","budget":20417,"next_budget":25907,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"①広報活動の推進広報こさいやウェブサイトなどの各種広報手段により、暮らしに役立つ情報や出来事を市民に提供する。②プロモーション事業（移住定住を重点的に）移住・定住プロモーション戦略、Instagram、キャラクター(うなぽん)、LINE、ふるさと大使、オリジナル婚姻届・出産届を活用し、市内外の人に対して戦略的に市の魅力発信を行う。"},{"no":7,"name":"基金管理事務事業（財政調整基金）","bureau":"総務部","dept":"財政課","budget":300827,"next_budget":757,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性A","legal":"","law":"","desc":"財政調整基金の利子分を基金に積み立てる。※決算積立は除く。"},{"no":8,"name":"基金管理事務事業（公共施設整備基金）","bureau":"総務部","dept":"財政課","budget":46439,"next_budget":4630,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性A","legal":"","law":"","desc":"公共施設整備基金の利子及び入札差金等を積み立てる。"},{"no":9,"name":"企画推進事業","bureau":"企画部","dept":"企画政策課","budget":41366,"next_budget":2316,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"・総合計画（総合戦略）、定住自立圏共生ビジョンなど主要計画の策定及び進捗管理・効果測定（事務事業評価）。・県施策に関係する市事業の進捗管理（ふじのくにフロンティア）・地方分権、権限移譲、行財政改革の推進・国、県との調整（要望活動）・市民意識の調査及び市の現況分析・研究・近隣市町村との広域的連携の推進"},{"no":10,"name":"移住定住促進事業","bureau":"企画部","dept":"企画政策課","budget":44417,"next_budget":59124,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性C・効率性B","legal":"","law":"","desc":"人口減少対策として、市内への移住・定住を促進させるための事業を展開する。・定住促進のための住宅取得補助制度による転入増の促進、転出減の抑制・若い世代の転入促進（新生活応援金、奨学金返還支援補助金など）・移住定住に向けたプロモーションの実施"},{"no":11,"name":"公共施設マネジメント推進事業","bureau":"企画部","dept":"資産経営課","budget":184325,"next_budget":191069,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"①公共施設再配置個別計画の実行②施設点検マニュアル運用、自主定期点検の実施③包括施設管理業務の運営④指定管理者制度の導入推進"},{"no":12,"name":"会計事務費","bureau":"","dept":"会計課","budget":30508,"next_budget":40393,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"規則等","law":"会計規則","desc":"・国、県の支出金及び市税や料金などの収納処理・正当な債権者へ支払期日を厳守した支払処理・正確な資金運用計画と効率的運用"},{"no":13,"name":"財産管理費","bureau":"企画部","dept":"資産経営課","budget":97927,"next_budget":85396,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"普通財産の維持管理及び市有財産の取得、処分に係る登記事務処理"},{"no":14,"name":"交通安全推進事業","bureau":"市民安全部","dept":"危機管理課","budget":11979,"next_budget":12903,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①交通安全運動（春・夏・秋・年末）　　　　　　　 　　　 　⑥交通指導隊街頭指導等活動に対する支援②交通事故「ゼロ」の日広報　　　　　　　　　　　　　　　　⑦交通教室等への派遣支援③広報啓発　　　　　　　　　　　　　　　　 　　　　　　　　　　 ⑧市内イベントにおける交通街頭指導の協力④市内交通危険箇所対策及び相談⑤啓発用品の購入・管理・配布"},{"no":15,"name":"防犯まちづくり事業","bureau":"市民安全部","dept":"危機管理課","budget":23796,"next_budget":24691,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①防犯まちづくり会議の開催②暴力追放推進協議会の開催③湖西市防犯協会等の団体の活動支援④青色パトロールの実施⑤防犯灯の新設及び既設防犯灯のLED化⑥犯罪被害者等の支援"},{"no":16,"name":"電子市役所推進費","bureau":"企画部","dept":"ＤＸ推進課","budget":357346,"next_budget":356230,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"◎市民サービスの利便性向上、行政内部事務の効率化、ＩＣＴ推進の環境整備のため、市全体のＤＸ推進に関する事業を先導して実施する。◎市役所全体の情報資産の調達、管理、運用を行うとともに、個人情報保護のための情報セキュリティ対策を実施する。◎住民基本台帳・税業務等の住民サービスに不可欠な基幹情報システム及び、財務会計・職員給与計算業務などの内部情報システムを管理・運用する。◎市役所全体の情報セキュリティ対策を実施する。また、ＤＸ推進のためデジタル人材の育成を図る。"},{"no":17,"name":"自治会活動費","bureau":"市民安全部","dept":"市民課","budget":46149,"next_budget":68865,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"・自治会活動助成事業市内自治会組織の自主的な運営を促進し、地域活動の活性化を図るため、各自治会に対し交付金を交付する。・自治会連合会助成事業自治会連合会の円滑な運営と自治会長相互の協調及び研修等の充実を図るため、自治会連合会に対し交付金を交付する。・公会堂等建設助成事業自治会活動の充実を図るため、公会堂等の建設、修繕、備品購入に対し補助金を交付する。"},{"no":18,"name":"多文化共生事業","bureau":"市民安全部","dept":"市民課","budget":25626,"next_budget":37185,"root":"裁量","cls":"ソフト","ev":"拡大","ev_detail":"必要性A・有効性C・効率性A","legal":"","law":"","desc":"・多文化共生・国際交流の推進・外国人総合窓口設置と多言語広報・日本語講座の開催、通訳派遣事業・多文化共生社会推進協議会開催・日本語教育推進会議開催・多文化共生社会推進プラン策定のための実態調査"},{"no":19,"name":"新居地域センター管理運営費","bureau":"市民安全部","dept":"新居支所","budget":457463,"next_budget":23735,"root":"裁量","cls":"施設管理","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"貸館の受付、調整業務及び施設・設備の維持管理業務を行う。"},{"no":20,"name":"新庁舎建設事業","bureau":"企画部","dept":"資産経営課","budget":13945,"next_budget":116928,"root":"裁量","cls":"ハード","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"新庁舎建設に向けて必要な調査・検討を実施する。"},{"no":21,"name":"市県民税課税業務","bureau":"総務部","dept":"税務課","budget":19718,"next_budget":23993,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"・個人市民税の納税義務者に対し、適正な課税を執行するため、課税資料（給与支払報告書、年金支払報告書、確定申告書、市民税申告書等）を確認のうえ賦課を行う。・法人市民税は、事業年度に基づく法人からの申告書等を確認のうえ賦課を行う。"},{"no":22,"name":"固定資産税課税業務","bureau":"総務部","dept":"税務課","budget":30043,"next_budget":70222,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"法務局からの登記済み通知及び現地調査を行うことで、毎年1月1日（賦課期日）に市内に固定資産（土地、家屋、償却資産）を所有する納税者に対して、適正な評価と課税を行う。"},{"no":23,"name":"市税収納業務","bureau":"総務部","dept":"税務課","budget":60442,"next_budget":99255,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":""},{"no":24,"name":"定額減税補足臨時給付金支援事業","bureau":"総務部","dept":"税務課","budget":426178,"next_budget":0,"root":"法定義務あり","cls":"法定","ev":"休止","ev_detail":"","legal":"","law":"","desc":"（R5からR6への繰越明許事業分）「令和6年度市・県民税課税情報」及び「市で把握している令和5年分所得税情報から推計される令和6年分所得税情報」に基づき、対象者1人につき市県民税から1万円・所得税から3万円減税したうえで減税枠の残額を1万円単位で切上げた額を給付する。給付対象者は所得税課税者又は市県民税所得割課税者及び左記課税者の被扶養者。（R6からR7への繰越明許事業分）上記6年度実施事業において不足額が発生した対象者及び新たな対象者へ対象者1人あたり1～4万円（1万円単位）の給付を行う。"},{"no":25,"name":"戸籍住民基本台帳事務","bureau":"市民安全部","dept":"市民課","budget":37046,"next_budget":40422,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"条例","law":"印鑑条例","desc":"・住民基本台帳事務　戸籍、住民基本台帳にかかわる届出書の受理、編製、記録、関連事務、証明書等交付事務、戸籍電算システムの運用・管理、印鑑登録、印鑑証明に関する事務。臨時運行許可証に関する事務、人口動態に係わる事務、広域交付に係わる事務・中長期在留者居住地届出事務　届出・通知による外国人住民の住民基本台帳の適正な管理、各種証明書の交付・旅券事務　旅券の申請受付、交付、県への送付、受領・西部市民サービスセンター　印鑑登録業務及び戸籍、住民基本台帳、印鑑関係の各種証明書の発行業務を行う・新居支所　届出書の受理、記録、関連事務、証明書等交付事務、印鑑登録、印鑑証明に関する事務、臨時運行許可証に関する事務を行う。"},{"no":26,"name":"静岡県知事選挙事務費","bureau":"総務部","dept":"総務課","budget":16260,"next_budget":0,"root":"法定義務あり","cls":"法定","ev":"休止","ev_detail":"","legal":"","law":"","desc":"静岡県知事辞職に伴う静岡県知事選挙を執行する。"},{"no":27,"name":"衆議院議員選挙事務費","bureau":"総務部","dept":"総務課","budget":18694,"next_budget":0,"root":"法定義務あり","cls":"法定","ev":"休止","ev_detail":"","legal":"","law":"","desc":"衆議院解散に伴う衆議院議員総選挙を執行する。"},{"no":28,"name":"社会福祉事務事業","bureau":"健康福祉部","dept":"","budget":56304,"next_budget":68930,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"①　福祉関係団体への負担金・補助金の支出②　地域福祉推進のための事業の実施"},{"no":29,"name":"令和６年度非課税世帯給付金支給事業","bureau":"健康福祉部","dept":"地域福祉課","budget":133263,"next_budget":0,"root":"法定義務あり","cls":"法定","ev":"廃止","ev_detail":"","legal":"","law":"","desc":"令和６年度住民税非課税世帯に対して、物価高騰対応重点支援地方創生臨時交付金の低所得世帯支援枠を活用し、物価高騰重点支援臨時給付金として１世帯当たり３万円を支給する。また、令和６年度住民税非課税世帯内で扶養されている18歳以下のこども１人当たり２万円を支給する。"},{"no":30,"name":"国民健康保険事業費","bureau":"市民安全部","dept":"保険年金課","budget":303406,"next_budget":302381,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"国民健康保険財政の基盤安定及び保険給付費等に対する被保険者の負担の軽減に資するため、国民健康保険事業特別会計へ繰り出しを行う。"},{"no":31,"name":"介護保険事業特別会計繰出金","bureau":"健康福祉部","dept":"高齢者福祉課","budget":642139,"next_budget":670000,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"介護給付費、事務費及び地域支援事業費、低所得者保険料軽減負担金における市負担。"},{"no":32,"name":"重度障害者（児）医療費助成事業","bureau":"健康福祉部","dept":"地域福祉課","budget":92653,"next_budget":94291,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"身体障害者手帳1・2級・内部3級、療育手帳A,・Ｂ、,精神障害者保健福祉手帳1級の手帳交付者及び特別児童扶養手当1級対象児童に対し、保険診療分の医療費（1ケ月１医療機関につき500円の自己負担あり）を助成する。ただし、身体障害者手帳内部障害3級については、当該障害に係る保険診療分の医療費のみ対象とする。"},{"no":33,"name":"心身障害者福祉費","bureau":"健康福祉部","dept":"地域福祉課","budget":41898,"next_budget":35565,"root":"裁量","cls":"法定（裁量含む）","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①心身障害者扶養共済掛金の１／４を助成　②心身障害者扶養共済給付金支給　③身体障害者相談員設置　④湖西市身体障害者福祉協会への助成　⑤知的障害者相談員設置　⑥湖西市手をつなぐ育成会への助成　⑦タクシーの初乗り料金を助成（タクシー券２４枚綴り／年）⑧重度心身障害者に特別障害者手当を支給　⑨重度心身障害児に障害児福祉手当を支給　⑩障害者に経過的福祉手当を支給"},{"no":34,"name":"浜名学園負担金","bureau":"健康福祉部","dept":"地域福祉課","budget":54057,"next_budget":32937,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"浜名学園組合への負担金"},{"no":35,"name":"地域生活支援関係経費","bureau":"健康福祉部","dept":"地域福祉課","budget":35437,"next_budget":39482,"root":"裁量","cls":"法定（裁量含む）","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①移動支援事業　②日中一時支援事業　③地域活動支援センター事業　④日常生活用具給付事業　⑤身体障害者自動車免許取得及び身体障害者車改造費助成事業　⑥訪問入浴サービス事業　⑦相談支援事業"},{"no":36,"name":"介護・訓練等給付費","bureau":"健康福祉部","dept":"地域福祉課","budget":948480,"next_budget":926030,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"障害福祉サービス（介護給付、訓練等給付、施設入所等）の支給"},{"no":37,"name":"自立支援医療費","bureau":"健康福祉部","dept":"地域福祉課","budget":46129,"next_budget":37260,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"更生医療、育成医療、療養介護医療費"},{"no":38,"name":"補装具給付費","bureau":"健康福祉部","dept":"地域福祉課","budget":11475,"next_budget":9646,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"身体の不自由な部分を補って、日常生活や職業生活を容易にするために、義肢、補聴器などの補装具の購入・仮受け・修理費を助成する。"},{"no":39,"name":"障害児通所給付費","bureau":"健康福祉部","dept":"地域福祉課","budget":252890,"next_budget":247480,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"障害福祉サービス（児童発達支援、放課後デイサービス、保育所等訪問支援）の支給"},{"no":40,"name":"後期高齢者医療事業費","bureau":"市民安全部","dept":"保険年金課","budget":754275,"next_budget":859078,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"一般会計から後期高齢者医療事業特別会計へ繰出しを行う。"},{"no":41,"name":"後期高齢者健康診査事業","bureau":"健康福祉部","dept":"健康増進課","budget":23721,"next_budget":32096,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"法令","law":"高齢者の医療の確保に関する法律","desc":"後期高齢者医療制度加入者の方で75歳以上の方（65歳以上で一定の障害があると認定された方を含む）を対象に、後期高齢者健康診査を実施する。"},{"no":42,"name":"児童健全育成事業","bureau":"こども未来部","dept":"こども政策課","budget":21304,"next_budget":13669,"root":"法定義務あり","cls":"法定","ev":"縮小","ev_detail":"","legal":"","law":"","desc":"①子ども・子育て会議の運営、こども計画の策定・推進、こども施策に関する環境整備を行う。②児童手当、こども医療費、児童扶養手当、ひとり親医療に関する福祉総合システムの運用管理を行う。"},{"no":43,"name":"発達支援事業","bureau":"こども未来部","dept":"こども未来課","budget":98020,"next_budget":5550,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"発達に課題のある乳幼児とその保護者への支援・発達支援教室(1歳児クラス月2回、2歳児クラス週1回）・発達に関する相談園の保育士など支援者に対する支援と連携・支援方法に関する相談、講座市民に対する啓蒙活動・こどもの発達や支援に関する講座"},{"no":44,"name":"新居子育て支援センター運営事業","bureau":"こども未来部","dept":"こども未来課","budget":15905,"next_budget":13265,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"地域子育て支援拠点事業・子育て親子の交流の場として、遊びの広場の提供・子育て講座の開催・保育士による子育てに対する相談、援助の実施・満1歳～就学前の児童を対象にした預かり保育実施（水～金）"},{"no":45,"name":"児童手当支給事業費","bureau":"こども未来部","dept":"こども政策課","budget":913678,"next_budget":0,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"高校生年代までの子どもを養育している者に手当を支給※令和６年10月分より、所得制限を撤廃、支給期間を高校生年代まで延長、第３子以降30,000円に拡充。多子加算カウント方法を22歳年度末までに拡大、支払月を３回から６回に拡充。"},{"no":46,"name":"こども医療費助成事業","bureau":"こども未来部","dept":"こども政策課","budget":304577,"next_budget":328685,"root":"裁量","cls":"法定（裁量含む）","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"０歳から18歳に到達した最初の３月31日までの、通院・入院等の保険診療分の医療費及び入院時食事療養費標準負担額を助成する。"},{"no":47,"name":"放課後児童健全育成事業","bureau":"教育委員会事務局","dept":"教育総務課","budget":70602,"next_budget":88566,"root":"裁量","cls":"法定（裁量含む）","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"・子育て支援事業として、昼間保護者等のいない小学校児童に対して、小学校の空き教室等を生活の場として提供する。委託により実施。・12クラブ16単位による運営たまゆらのいえ（新居小）、たまゆらのいえ（のびりん）、のびりん元気クラブ、なろっぷ児童クラブ（ゆめ／きぼう）、白須賀小放課後元気クラブ、東小放課後元気クラブ、岡崎小放課後元気クラブ（第１／第２／第３）、知波田小放課後元気クラブ、なろっぷ児童クラブあせかくこ、おかさきこども園（赤とんぼ／銀やんま）、真愛谷上学童クラブ、さくら元気クラブ"},{"no":48,"name":"児童扶養手当給付事業","bureau":"こども未来部","dept":"こども政策課","budget":122516,"next_budget":143885,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"児童を監護している母（父）又は母（父）に代わって児童を養育している人で一定の低所得の人に、児童扶養手当法（昭和36年法律第238号）に基づく手当を支給する。"},{"no":49,"name":"民間保育所等助成事業","bureau":"こども未来部","dept":"保育幼稚園課","budget":1314921,"next_budget":1408649,"root":"裁量","cls":"法定（裁量含む）","ev":"縮小","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①《施設型給付費》保育を実施する民間保育園・こども園及び幼児教育を実施する私立幼稚園・こども園に対し、給付費を支給する。②《多様な保育事業》県が行う多様な保育推進事業の内、乳幼児保育事業（３歳未満児が年間72人以上入所）を行う民間保育所・こども園に、保育に要した実支出額の補助を行う。③《保育士会運営費補助》市内の保育園・こども園に勤務する保育士等の資質向上と相互の連絡並びに連携を図る事業に対し補助するため、湖西保育士会が実施する研修事業に係る経費の1/2以内の額を補助する。④《保育対策事業》延長保育、一時預かり（一般型・幼稚園型・余裕活用型）、病児保育（体調不良時対応型）、０歳児入所サポート等の事業を行う民間保育所・こども園に、国・県の基準により実支出額の補助を行う。⑤《施設整備費補助》民間保育所・こども園の新設・大規模改修等に要する整備事業への補助及びその借入れに対する利子補給を行う。⑥《施設等利用等給付費》保育料等の無償化に伴う施設等利用給付費を支出する。"},{"no":50,"name":"公立保育所施設管理運営費","bureau":"教育委員会事務局","dept":"教育総務課","budget":99682,"next_budget":0,"root":"裁量","cls":"施設管理","ev":"廃止","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"用途廃止した保育園の解体工事（旧鷲津保育園）"},{"no":51,"name":"生活保護実施事業","bureau":"健康福祉部","dept":"地域福祉課","budget":380439,"next_budget":374133,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"生活保護法に基づき、生活困窮者に最低限度の生活を保障するとともに、自立を助長する支援を実施する。"},{"no":52,"name":"生活困窮者自立支援事業","bureau":"健康福祉部","dept":"地域福祉課","budget":14992,"next_budget":20495,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"生活困窮者自立支援法に基づき、生活保護に至る前の段階の生活医困窮者に対して支援を実施し、自立を助長する。"},{"no":53,"name":"管理運営事業","bureau":"健康福祉部","dept":"健康増進課","budget":10189,"next_budget":10666,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"健康増進課事業の管理運営を行い、事業を円滑に推進する。市民の健康保持と増進のため、各種関係団体に対して財政的補助を行う。若年がん患者等への支援、骨髄ドナーへの支援を行う。標準化準拠システムへの移行作業を実施する。"},{"no":54,"name":"健康福祉センター管理運営事業","bureau":"健康福祉部","dept":"健康増進課","budget":162223,"next_budget":14393,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性A","legal":"","law":"","desc":"健康福祉センターの施設管理・運営に必要な経費"},{"no":55,"name":"母子保健事業","bureau":"こども未来部","dept":"こども未来課","budget":44372,"next_budget":66795,"root":"裁量","cls":"法定（裁量含む）","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"・妊産婦健診・乳幼児健診（個別・集団）・育児相談、各種教室"},{"no":56,"name":"出産・子育て応援事業","bureau":"こども未来部","dept":"こども未来課","budget":32131,"next_budget":31746,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"妊婦のための支援給付：妊婦に対して2回にわけてそれぞれ5万円を支給。妊婦等包括相談支援事業：妊娠届出時より妊婦に寄り添い、出産・育児等の見通しを立てるための面談や継続的な情報発信等を行うことを通じて必要な支援につなぐ伴走型相談支援の充実を図る。"},{"no":57,"name":"小児等予防接種事業","bureau":"こども未来部","dept":"こども未来課","budget":118623,"next_budget":131390,"root":"法定義務あり","cls":"法定","ev":"拡大","ev_detail":"","legal":"法令","law":"予防接種法","desc":"予防接種法に基づき乳幼児、学童の疾病予防のための予防接種を行う"},{"no":58,"name":"地域医療対策事業","bureau":"健康福祉部","dept":"健康増進課","budget":21390,"next_budget":23992,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"夜間、休日診療を市内医療機関に依頼するとともに、救急医療の体制整備のための医療機関に財政支援を行う。地域医療体制に関する会議（Medi-Netこさい）、及び災害医療救護体制検討会の定期開催。看護師確保事業（浜松市立看護専門学校における「湖西市枠」）の推進。"},{"no":59,"name":"疾病対策事業","bureau":"健康福祉部","dept":"健康増進課","budget":173553,"next_budget":170757,"root":"裁量","cls":"法定（裁量含む）","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"規則等","law":"健康増進法施行規則","desc":"・健康増進法に基づく、健康相談、健康教育、訪問指導、各種がん検診、肝炎ウイルス検診、骨粗しょう症検診、歯周病検診等の実施。・市の独自事業としての前立腺がん検診の実施。・コーちゃん健康マイレージの実施。・熱中症対策の実施。・予防接種法に基づく高齢者肺炎球菌、高齢者インフルエンザ及び、市の独自事業としての帯状疱疹の予防接種の実施。・湖西市の健康づくりを広く普及することを目的に各組織の育成及び活動を支援する。・自殺対策計画に基づく啓発や、講演会及びゲートキーパー養成等の教室実施。"},{"no":60,"name":"斎場管理運営事業","bureau":"環境部","dept":"環境課","budget":60316,"next_budget":61316,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"新居斎場やすらぎ苑の効率的かつ適切な運営を行う。※市営火葬場は、Ｒ6.3.31をもって廃止。"},{"no":61,"name":"斎場整備事業","bureau":"環境部","dept":"環境課","budget":179199,"next_budget":0,"root":"裁量","cls":"ハード","ev":"休止","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"内山65号線の1期工事を実施し、Ｒ7年度末の供用開始を目指す。"},{"no":62,"name":"合併処理浄化槽補助事業","bureau":"環境部","dept":"廃棄物対策課","budget":17838,"next_budget":23778,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"公共下水道事業計画区域を除く個人住宅のくみ取りトイレ、単独浄化槽を合併浄化槽に転換する場合において、設置費用の一部を補助する。国、県と連携した施策で、国費・県費を活用している。"},{"no":63,"name":"廃棄物対策事業","bureau":"環境部","dept":"廃棄物対策課","budget":362569,"next_budget":412619,"root":"裁量","cls":"法定（裁量含む）","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"１　家庭系一般廃棄物の収集運搬を行う。２　資源物の分別収集を行い、再資源化、ごみの減量化を図る。３　ごみステーションの備品支給、不法投棄対策を行う。４　家庭ごみ、事業ごみの減量を進めるため、生ごみ堆肥化容器の普及・啓発を行う。"},{"no":64,"name":"ごみ処理施設管理運営事業","bureau":"環境部","dept":"廃棄物対策課","budget":1783162,"next_budget":872457,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"要綱","law":"の技術上の基準","desc":"１　環境センター運営管理２　笠子・新居廃棄物処分場の維持管理、運営管理３　笠子廃棄物処分場の拡張"},{"no":65,"name":"し尿処理施設管理運営事業","bureau":"環境部","dept":"廃棄物対策課","budget":159706,"next_budget":190370,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"衛生プラントの安全かつ効率的な管理運営を実施する。"},{"no":66,"name":"脱炭素推進事業","bureau":"環境部","dept":"環境課","budget":73605,"next_budget":30479,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性B・有効性A・効率性B","legal":"","law":"","desc":"・市民向けに、家庭用蓄電池、家庭用コージェネレーションシステム、低公害車（電気自動車、ﾌﾟﾗｸﾞｲﾝﾊｲﾌﾞﾘｯﾄﾞ車、燃料電池自動車）、Ｖ２Ｈ（ヴィークル・トゥ・ホーム）充放電設備の導入支援を行う。・中小企業等事業者向けに、省エネルギー診断に対する奨励金の交付を行うほか、市内５金融機関と連携しカーボンニュートラル推進を支援するため、「脱炭素化促進事業利子補給金」、「温室効果ガス算定ツール購入費等補助金」、「サステナビリティ経営促進事業補助金」の交付などを行う。・アースキッズ、湖西ソーラーウェイの太陽光発電にかかる環境学習会などの教室を開催する。"},{"no":67,"name":"花と緑のまちづくり推進事業","bureau":"環境部","dept":"環境課","budget":11545,"next_budget":12718,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"春と秋の年２回、緑花フェアの開催公共花壇の維持管理大森・新居・南部育苗施設にて地域花壇に配布するため、年３回の花苗生産"},{"no":68,"name":"湖西市立病院事業繰出金","bureau":"健康福祉部","dept":"健康増進課","budget":832887,"next_budget":806400,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"公営企業法に定められた経営に伴う収入のみをもって充てることが客観的に困難であると認められる経費、及び医学修学基金への繰入金を一般会計より支出する。"},{"no":69,"name":"勤労者定着促進事業","bureau":"産業部","dept":"産業振興課","budget":12524,"next_budget":6850,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性B・有効性B・効率性B","legal":"","law":"","desc":"勤労者が住宅の購入等のために借り受けた住宅資金（住宅ローン）の返済金に生じる利子の一部を市が補給して、負担を軽減し勤労者の市内定住化を促進する。"},{"no":70,"name":"高齢者能力活用支援事業","bureau":"産業部","dept":"産業振興課","budget":15060,"next_budget":15071,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"高齢者の生きがい支援並びに就業機会の創出を図るため各種事業を実施している(公社)湖西市シルバー人材センターに対し補助金を交付し、円滑な運営を図る。"},{"no":71,"name":"技術・技能開発事業","bureau":"産業部","dept":"産業振興課","budget":23457,"next_budget":24763,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性B・有効性B・効率性B","legal":"","law":"","desc":"・企業の技術者・技能者の養成を目的とした技術向上訓練の実施・社員教育や管理者・監督者のレベルアップ等の訓練の実施・求職者に対し、就職活動を有利にすることを目的とした職業訓練の実施・日本在住の外国人を対象とした語学及び職業訓練の実施"},{"no":72,"name":"農業委員会運営事業","bureau":"産業部","dept":"産業振興課","budget":12436,"next_budget":12283,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"「農地法」に基づき、農地の有効利用について調整することにより、秩序ある農政と農業従事者の生活安定に努める。また農地台帳整備事業においては、台帳の整理を適正に行い農業委員会業務の充実と市民ニーズの迅速な対応を図る"},{"no":73,"name":"農業振興推進事業","bureau":"産業部","dept":"産業振興課","budget":18660,"next_budget":8571,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"農業の振興を図るため、国、県、農協等関係機関と連携し各種施策を行う。"},{"no":74,"name":"畜産振興対策事業","bureau":"産業部","dept":"産業振興課","budget":64334,"next_budget":6606,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"畜産経営の安定と環境対策のために農家を支援する。"},{"no":75,"name":"土地改良整備事業","bureau":"産業部","dept":"産業振興課","budget":86875,"next_budget":117921,"root":"裁量","cls":"ソフト","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"農業用施設の機能保全のための事業に対し、県への負担金や土地改良区、地域の農業者団体への補助を行う。"},{"no":76,"name":"森林保護整備事業","bureau":"産業部","dept":"産業振興課","budget":29757,"next_budget":16865,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"森林保全対策として森林区域内や保安林内に不法投棄されたゴミの処理や草刈りを行う。また、海岸防災林における松くい虫の被害拡大防止のために各種防除を行うとともに、森林・保安林の機能の保全を図る。"},{"no":77,"name":"水産業振興事業","bureau":"産業部","dept":"産業振興課","budget":14812,"next_budget":31481,"root":"裁量","cls":"ソフト","ev":"縮小","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"鷲津漁港において、泊地浚渫や係留施設の補修工事を実施する。アサリやクルマエビなどの資源回復のため浜松市等と組織する協議会に対し負担金を負担する。"},{"no":78,"name":"商工業振興事業","bureau":"産業部","dept":"産業振興課","budget":50879,"next_budget":28562,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"中小企業等の振興を支援するため、展示会や見本市などに新製品等を出展する中小企業者等に対し補助金を交付する。商店街が主催する市内イベントに対し補助金を交付する。"},{"no":79,"name":"観光振興事業","bureau":"産業部","dept":"文化観光課","budget":30573,"next_budget":32568,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"・静岡県および浜松市、DMO（浜松・浜名湖ツーリズムビューロー）と連携を図り、魅力ある浜名湖の観光地域づくりを推進する。・湖西・新居観光協会と連携した施策を実施し、市内外から誘客に努める。"},{"no":80,"name":"道の駅潮見坂管理運営事業","bureau":"産業部","dept":"文化観光課","budget":16430,"next_budget":23004,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"・来場者に市の特産物を提供することにより、湖西市を広くＰＲする・道の駅から情報発信を積極的に行い、市内観光施設及び宿泊施設の入込客数の増加を図る。・交流人口の増加による、市の賑わいを創出する。"},{"no":81,"name":"新居今切体験の里管理運営事業","bureau":"産業部","dept":"文化観光課","budget":52110,"next_budget":48191,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"・浜名湖独自の環境や文化、水産物の紹介と振興。・浜名湖のブランドイメージの発信。・浜名湖の観光拠点としてのPR。･海湖館等の施設管理。"},{"no":82,"name":"ふるさと納税推進事業","bureau":"産業部","dept":"文化観光課","budget":234137,"next_budget":241630,"root":"裁量","cls":"ソフト","ev":"拡大","ev_detail":"必要性A・有効性C・効率性A","legal":"","law":"","desc":"本市を全国にＰＲするほか、寄付者への返礼品として地元特産品を贈呈することで市内の産業振興を図る"},{"no":83,"name":"企業立地促進事業","bureau":"産業部","dept":"産業振興課","budget":154177,"next_budget":334603,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性B・有効性B・効率性A","legal":"","law":"","desc":"市内に新たに土地を購入し、業務を開始した事業者に対し、補助金を交付する。・用地取得奨励金：用地取得費の20％～40％を補助する。・雇用奨励金：新規雇用1人につき100万円（パートタイマーは50万円）を補助する。・設置奨励金：固定資産税相当額を補助する。（3～5年間）"},{"no":84,"name":"庶務及び管理費","bureau":"都市整備部","dept":"土木課","budget":34242,"next_budget":41753,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"①官民境界管理事務道路・河川の官民境界の管理、未登記物件の解消を行う。②道路台帳等管理事業道路の管理を円滑に行うため、台帳の修正を行う。"},{"no":85,"name":"地元要望事業","bureau":"都市整備部","dept":"土木課","budget":69299,"next_budget":150000,"root":"裁量","cls":"ハード","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"地元自治会からの要望に基づき、安全性及び利便性を確保するための整備・補修工事を行う。"},{"no":86,"name":"地籍調査事業","bureau":"都市整備部","dept":"土木課","budget":17596,"next_budget":10440,"root":"法定義務あり","cls":"法定","ev":"拡大","ev_detail":"","legal":"","law":"","desc":"昭和51年度に休止していた地籍調査業務の再開。境界の位置と面積を測量することで、迅速な災害復旧、円滑な公共事業等の効果を望む。"},{"no":87,"name":"道路維持補修事業","bureau":"都市整備部","dept":"土木課","budget":393196,"next_budget":440000,"root":"法定義務あり","cls":"法定","ev":"拡大","ev_detail":"","legal":"","law":"","desc":"市道の安全性及び利便性の確保並びに、良好な道路環境の確保を図るための維持管理。"},{"no":88,"name":"新所原笠子線道路改良事業","bureau":"都市整備部","dept":"都市政策課","budget":120050,"next_budget":50000,"root":"裁量","cls":"ハード","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"本路線は、県道新所原停車場日の岡線と県道新所原停車場白須賀線を結ぶ幹線市道である。路線の東工区はH24に事業を完了しており利用者の利便性の向上及び地域の交通安全を図るため事業区間を延伸し整備を行なうものである。全体計画　県道豊橋湖西線～境宿門原線 （L=780m）１工区　　南部幹線～境宿門原線（L=370ｍ）"},{"no":89,"name":"（都）大倉戸茶屋松線整備事業","bureau":"都市整備部","dept":"土木課","budget":45982,"next_budget":0,"root":"裁量","cls":"ハード","ev":"廃止","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"地域振興に資するため、浜名湖西岸地区新産業拠点のアクセス道路となる都市計画道路　大倉戸茶屋松線並びに周辺道路の整備を行う。・計画整備延長　L＝1.6km・道路幅員　W=16ｍ"},{"no":90,"name":"道路改良関係事務費","bureau":"都市整備部","dept":"","budget":22443,"next_budget":0,"root":"裁量","cls":"内部管理","ev":"廃止","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"道路改良事業を進める為に必要な調査や各期成同盟会への参加。"},{"no":91,"name":"河川・排水路維持補修事業","bureau":"都市整備部","dept":"土木課","budget":50330,"next_budget":45000,"root":"法定義務あり","cls":"法定","ev":"拡大","ev_detail":"","legal":"","law":"","desc":"準用河川及び普通河川、排水路等の維持補修を行い、完全安心快適な環境づくりに努める。"},{"no":92,"name":"河川整備関係経費","bureau":"都市整備部","dept":"都市政策課","budget":45614,"next_budget":86268,"root":"裁量","cls":"内部管理","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"河川整備事業を進めるために必要な関係事務費"},{"no":93,"name":"地域公共交通対策事業","bureau":"都市整備部","dept":"都市計画課","budget":95744,"next_budget":145595,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"市民生活に必要な通勤通学や通院、買い物などへの移動手段を確保し、利便性向上を図るために、コミュニティバス、デマンド型乗合タクシーを運行する。また、官民連携による新たなモビリティサービスの検証として企業シャトルBaaS事業を実施する。地域公共交通会議では、バス等の旅客輸送の確保を図り、利用者がより便利に利用できる施策や地域の実情に応じた輸送サービスの実現に必要となる事項を協議する。"},{"no":94,"name":"天竜浜名湖鉄道対策事業","bureau":"都市整備部","dept":"都市計画課","budget":38237,"next_budget":36830,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"天竜浜名湖鉄道の利用促進と地域のマイレール意識を高め、財政的支援を計画的に行うことで経営の長期安定化を図る。"},{"no":95,"name":"都市計画関係事務費","bureau":"都市整備部","dept":"都市計画課","budget":554122,"next_budget":622233,"root":"裁量","cls":"施設管理","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"都市の健全な発展と秩序ある整備を図り、国土の均衡ある発展と公共の福祉の増進に寄与するために定められた都市計画の方針に従い、円滑な都市計画行政を推進する。"},{"no":96,"name":"鷲津駅谷上線整備事業","bureau":"都市整備部","dept":"都市政策課","budget":83144,"next_budget":218000,"root":"裁量","cls":"ハード","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"本路線は、鷲津駅と（都）谷上大沢線を結ぶ都市計画道路である。鷲津駅側及び谷上地区側は土地区画整理事業により整備が完了しているが、本区間は未整備の状況である。このため本工区の整備を行い、通勤通学者はもとより付近商業施設等の利用者の安全の確保と地域の生活環境の改善を図る。（L=430ｍ・W=16m）"},{"no":97,"name":"浜名弁天線整備事業","bureau":"都市整備部","dept":"都市政策課","budget":14019,"next_budget":48000,"root":"法定義務あり","cls":"法定","ev":"拡大","ev_detail":"","legal":"","law":"","desc":"本路線は国道1号と（都）向島弁天線を結ぶ都市計画道路である。H26.2に浜名バイパス新居弁天ICのフルインター化が完成したことから、自動車利用者の利便性の向上、歩行者の安全を確保するよう整備を行うものである。全体計画　住吉線～浜名BP新居弁天IC付近（L=870m・W=16m)１工区　住吉線～新居177号線付近（L=200m）"},{"no":98,"name":"表鷲津漁港線整備事業","bureau":"都市整備部","dept":"都市政策課","budget":29546,"next_budget":140000,"root":"法定義務あり","cls":"法定","ev":"拡大","ev_detail":"","legal":"","law":"","desc":"本路線は、（都）南部幹線を起点とし、鷲津漁港へ至る都市計画道路である。平成4年に都市計画決定され、事業が進めていたが、支障物件の移転などに課題があり平成11年度から休止状態となった。その後、前述の課題は解消し、自治会からも道路拡幅の要望がされていることから、事業を再開し、自動車利用者の利便性の向上、歩行者の安全を確保するよう未整備区間の整備を行うものである。（L=210m)"},{"no":99,"name":"都市公園維持管理業務","bureau":"都市整備部","dept":"土木課","budget":88964,"next_budget":110000,"root":"法定義務あり","cls":"法定","ev":"拡大","ev_detail":"","legal":"","law":"","desc":"市内公園及び緑地について、公園施設及び緑化の維持管理を行う。"},{"no":100,"name":"公園施設整備費","bureau":"都市整備部","dept":"都市政策課","budget":31585,"next_budget":92,"root":"裁量","cls":"内部管理","ev":"縮小","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"公園整備事業を進めるために必要な関係事務費"},{"no":101,"name":"組合土地区画整理事業事務費","bureau":"都市整備部","dept":"都市計画課","budget":111783,"next_budget":97251,"root":"裁量","cls":"ハード","ev":"維持","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"組合区画整理事業への技術支援及び公共施設の建設に際し要綱に基づき補助金を交付する。"},{"no":102,"name":"公共下水道整備事業","bureau":"環境部","dept":"上下水道課","budget":633098,"next_budget":680055,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"","law":"","desc":"生活環境の改善及び公共用水域の水質保全を目的として実施している公共下水道事業の経営健全の促進とその経営基盤を強化するため、公共下水度事業特別会計に繰出しを行う。"},{"no":103,"name":"市営住宅建設事業","bureau":"都市整備部","dept":"建築住宅課","budget":45800,"next_budget":38000,"root":"裁量","cls":"ハード","ev":"維持","ev_detail":"必要性A・有効性B・効率性A","legal":"","law":"","desc":"湖西市営住宅建設計画及び、市営住宅長寿命化計画に基づき、設計・工事を実施する。"},{"no":104,"name":"港湾施設管理運営費","bureau":"都市整備部","dept":"都市政策課","budget":47042,"next_budget":65716,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"条例","law":"静岡県建設事業等市町負担金徴収条例","desc":"港湾施設整備の要望及び静岡県が実施する浜名港修築事業に係る事業費を負担する。"},{"no":105,"name":"消防団運営費","bureau":"消防本部","dept":"消防総務課","budget":57793,"next_budget":61620,"root":"法定義務あり","cls":"法定","ev":"維持","ev_detail":"","legal":"法令","law":"を中核とした地域防災力の充実強化に関する法律","desc":"消防団活動を円滑にし、地域防災力の向上を目指すため、充実した訓練及び研修会等を実施する。"},{"no":106,"name":"防災推進事業","bureau":"市民安全部","dept":"危機管理課","budget":50167,"next_budget":100387,"root":"裁量","cls":"ハード","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"津波防災地域づくり推進計画に基づく津波対策等施策の推進。静岡県第4次地震被害想定に基づく防災備蓄品の補充及び資機材の整備。災害時における情報収集システムの構築。防災設備の保守点検。感震ブレーカーの普及促進、及び、要援護者世帯を対象とした家具転倒防止事業の推進。"},{"no":107,"name":"自主防災振興事業","bureau":"市民安全部","dept":"危機管理課","budget":11841,"next_budget":15975,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①地域防災指導員の育成②自主防災倉庫の整備、更新③防災訓練の推進及び防災資機材整備事業への補助"},{"no":108,"name":"無線設備事業","bureau":"市民安全部","dept":"危機管理課","budget":27831,"next_budget":49130,"root":"裁量","cls":"ハード","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"無線設備の保守及び維持管理を行う。"},{"no":109,"name":"消防総務費","bureau":"消防本部","dept":"消防総務課","budget":530982,"next_budget":365816,"root":"裁量","cls":"ハード","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①　湖西市消防防災センター建設に伴う経費　・地質調査、基本・実施設計、庁舎建設工事、移転、解体工事設計、旧庁舎・訓練塔解体工事、訓練塔等の建設工事②　福利厚生及び事務経費　　　　　　　　　　　　・消防職員に対してインフルエンザ予防接種を行う。・消防職員に対して服制基準に基づき被服を貸与する。・消防職員に対して特殊な消防車両等の運転に必要な免許取得を要領に基づき助成を行う。③　人材育成・研修費　　　　　　　　　　　　　　　　・静岡県消防学校、救急救命士養成研修所、消防大学校等へ消防職員を派遣する。④　消防庁舎維持管理　　　　　　　　　　　　　　　・消防庁舎を適正に維持管理する。"},{"no":110,"name":"通信指令装置・消防救急無線整備事業","bureau":"消防本部","dept":"警防課","budget":49138,"next_budget":10586,"root":"裁量","cls":"施設管理","ev":"縮小","ev_detail":"必要性A・有効性A・効率性B","legal":"","law":"","desc":"①119番通報等、災害情報の受信②災害情報に応じた出動車両の選択及び出動指令の放送③署所や出動車両に各種災害情報や気象情報等の伝達④気象の観測及び気象警報・注意報等の受信⑤通信指令装置及び消防救急デジタル無線装置の維持管理⑥通信指令装置及び消防救急デジタル無線装置の更新準備"},{"no":111,"name":"公用車維持管理費","bureau":"消防本部","dept":"消防署","budget":10833,"next_budget":11279,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①消防車両（一般車両含む）の燃料費、法定点検代等②消防車両の特殊装備の維持管理③故障・損傷に伴う修繕"},{"no":112,"name":"会計年度任用職員雇用経費","bureau":"教育委員会事務局","dept":"教育総務課","budget":56356,"next_budget":66290,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"市内各小学校、中学校の会計年度任用職員の雇用"},{"no":113,"name":"学校教育運営事業","bureau":"教育委員会事務局","dept":"学校教育課","budget":27150,"next_budget":7255,"root":"裁量","cls":"ソフト","ev":"縮小","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"１．小・中学校の教師用教科書及び指導書を貸与する。小中学校教科書改訂に伴う選定を行う。２．卒業記念品の授与を行う。３．指導主事等が県教委等との連絡調整、先進の教育情報の入手を行い、学校運営を教育委員会として支援する。４．スクールロイヤー、生徒指導相談員を活用した学校運営の支援を行う。５．部活動地域展開の検討を行う。"},{"no":114,"name":"生きた英語教育推進事業","bureau":"教育委員会事務局","dept":"学校教育課","budget":20460,"next_budget":22176,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"４名のALTを市内の小中学校に巡回配置し、中学校英語科や小学校外国語、外国語活動の指導にあたらせる。また、幼稚園にも規模に応じて派遣する。"},{"no":115,"name":"外国人児童生徒支援事業","bureau":"教育委員会事務局","dept":"学校教育課","budget":11301,"next_budget":15443,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"①外国人児童生徒の日本語の習得や学習の支援をする。②保護者との正確な意思疎通が図れるよう、通訳や翻訳などを行う。③各学校からの要請に応じて、未配置校にも派遣する。"},{"no":116,"name":"特別支援教育推進事業","bureau":"教育委員会事務局","dept":"学校教育課","budget":41425,"next_budget":53492,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"小中学校の状況に応じて支援員を配置する。専門家による巡回相談を実施する。"},{"no":117,"name":"学校保健衛生費","bureau":"教育委員会事務局","dept":"学校教育課","budget":23826,"next_budget":24963,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"学校保健安全法に基づき、児童生徒及び教職員の健康保持増進のため定期健康診断を行う。結核予防法により、結核対策委員会を設置し、児童生徒の健康保持に努める。"},{"no":118,"name":"特別支援教育推進事業（幼稚園）","bureau":"こども未来部","dept":"保育幼稚園課","budget":15164,"next_budget":20782,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"法令","law":"法律","desc":"軽度の発達障害がある園児の個別支援を目的として、公立幼稚園各園の状況に応じて支援員を配置する。巡回相談を行い、対象児への具体的な支援の手立てや保護者との連携の仕方等について専門家からアドバイスを受ける。"},{"no":119,"name":"学校給食推進事業","bureau":"教育委員会事務局","dept":"教育総務課","budget":195042,"next_budget":266364,"root":"裁量","cls":"法定（裁量含む）","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"・給食調理従事者に対する保菌検査・副食物細菌検査・食材細菌検査を実施する。・学校における給食調理業務を委託契約し、安定的に給食を提供する。・中学校給食費を10月から無償化する。・給食費公会計化に向けた準備を行う。"},{"no":120,"name":"学校再編事業","bureau":"教育委員会事務局","dept":"学校教育課","budget":11243,"next_budget":142598,"root":"裁量","cls":"ソフト","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"白須賀地区については、学校再編検討委員会を開催し、学校再編基本計画を策定する。北部地区については、学校再編基本計画に基づき、小中学校統合に係る校舎の改修等の設計を行うほか、小中学校統合準備委員会を開催し、統合に向けた具体的な事項について検討を行う。"},{"no":121,"name":"学校給食施設整備事業","bureau":"教育委員会事務局","dept":"教育総務課","budget":24860,"next_budget":122137,"root":"裁量","cls":"ハード","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"要綱","law":"現在の衛生管理基準","desc":"学校給食センター整備をＰＦＩ事業として進めるため、令和４年度～令和６年度の３ヵ年でPFI事業者の選定業務等を行い、令和６年度後半より設計、建設、開業準備等を進めていく。完成は令和８年度末の予定。"},{"no":122,"name":"教育施設管理事業","bureau":"教育委員会事務局","dept":"教育総務課","budget":47777,"next_budget":30000,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"こども園2園、幼稚園3園、小学校6校、中学校5校の施設を維持する。(令和7年度より、こども園・幼稚園が保育幼稚園課の所管となる。）"},{"no":123,"name":"鷲津小学校管理運営費","bureau":"教育委員会事務局","dept":"教育総務課","budget":13059,"next_budget":12053,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"鷲津小学校の健全な教育環境の維持及び充実を図るため、消耗品、燃料費、修繕費、備品購入等の経費を計上する。"},{"no":124,"name":"東小学校管理運営費","bureau":"教育委員会事務局","dept":"教育総務課","budget":10410,"next_budget":10989,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"東小学校の健全な教育環境の維持及び充実を図るため、消耗品、燃料費、修繕費、備品購入等の経費を計上する。"},{"no":125,"name":"岡崎小学校管理運営費","bureau":"教育委員会事務局","dept":"教育総務課","budget":11695,"next_budget":18312,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"岡崎小学校の健全な教育環境の維持及び充実を図るため、消耗品、燃料費、修繕費、備品購入等の経費を計上する。"},{"no":126,"name":"新居小学校管理運営費","bureau":"教育委員会事務局","dept":"教育総務課","budget":13225,"next_budget":13592,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"新居小学校の健全な教育環境の維持及び充実を図るため、消耗品、燃料費、修繕費、備品購入等の経費を計上する。"},{"no":127,"name":"学校運営費（小学校）","bureau":"教育委員会事務局","dept":"教育総務課","budget":134122,"next_budget":240197,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"各小学校6校分の施設維持管理及び保守点検"},{"no":128,"name":"小学校施設整備事業","bureau":"教育委員会事務局","dept":"教育総務課","budget":70634,"next_budget":71082,"root":"裁量","cls":"ハード","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"小学校の施設整備を推進し、児童の安全確保と教育環境の向上を図る。児童が安全・安心で快適な教育環境で学習できるよう、トイレの洋式化を推進する。"},{"no":129,"name":"鷲津中学校管理運営費","bureau":"教育委員会事務局","dept":"教育総務課","budget":11810,"next_budget":10723,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"鷲津中学校生徒の健全な教育環境の整備及び充実を図るため、消耗品、燃料費、備品の修繕料、備品購入等の経費を計上する。"},{"no":130,"name":"岡崎中学校管理運営費","bureau":"教育委員会事務局","dept":"教育総務課","budget":15134,"next_budget":15481,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"岡崎中学校生徒の健全な教育環境の整備及び充実を図るため、消耗品、燃料費、備品の修繕料、備品購入等の経費を計上する。"},{"no":131,"name":"新居中学校管理運営費","bureau":"教育委員会事務局","dept":"教育総務課","budget":11488,"next_budget":12494,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"新居中学校生徒の健全な教育環境の整備及び充実を図るため、消耗品、燃料費、備品の修繕料、備品購入等の経費を計上する。"},{"no":132,"name":"学校運営費（中学校）","bureau":"教育委員会事務局","dept":"教育総務課","budget":114060,"next_budget":191347,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"各中学校5校分の施設維持管理及び保守点検"},{"no":133,"name":"中学校施設整備事業","bureau":"教育委員会事務局","dept":"教育総務課","budget":677962,"next_budget":0,"root":"裁量","cls":"ハード","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"中学校の施設整備を推進し、生徒の安全確保と教育環境の向上を図る。生徒が安全・安心で快適な教育環境で学習できるよう、トイレの洋式化を推進する。"},{"no":134,"name":"岡崎幼稚園管理運営費","bureau":"こども未来部","dept":"保育幼稚園課","budget":42578,"next_budget":50900,"root":"裁量","cls":"内部管理","ev":"拡大","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"岡崎幼稚園の管理・運営に要する経費"},{"no":135,"name":"新居幼稚園管理運営費","bureau":"こども未来部","dept":"保育幼稚園課","budget":43546,"next_budget":47920,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"新居幼稚園の管理・運営に要する経費"},{"no":136,"name":"幼稚園・こども園総務費","bureau":"こども未来部","dept":"保育幼稚園課","budget":94552,"next_budget":112164,"root":"裁量","cls":"内部管理","ev":"維持","ev_detail":"必要性A・有効性A・効率性A","legal":"","law":"","desc":"鷲津幼稚園、知波田幼稚園の公立幼稚園２園の共通経費岡崎幼稚園、新居幼稚園の公立認定こども園２園の共通経費及び教育委員会事務局経費について管理する。"},{"no":137,"name":"新居関所史料館管理運営費","bureau":"産業部","dept":"文化観光課","budget":19628,"next_budget":32291,"root":"裁量","cls":"施設管理","ev":"拡大","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"・新居関所の保全及び関所史料館の維持管理を行う。・展示活動として企画展等を開催する。"},{"no":138,"name":"西部地域センター管理運営事業","bureau":"教育委員会事務局","dept":"スポーツ・生涯学習課","budget":165118,"next_budget":10648,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性B・有効性B・効率性B","legal":"","law":"","desc":"①施設維持管理利用者が安全で安心して利用できるよう施設の維持管理を行う。②講座等の開設市民が率先して学べる機会を提供するため講座を開設する。また、施設の利用団体の日頃の活動成果の発表の機会と地域のふれあいを図るためまつりを開催する。"},{"no":139,"name":"図書館運営事業","bureau":"教育委員会","dept":"図書館","budget":44229,"next_budget":45346,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性B・効率性A","legal":"","law":"","desc":"図書や雑誌等の資料の充実"},{"no":140,"name":"図書館運営事業（新居図書館）","bureau":"教育委員会","dept":"図書館","budget":15989,"next_budget":17404,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性A・有効性B・効率性A","legal":"","law":"","desc":"図書か雑誌等の資料の充実"},{"no":141,"name":"社会体育施設維持管理事業","bureau":"教育委員会事務局","dept":"スポーツ・生涯学習課","budget":342418,"next_budget":288300,"root":"裁量","cls":"施設管理","ev":"維持","ev_detail":"必要性A・有効性B・効率性B","legal":"","law":"","desc":"①湖西運動公園他４施設湖西運動公園、北部地区運動広場、みなと運動公園、新居スポーツ広場後援、勤労者体育センターの利用者が快適かつ安全に競技ができるよう指定管理者による施設管理を行う。②アメニティプラザアメニティプラザの利用者が、快適かつ安全に競技できるよう指定管理者による施設管理を行う。"},{"no":142,"name":"スポーツ活動推進及び大会運営事業","bureau":"教育委員会事務局","dept":"スポーツ・生涯学習課","budget":13354,"next_budget":16715,"root":"裁量","cls":"ソフト","ev":"維持","ev_detail":"必要性B・有効性A・効率性B","legal":"","law":"","desc":"①スポーツ普及推進及び育成事業市民のスポーツ活動を推進し、競技力向上と健康増進を図るため、スポーツ大会やスポーツ教室の開催など各種事業を行う。②ジュニアスポーツ育成事業中学生の競技力向上のため、ジュニアスポーツクラブを育成する。③高齢者の健康生きがいづくり事業高齢者の方々が心と体を健康に保つために、スポーツに親しむ場を提供する。"}];
+
+function fmt(y){
+  if(y>=100000) return (y/100000).toFixed(1)+'億円';
+  if(y>=1000)   return (y/1000).toFixed(1)+'百万円';
+  return y+'千円';
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function rootCls(r){ return 'troot-'+r.split('/').join('-'); }
+
+const state = {
+  ratings: JSON.parse(localStorage.getItem('kosai7_ratings')||'{}'),
+  filters: {bureau:'',root:'',cls:'',ev:'',rating:''},
+  screen: 'filter',
+  queue: [],
+  pos: 0,
+};
+function save(){ localStorage.setItem('kosai7_ratings', JSON.stringify(state.ratings)); }
+
+function getFiltered(){
+  return EVENTS.filter(e=>{
+    if(state.filters.bureau && e.bureau!==state.filters.bureau) return false;
+    if(state.filters.root   && e.root!==state.filters.root)     return false;
+    if(state.filters.cls    && e.cls!==state.filters.cls)       return false;
+    if(state.filters.ev     && e.ev!==state.filters.ev)         return false;
+    if(state.filters.rating==='未評価' && state.ratings[e.no]) return false;
+    if(state.filters.rating && state.filters.rating!=='未評価' && state.ratings[e.no]!==state.filters.rating) return false;
+    return true;
+  });
+}
+
+function stats(evts){
+  const k=evts.filter(e=>state.ratings[e.no]==='続行');
+  const h=evts.filter(e=>state.ratings[e.no]==='廃止');
+  const f=evts.filter(e=>state.ratings[e.no]==='見直し');
+  const u=evts.filter(e=>!state.ratings[e.no]);
+  const sum=a=>a.reduce((s,e)=>s+e.budget,0);
+  return {k:{c:k.length,b:sum(k)},h:{c:h.length,b:sum(h)},f:{c:f.length,b:sum(f)},u:{c:u.length,b:sum(u)},
+          total:{c:evts.length,b:sum(evts)}};
+}
+
+function setFilter(k,v){ state.filters[k]=v; if(state.screen==='filter') renderFilter(); }
+function clearFilters(){ state.filters={bureau:'',root:'',cls:'',ev:'',rating:''}; renderFilter(); }
+
+function batchRate(r){
+  getFiltered().forEach(e=>{ state.ratings[e.no]=r; });
+  save(); renderFilter();
+}
+
+function startCards(){
+  state.queue = getFiltered().map(e=>e.no);
+  if(!state.queue.length){ alert('対象事業がありません'); return; }
+  const first = state.queue.findIndex(n=>!state.ratings[n]);
+  state.pos = first>=0 ? first : 0;
+  state.screen='card'; render();
+}
+
+function rateCard(r){
+  const no=state.queue[state.pos];
+  if(!no) return;
+  state.ratings[no]=r; save();
+  if(state.pos < state.queue.length-1){ state.pos++; renderCard(); }
+  else { renderCard(); }
+}
+function prevCard(){ if(state.pos>0){ state.pos--; renderCard(); } }
+function nextCard(){ if(state.pos<state.queue.length-1){ state.pos++; renderCard(); } }
+function showFilter(){ state.screen='filter'; render(); }
+function showSummary(){ state.screen='summary'; render(); }
+function resetAll(){ if(confirm('全評価をリセットしますか？')) { state.ratings={}; save(); render(); } }
+
+function opts(key){ return [...new Set(EVENTS.map(e=>e[key]))].filter(Boolean).sort(); }
+function selHtml(fkey,label,val){
+  const os=opts(fkey).map(o=>`<option value="${esc(o)}"${val===o?' selected':''}>${esc(o)}</option>`).join('');
+  return `<select title="${label}" onchange="setFilter('${fkey}',this.value)"><option value="">全ての${label}</option>${os}</select>`;
+}
+
+function rcls(no){ const r=state.ratings[no]; return r==='続行'?'rk':r==='廃止'?'rh':r==='見直し'?'rf':''; }
+function rBtnCls(no,r){ const c=state.ratings[no]===r; return c?(r==='続行'?'ak':r==='廃止'?'ah':'af'):''; }
+function rBtnDesc(no,r){
+  const d={'続行':'活動内容と予算に納得','廃止':'活動内容に納得できない','見直し':'予算に納得できない'};
+  return state.ratings[no]===r ? '◀ 選択中' : d[r];
+}
+
+// ============================================================
+// Screen: フィルター
+// ============================================================
+function renderFilter(){
+  const filtered=getFiltered();
+  const st=stats(EVENTS), fs=stats(filtered);
+  const hasFilter=Object.values(state.filters).some(Boolean);
+
+  document.getElementById('app').innerHTML=`
+<div class="hd">
+  <h1>🏛 ${LABELS.tool_title}</h1>
+  <div class="sub">令和7年度実施 事務事業評価 ${EVENTS.length}事業 ／ 総予算 ${fmt(st.total.b)}（R6決算 事業費のみ）</div>
+  <div style="font-size:.75rem;color:#9ca3af;margin-top:4px">出典：<a href="${LABELS.source_url}" target="_blank" style="color:#9ca3af">令和7年度事務事業評価｜湖西市</a></div>
+</div>
+
+<div class="sbar">
+  <span class="sb sb-k">続行 ${st.k.c}件</span>
+  <span class="sb sb-h">廃止 ${st.h.c}件・${fmt(st.h.b)}</span>
+  <span class="sb sb-f">見直し ${st.f.c}件・${fmt(st.f.b)}</span>
+  <span class="sb sb-u">未評価 ${st.u.c}件</span>
+  ${st.k.c+st.h.c+st.f.c>0?`<button class="btn btn-sm btn-o" onclick="resetAll()" style="margin-left:auto">↺ リセット</button>`:''}
+</div>
+
+<div class="card">
+  <div style="font-size:.85rem;font-weight:600;color:#374151;margin-bottom:8px">絞り込み</div>
+  <div class="frow">
+    ${selHtml('bureau',LABELS.bureau,state.filters.bureau)}
+    ${selHtml('root','法的根拠',state.filters.root)}
+    ${selHtml('cls',LABELS.cls,state.filters.cls)}
+    ${selHtml('ev','R8方向性',state.filters.ev)}
+    <select title="評価結果" onchange="setFilter('rating',this.value)">
+      <option value="">全ての評価結果</option>
+      <option value="続行"${state.filters.rating==='続行'?' selected':''}>続行</option>
+      <option value="廃止"${state.filters.rating==='廃止'?' selected':''}>廃止</option>
+      <option value="見直し"${state.filters.rating==='見直し'?' selected':''}>見直し</option>
+      <option value="未評価"${state.filters.rating==='未評価'?' selected':''}>未評価</option>
+    </select>
+  </div>
+  <div class="fresult">
+    対象: <strong>${filtered.length}件</strong> ／ ${fmt(fs.total.b)}
+    ${hasFilter?`<button class="btn btn-sm btn-o" onclick="clearFilters()" style="margin-left:8px">✕ クリア</button>`:''}
+  </div>
+</div>
+
+<div class="batch">
+  <h3>一斉評価 — 上の絞り込み結果（${filtered.length}件）を一括設定</h3>
+  <div class="bbtns">
+    <button class="btn btn-k" onclick="batchRate('続行')">✓ 全部 続行</button>
+    <button class="btn btn-h" onclick="batchRate('廃止')">✕ 全部 廃止</button>
+    <button class="btn btn-f" onclick="batchRate('見直し')">△ 全部 見直し</button>
+  </div>
+</div>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+  <button class="btn btn-p" onclick="startCards()" style="flex:1">
+    カード評価を始める → （${filtered.length}件）
+  </button>
+  <button class="btn btn-o" onclick="showSummary()">集計サマリー →</button>
+</div>
+${hasFilter?`<p style="font-size:.78rem;color:#9ca3af;margin-top:8px">※ フィルター適用中。カード評価はこの ${filtered.length} 件を表示します。</p>`:''}`;
+}
+
+// ============================================================
+// Screen: カード評価
+// ============================================================
+function renderCard(){
+  const total=state.queue.length;
+  const no=state.queue[state.pos];
+  const ev=EVENTS.find(e=>e.no===no);
+  if(!ev){ showFilter(); return; }
+
+  const done=state.queue.filter(n=>state.ratings[n]).length;
+  const pct=total>0?Math.round(done/total*100):0;
+  const st=stats(EVENTS);
+  const isLast=state.pos===total-1;
+  const allDone=state.queue.every(n=>state.ratings[n]);
+
+  document.getElementById('app').innerHTML=`
+<div style="position:fixed;top:0;left:0;right:0;bottom:0;background:#f3f4f6;overflow:hidden;z-index:10">
+<div style="max-width:780px;margin:0 auto;height:100%;display:flex;flex-direction:column;padding:12px">
+
+  <div style="flex-shrink:0">
+    <div class="nstrip">
+      <button class="btn btn-sm btn-o" onclick="showFilter()">← フィルター</button>
+      <div style="flex:1;text-align:center">
+        <div style="font-size:.75rem;font-weight:700;color:#1e40af">${LABELS.card_title}</div>
+        <div class="sbar" style="margin:4px 0 0;justify-content:center">
+          <span class="sb sb-k">続行 ${st.k.c}件</span>
+          <span class="sb sb-h">廃止 ${st.h.c}件</span>
+          <span class="sb sb-f">見直し ${st.f.c}件</span>
+          <span class="sb sb-u">未評価 ${st.u.c}件</span>
+        </div>
+      </div>
+      <button class="btn btn-sm btn-p" onclick="showSummary()">サマリー →</button>
+    </div>
+    <div style="font-size:.82rem;color:#6b7280;margin-bottom:6px">評価済み: ${done}/${total}件 (${pct}%)</div>
+    <div class="pbwrap"><div class="pbfill" style="width:${pct}%"></div></div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;padding:4px 0 8px">
+    ${allDone?`<div class="done-msg"><h3>✓ この絞り込み結果（${total}件）の評価が完了しました</h3><button class="btn btn-p" onclick="showSummary()">集計サマリーを見る →</button></div>`:''}
+    <div class="ecard ${rcls(no)}">
+      <div class="tag-row">
+        <div class="tag-item">
+          <div class="tag-lbl">法的根拠</div>
+          <span class="tag ${esc(rootCls(ev.root))}">${esc(ev.root)}</span>
+        </div>
+        <div class="tag-item">
+          <div class="tag-lbl">事業類型</div>
+          <span class="tag tcls">${esc(ev.cls)}</span>
+        </div>
+        <div class="tag-item">
+          <div class="tag-lbl">行政の評価方針（R8）</div>
+          <span class="tag tev">${esc(ev.ev)}</span>
+        </div>
+      </div>
+      <div class="emeta"><span class="field-lbl">${LABELS.no_col}：</span>${esc(String(ev.no))}　<span class="field-lbl">所管：</span>${esc(ev.bureau)} ／ ${esc(ev.dept)}</div>
+      <div class="ename">${esc(ev.name)}</div>
+      <div class="ebudget">
+        <div><span class="bdg-lbl">当年度予算（R6決算）：</span><span class="amt">${fmt(ev.budget)}</span></div>
+        ${ev.next_budget>0?`<div><span class="bdg-lbl">今後の計画（R8年度）：</span><span class="amt">${fmt(ev.next_budget)}</span></div>`:''}
+        <div style="font-size:.72rem;color:#9ca3af;margin-top:3px">※ 事業費のみ（職員人件費除く）</div>
+      </div>
+      ${ev.desc?`<div class="edesc"><h4>事業概要</h4><p>${esc(ev.desc)}</p></div>`:''}
+      <div class="edetail">
+        ${ev.root==='法定義務あり'?`<div class="edi"><label>法的根拠の詳細：</label>${esc(ev.legal)}${ev.law?' — '+esc(ev.law):''}</div>`:''}
+        ${ev.ev_detail?`<div class="edi"><label>評価詳細：</label>${esc(ev.ev_detail)}</div>`:''}
+      </div>
+      <a href="${LABELS.source_url}" target="_blank" class="btn btn-o" style="display:block;text-align:center;text-decoration:none;margin-bottom:8px">📄 評価シートを確認</a>
+    </div>
+  </div>
+
+  <div style="flex-shrink:0;background:#f3f4f6;padding:10px 0 4px;border-top:1px solid #e5e7eb">
+    <div class="rbtns">
+      <button class="rbtn ${rBtnCls(no,'続行')}" onclick="rateCard('続行')">
+        ✓ 続行<small>${rBtnDesc(no,'続行')}</small>
+      </button>
+      <button class="rbtn ${rBtnCls(no,'廃止')}" onclick="rateCard('廃止')">
+        ✕ 廃止<small>${rBtnDesc(no,'廃止')}</small>
+      </button>
+      <button class="rbtn ${rBtnCls(no,'見直し')}" onclick="rateCard('見直し')">
+        △ 見直し<small>${rBtnDesc(no,'見直し')}</small>
+      </button>
+    </div>
+    <div class="nav">
+      <button class="btn btn-sm btn-o" onclick="prevCard()" ${state.pos===0?'disabled':''}>◀ 前へ</button>
+      <span class="cpos">${state.pos+1} / ${total}</span>
+      <button class="btn btn-sm btn-o" onclick="nextCard()" ${isLast?'disabled':''}>次へ ▶</button>
+    </div>
+  </div>
+
+</div>
+</div>`;
+}
+
+// ============================================================
+// Screen: サマリー
+// ============================================================
+function renderSummary(){
+  const st=stats(EVENTS);
+  const zokkoList  =EVENTS.filter(e=>state.ratings[e.no]==='続行').sort((a,b)=>b.budget-a.budget);
+  const haishiList =EVENTS.filter(e=>state.ratings[e.no]==='廃止').sort((a,b)=>b.budget-a.budget);
+  const minaoshiList=EVENTS.filter(e=>state.ratings[e.no]==='見直し').sort((a,b)=>b.budget-a.budget);
+  const mirateList =EVENTS.filter(e=>!state.ratings[e.no]).sort((a,b)=>b.budget-a.budget);
+
+  function tblRows(list){
+    if(!list.length) return '<tr><td colspan="6" style="color:#9ca3af;text-align:center;padding:12px">（なし）</td></tr>';
+    return list.map(e=>`<tr>
+      <td style="white-space:nowrap">${esc(e.no)}</td>
+      <td>${esc(e.name)}</td>
+      <td style="white-space:nowrap">${esc(e.bureau)}</td>
+      <td><span class="tag ${esc(rootCls(e.root))}" style="font-size:.68rem">${esc(e.root)}</span></td>
+      <td><span class="tag tev" style="font-size:.68rem">${esc(e.ev)}</span></td>
+      <td style="text-align:right;white-space:nowrap;font-weight:600">${fmt(e.budget)}</td>
+    </tr>`).join('');
+  }
+  const thead=`<thead><tr><th>${LABELS.no_col}</th><th>事業名</th><th>${LABELS.bureau}</th><th>根拠</th><th>R8方向性</th><th>予算</th></tr></thead>`;
+
+  document.getElementById('app').innerHTML=`
+<div class="nstrip">
+  <button class="btn btn-sm btn-o" onclick="showFilter()">← フィルター</button>
+  <h2>${LABELS.summary_title}</h2>
+  <button class="btn btn-sm btn-p no-print" onclick="startCards()">評価を続ける</button>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:12px;justify-content:flex-end" class="no-print">
+  <button class="btn btn-sm btn-o" onclick="downloadCsv()">📥 CSV出力</button>
+  <button class="btn btn-sm btn-o" onclick="window.print()">🖨 印刷</button>
+</div>
+
+<p style="font-size:.82rem;color:#6b7280;margin-bottom:12px">
+  続行 ${st.k.c}件 ｜ 廃止 ${st.h.c}件 ｜ 見直し ${st.f.c}件 ｜ 未評価 ${st.u.c}件（合計${EVENTS.length}件）
+</p>
+
+<div class="kgrid">
+  <div class="kbox kk">
+    <div class="klbl">✓ 続行</div>
+    <div class="knum">${st.k.c}件</div>
+    <div class="kbdg">${fmt(st.k.b)}</div>
+  </div>
+  <div class="kbox kh">
+    <div class="klbl">✕ 廃止</div>
+    <div class="knum">${st.h.c}件</div>
+    <div class="kbdg">${fmt(st.h.b)}</div>
+  </div>
+  <div class="kbox kf">
+    <div class="klbl">△ 見直し</div>
+    <div class="knum">${st.f.c}件</div>
+    <div class="kbdg">${fmt(st.f.b)}</div>
+  </div>
+  <div class="kbox ku">
+    <div class="klbl">— 未評価</div>
+    <div class="knum">${st.u.c}件</div>
+    <div class="kbdg">${fmt(st.u.b)}</div>
+  </div>
+</div>
+
+<details class="ssec" ${st.k.c?'open':''}>
+  <summary>✓ 続行一覧 <span style="color:#059669">${st.k.c}件・${fmt(st.k.b)}</span></summary>
+  <div style="overflow-x:auto"><table class="stbl">${thead}<tbody>${tblRows(zokkoList)}</tbody></table></div>
+</details>
+
+<details class="ssec" ${st.h.c?'open':''}>
+  <summary>✕ 廃止一覧 <span style="color:#dc2626">${st.h.c}件・${fmt(st.h.b)}</span></summary>
+  <div style="overflow-x:auto"><table class="stbl">${thead}<tbody>${tblRows(haishiList)}</tbody></table></div>
+</details>
+
+<details class="ssec" ${st.f.c?'open':''}>
+  <summary>△ 見直し一覧 <span style="color:#d97706">${st.f.c}件・${fmt(st.f.b)}</span></summary>
+  <div style="overflow-x:auto"><table class="stbl">${thead}<tbody>${tblRows(minaoshiList)}</tbody></table></div>
+</details>
+
+<details class="ssec">
+  <summary>— 未評価一覧 <span style="color:#6b7280">${st.u.c}件・${fmt(st.u.b)}</span></summary>
+  <div style="overflow-x:auto"><table class="stbl">${thead}<tbody>${tblRows(mirateList)}</tbody></table></div>
+</details>
+
+<p class="note">
+  ※ 評価結果はこのブラウザのローカルストレージに保存されます（ページを閉じても残ります）。<br>
+  ※ 予算額はR6決算 事業費（直接経費のみ・職員人件費は含まない）です。<br>
+  ※ 法定義務あり事業は市単独では廃止できません。削減額はあくまで参考値です。<br>
+  出典：<a href="${LABELS.source_url}" target="_blank">令和7年度事務事業評価｜湖西市</a>
+</p>`;
+}
+
+// CSV出力
+function downloadCsv(){
+  const BOM = '\uFEFF';
+  const header = [LABELS.no_col,'事業名',LABELS.bureau,LABELS.dept,'法的根拠',LABELS.cls,'R8方向性','評価詳細',LABELS.budget_col,LABELS.next_col,'評価結果'];
+  const rows = EVENTS.map(e=>[
+    e.no, e.name, e.bureau, e.dept, e.root, e.cls, e.ev, e.ev_detail, e.budget, e.next_budget,
+    state.ratings[e.no]||'未評価'
+  ]);
+  const csv = BOM+[header,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = LABELS.csv_filename;
+  a.click();
+}
+
+function render(){
+  if(state.screen==='filter') renderFilter();
+  else if(state.screen==='card') renderCard();
+  else if(state.screen==='summary') renderSummary();
+}
+render();
+
+</script>
+</body>
+</html>
