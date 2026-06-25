@@ -92,6 +92,15 @@ const MUNICIPALITIES = [
     source_url:   'https://www.city.kosai.shizuoka.jp/soshikiichiran/kikakuseisakuka/gyomuannai/5/2/17411.html',
     source_label: '令和7年度事務事業評価｜湖西市',
   },
+  {
+    pref:         '東京都',
+    name:         '品川区',
+    year:         '令和7年度',
+    count:        652,
+    file:         'shinagawa_index.html',
+    source_url:   'https://www.city.shinagawa.tokyo.jp/PC/kuseizyoho/kuseizyoho-siryo/kuseizyoho-siryo-zaisei/kuseizyoho-siryo-zaisei-shinagawa/kuseizyoho-siryo-zaisei-shinagawa-gyouseihyoka/R7gyoseihyoka/20240222105532.html',
+    source_label: '令和7年度事務事業評価結果｜品川区',
+  },
 ];
 
 const prefs = [...new Set(MUNICIPALITIES.map(m => m.pref))].sort((a, b) => a.localeCompare(b, 'ja'));
