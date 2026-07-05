@@ -12,29 +12,14 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;co
 .hd{background:#1e40af;color:#fff;padding:14px 16px;border-radius:8px;margin-bottom:12px}
 .hd h1{font-size:1.1rem;font-weight:700}
 .hd .sub{font-size:.8rem;opacity:.8;margin-top:3px}
-
-/* ステータスバー */
-.sbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.sb{padding:4px 10px;border-radius:20px;font-size:.8rem;font-weight:600}
-.sb-k{background:#dcfce7;color:#16a34a}
-.sb-h{background:#fee2e2;color:#dc2626}
-.sb-f{background:#fef3c7;color:#d97706}
-.sb-u{background:#f3f4f6;color:#6b7280}
+.card-nav{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.cnav-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;min-width:0;max-width:42%}
+.cnav-btn:hover{background:rgba(255,255,255,.25)}
+.cnav-mid{font-size:.85rem;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;padding:0 4px}
+.cnav-mid-wrap{font-size:.85rem;flex:1;min-width:0;text-align:center;padding:0 4px;line-height:1.4}
 
 .card{background:#fff;border-radius:8px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 
-/* フィルター */
-.frow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.frow select{flex:1;min-width:140px;padding:7px 8px;border:1px solid #d1d5db;border-radius:6px;font-size:.85rem;background:#fff}
-.frow select:disabled{background:#f9fafb;color:#9ca3af}
-.fresult{font-size:.95rem;font-weight:600;color:#1e40af;margin-bottom:10px}
-
-/* 一斉評価 */
-.batch{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px;margin-bottom:12px}
-.batch h3{font-size:.85rem;color:#1e40af;margin-bottom:8px}
-.bbtns{display:flex;gap:8px;flex-wrap:wrap}
-
-/* ボタン */
 .btn{padding:9px 18px;border:none;border-radius:6px;cursor:pointer;font-size:.9rem;font-weight:600;transition:opacity .15s}
 .btn:hover{opacity:.85}
 .btn:disabled{opacity:.4;cursor:not-allowed}
@@ -46,53 +31,105 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;co
 .btn-sm{padding:6px 12px;font-size:.8rem}
 .btn-full{width:100%;margin-bottom:8px}
 
-/* 進捗バー */
-.pbwrap{background:#e5e7eb;border-radius:4px;height:6px;margin-bottom:12px}
-.pbfill{background:#1e40af;height:100%;border-radius:4px;transition:width .3s}
+.bbtns{display:flex;gap:8px;flex-wrap:wrap}
 
-/* カード */
-.ecard{background:#fff;border-radius:8px;padding:18px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.1);border-left:4px solid #e5e7eb}
-.ecard.rk{border-left-color:#22c55e}
-.ecard.rh{border-left-color:#ef4444}
-.ecard.rf{border-left-color:#f59e0b}
+/* マップ画面 */
+.filterrow{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.stbtn{padding:7px 14px;border:1px solid #d1d5db;border-radius:20px;background:#fff;color:#374151;font-size:.82rem;font-weight:600;cursor:pointer}
+.stbtn.active{background:#1e40af;color:#fff;border-color:#1e40af}
+.maphint{font-size:.82rem;color:#6b7280;line-height:1.6}
+.fresult{font-size:.95rem;font-weight:600;color:#1e40af;margin-bottom:8px}
+
+.clsgrid-wrap{border:1px solid #eef0f2;border-radius:6px;padding:8px;max-height:35vh;overflow-y:auto}
+.clsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.clsbox{background:#fff;border:1px solid #eef0f2;border-radius:6px;padding:7px 10px;cursor:pointer;transition:background .15s;min-width:0}
+.clsbox:hover{background:#f7f9fc}
+.clstop{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:4px}
+.clsname{font-weight:700;font-size:.85rem;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.clsamt{font-size:.76rem;color:#374151;white-space:nowrap;flex-shrink:0}
+.clsamt b{color:#1e40af}
+.clsbar-wrap{background:#eef2f7;border-radius:3px;height:5px;margin-bottom:4px;overflow:hidden}
+.clsbar{background:#1e40af;height:100%;border-radius:3px}
+.clsmeta{font-size:.7rem;color:#9ca3af}
+
+/* cls drilldown：行政評価（ev）でグルーピング。事業一覧は表形式（法定義務・提供形態を列見出しで明示） */
+.evsec{border:1px solid #eef0f2;border-radius:6px;margin-bottom:8px;overflow:hidden}
+.evsec:last-child{margin-bottom:0}
+.evsec summary{padding:9px 12px;cursor:pointer;font-weight:700;font-size:.85rem;color:#374151;background:#f8f9fb;list-style:none;user-select:none}
+.evsec summary::-webkit-details-marker{display:none}
+.evsec summary::before{content:'▶ ';font-size:.7rem;color:#9ca3af}
+.evsec[open] summary::before{content:'▼ '}
+.evsec-body{padding:6px 12px 2px}
+.evtbl-wrap{overflow:auto;max-height:320px;border:1px solid #eef0f2;border-radius:6px}
+.evtbl{border-collapse:collapse;font-size:.82rem}
+.evtbl th{text-align:left;font-weight:600;color:#6b7280;font-size:.7rem;padding:4px 8px;border-bottom:1px solid #e5e7eb;white-space:nowrap;position:sticky;top:0;background:#fff;z-index:1}
+.evtbl td{padding:8px;border-bottom:1px solid #f3f4f6;vertical-align:middle;white-space:normal;word-break:break-word}
+.evtbl tr:last-child td{border-bottom:none}
+.evtd-chk{width:28px}
+.evtd-chk input{width:16px;height:16px}
+.evtd-name{font-weight:600;color:#111827;cursor:pointer;width:110px;min-width:110px;max-width:110px}
+.evtd-budget{color:#374151;width:65px}
+.evtd-root{width:38px}
+.evtd-ptype{width:80px}
+.evtd-mine{width:80px}
+.evtd-vote{width:70px}
+.evtbl td.evtd-budget,.evtbl td.evtd-root,.evtbl td.evtd-ptype{white-space:nowrap}
+.vote-stack{display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+
+/* サマリー画面：評価結果一覧（ブラウザ表示用の圧縮テーブル。列を減らしセル内で折り返す） */
+.votetbl-wrap{overflow:auto;max-height:420px;border:1px solid #eef0f2;border-radius:6px}
+.votetbl{width:100%;border-collapse:collapse;font-size:.82rem}
+.votetbl th{text-align:left;font-weight:600;color:#6b7280;font-size:.7rem;padding:6px 8px;border-bottom:1px solid #e5e7eb;position:sticky;top:0;background:#fff;z-index:1}
+.votetbl td{padding:8px;border-bottom:1px solid #f3f4f6;vertical-align:top;white-space:normal}
+.votetbl tr:last-child td{border-bottom:none}
+.votetbl .vsub{font-size:.72rem;color:#6b7280;margin-top:2px}
+.votetbl .vno{font-size:.7rem;color:#9ca3af}
+.vtag-stack{display:flex;flex-direction:column;gap:3px;align-items:flex-start}
+
+/* サマリー画面：印刷専用の完全版（10列）テーブル。画面には出さず@media printでのみ表示 */
+.votetbl-print{display:none}
 
 /* タグ */
 .tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
 .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:600}
-
-/* root v2 タグ色 */
 .troot-法定義務あり{background:#dbeafe;color:#1d4ed8}
 .troot-法定義務なし{background:#fef3c7;color:#92400e}
 .troot-判断できない{background:#f3f4f6;color:#6b7280}
 .troot-データなし{background:#f3f4f6;color:#9ca3af}
-
-/* ev v2 タグ色（積極性順・グリーン→レッド）*/
 .tev-拡大{background:#dcfce7;color:#15803d}
 .tev-現状継続{background:#dbeafe;color:#1d4ed8}
 .tev-改善（手段変更）{background:#fef3c7;color:#92400e}
 .tev-縮小{background:#ffedd5;color:#c2410c}
 .tev-廃止方向{background:#fee2e2;color:#dc2626}
 .tev-完了{background:#f3e8ff;color:#7c3aed}
+.tev-続行{background:#dcfce7;color:#15803d}
+.tev-廃止{background:#fee2e2;color:#dc2626}
+.tev-見直し{background:#fef3c7;color:#92400e}
+.tptype-green{background:#ccfbf1;color:#0f766e}
+.tptype-blue{background:#dbeafe;color:#1d4ed8}
+.tptype-gray{background:#f3f4f6;color:#6b7280}
+.tptype-amber{background:#fef3c7;color:#92400e}
+.tptype-purple{background:#ede9fe;color:#6d28d9}
 
+/* 評価カード（opt-inキュー） */
+.pbwrap{background:#e5e7eb;border-radius:4px;height:6px;margin-bottom:12px}
+.pbfill{background:#1e40af;height:100%;border-radius:4px;transition:width .3s}
+.ecard{background:#fff;border-radius:8px;padding:18px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.1);border-left:4px solid #e5e7eb}
+.ecard.rk{border-left-color:#22c55e}
+.ecard.rh{border-left-color:#ef4444}
+.ecard.rf{border-left-color:#f59e0b}
 .emeta{font-size:.8rem;color:#6b7280;margin-bottom:6px}
 .ename{font-size:1.15rem;font-weight:700;color:#111827;margin-bottom:4px;line-height:1.3}
 .ebudget{font-size:.85rem;margin-bottom:12px;color:#374151}
 .ebudget .amt{font-weight:700;font-size:1rem;color:#1e40af}
-
-/* ストーリーテンプレート */
 .story{margin-bottom:14px}
 .story p{font-size:.9rem;line-height:1.75;color:#1f2937;margin-bottom:6px}
 .story-label{font-size:.72rem;font-weight:700;color:#6b7280;margin-bottom:3px;letter-spacing:.03em}
 .ai-note{font-size:.75rem;color:#713f12;line-height:1.65;margin-bottom:8px;background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:8px 10px}
 .sticky-actions{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:2px solid #e5e7eb;z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,.08)}
 .sticky-inner{max-width:780px;margin:0 auto;padding:10px 12px}
-.sticky-inner .rbtns{margin:0;border-top:1px solid #e5e7eb;padding-top:10px}
-.sticky-spacer{height:230px}
-.card-nav{display:flex;justify-content:space-between;align-items:center}
-.cnav-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.4);color:#fff;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:.8rem}
-.cnav-btn:hover{background:rgba(255,255,255,.25)}
-
-/* 評価ボタン */
+.sticky-spacer{height:110px}
+.sticky-spacer.tall{height:230px}
 .rbtns{display:flex;gap:10px;margin:16px 0}
 .rbtn{flex:1;padding:12px 6px;border:2px solid #e5e7eb;border-radius:8px;cursor:pointer;font-size:.9rem;font-weight:700;background:#f9fafb;color:#374151;text-align:center;transition:all .15s;line-height:1.4}
 .rbtn:hover{border-color:#9ca3af}
@@ -100,54 +137,44 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;co
 .rbtn.ak{background:#22c55e;color:#fff;border-color:#22c55e}
 .rbtn.ah{background:#ef4444;color:#fff;border-color:#ef4444}
 .rbtn.af{background:#f59e0b;color:#fff;border-color:#f59e0b}
-
 .nav{display:flex;justify-content:space-between;align-items:center}
 .cpos{font-size:.85rem;color:#6b7280}
-
-/* みんなの評価バッジ */
-.pc{display:inline-block;padding:1px 6px;border-radius:4px;font-size:.75rem;font-weight:600;margin-right:2px}
-.pc-k{background:#dcfce7;color:#16a34a}
-.pc-h{background:#fee2e2;color:#dc2626}
-.pc-f{background:#fef3c7;color:#d97706}
 
 /* サマリー */
 .kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
 .kbox{background:#fff;border-radius:8px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .kbox .klbl{font-size:.75rem;color:#6b7280;margin-bottom:6px}
 .kbox .knum{font-size:1.7rem;font-weight:700}
-.kbox .kbdg{font-size:.85rem;font-weight:600;margin-top:3px}
-.kh .knum,.kh .kbdg{color:#dc2626}
-.kf .knum,.kf .kbdg{color:#d97706}
-.kk .knum,.kk .kbdg{color:#059669}
-.ku .knum,.ku .kbdg{color:#6b7280}
+.kh .knum{color:#dc2626}
+.kf .knum{color:#d97706}
+.kk .knum{color:#059669}
+.ku .knum{color:#6b7280}
 
-.ssec{background:#fff;border-radius:8px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.ssec summary{padding:12px 16px;cursor:pointer;font-weight:600;font-size:.9rem;list-style:none;display:flex;justify-content:space-between;user-select:none}
-.ssec summary:hover{background:#f9fafb}
-.ssec summary::after{content:'▶';font-size:.75rem;color:#9ca3af;transition:transform .2s}
-.ssec[open] summary::after{transform:rotate(90deg)}
 .stbl{width:100%;border-collapse:collapse;font-size:.82rem}
 .stbl th{background:#f3f4f6;padding:8px 10px;text-align:left;font-weight:600;border-bottom:1px solid #e5e7eb}
 .stbl td{padding:7px 10px;border-bottom:1px solid #f3f4f6;vertical-align:top}
 .stbl tr:last-child td{border-bottom:none}
-.stbl tr:hover td{background:#fafafa}
-.sbdg{font-weight:600;color:#1e40af;white-space:nowrap}
+.stbl-wrap{overflow-x:auto}
 
-/* カードの見方（ガイド画面） */
-.gitem{margin-bottom:18px}
-.gitem:last-child{margin-bottom:0}
-.glbl{font-weight:700;font-size:.9rem;margin-bottom:4px;color:#1e40af}
-.gitem p{font-size:.85rem;line-height:1.75;color:#374151}
-.gitem .tag{margin-right:4px}
+.pc{display:inline-block;padding:1px 6px;border-radius:4px;font-size:.75rem;font-weight:600;margin-right:2px;white-space:nowrap}
+.pc-k{background:#dcfce7;color:#16a34a}
+.pc-h{background:#fee2e2;color:#dc2626}
+.pc-f{background:#fef3c7;color:#d97706}
 
 @media(max-width:480px){
   .kgrid{grid-template-columns:repeat(2,1fr)}
   .rbtns{flex-direction:column}
 }
+
 @media print{
-  .no-print{display:none!important}
-  .ecard{break-inside:avoid}
-  details>div{display:block!important}
+  .no-print{display:none !important}
+  body{background:#fff}
+  .card{box-shadow:none;border:1px solid #e5e7eb}
+  .votetbl-wrap{display:none}
+  .votetbl-print{display:block}
+  .evtbl-wrap{max-height:none;overflow:visible;border:none}
+  .evtbl td, .evtbl th{white-space:normal}
+  @page{size:landscape}
 }
 </style>
 </head>
@@ -156,45 +183,87 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;co
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
-const EVENTS = [{"no":"1","name":"議会運営費","bureau":"議会事務局","dept":"議会事務局　議会事務局","budget":30735,"root":"法定義務あり","ev":"現状継続","story_p1":"議会が円滑に機能し、住民の声を適切に反映した行政運営を実現するため、議会の運営に必要な庶務、議事進行、調査研究に関する各種事務を行っています。","story_p2":"定例会4回、臨時会3回の開催に加え、議員研修1回の実施と17人への政務活動費交付により議員の資質向上を支援しました。会議録は年4回発行し、議会だより年4回各20,000部を全戸配布することで、議会情報の透明性と住民への周知を図りました。","story_impact":"判断できない","pdf_page":18,"cls":"データなし"},{"no":"2","name":"庁舎維持管理費","bureau":"企画部","dept":"企画部　資産経営課","budget":63711,"root":"法定義務なし","ev":"現状継続","story_p1":"住民の皆さんが安心して利用できる行政サービスを提供するために、庁舎の施設や機器の適切な管理、修繕、改修を行っています。","story_p2":"庁舎維持管理では、庁舎の良好な整備率が100.0%の実績となりました。住民サービスの拠点として、庁舎の適切な維持管理が実現されています。","story_impact":"判断できない","pdf_page":19,"cls":"データなし"},{"no":"3","name":"車両維持管理費","bureau":"企画部","dept":"企画部　資産経営課","budget":19535,"root":"法定義務なし","ev":"現状継続","story_p1":"公用車を安全かつ効率的に運用するために、定期的な車検・点検を実施し、必要に応じて部品交換や修繕を行っています。","story_p2":"燃料費、修繕料、保険料、リース料などの経費により公用車を維持管理した結果、公用車の良好な整備率は100%を達成しました。","story_impact":"判断できない","pdf_page":20,"cls":"データなし"},{"no":"4","name":"文書・行政管理費","bureau":"総務部","dept":"総務部　総務課","budget":17084,"root":"法定義務なし","ev":"現状継続","story_p1":"住民の皆様がより良い行政サービスを受けられるように、法的サポートや相談体制の充実、効率的な行政運営を実現するための体制を整備しています。","story_p2":"訴訟事務に関して顧問弁護士への相談が実施されました。成果指標については具体的な数値が記録されていませんが、法的課題への対応体制が整備されています。","story_impact":"判断できない","pdf_page":21,"cls":"23　行政経営"},{"no":"5","name":"人事・研修費","bureau":"総務部","dept":"総務部　総務課","budget":69094,"root":"法定義務なし","ev":"現状継続","story_p1":"職員の採用や研修、安全衛生管理を行うことで、法令遵守と職場の安全・健康を確保し、職員の能力向上と組織力強化を図っています。","story_p2":"職員派遣研修や新規採用、安全衛生管理、人事給与システムの運用などを実施しました。市職員の接客態度・仕事に対する満足度は50.4%となっており、職員の資質向上と住民サービスの質的向上を図っています。","story_impact":"判断できない","pdf_page":22,"cls":"23　行政経営"},{"no":"6","name":"広報推進事業","bureau":"企画部","dept":"企画部　秘書広報課","budget":20417,"root":"法定義務なし","ev":"現状継続","story_p1":"市民の皆様に暮らしに役立つ情報をお届けするとともに、移住・定住を促進するため、広報紙やウェブサイト、SNSなどの多様な手段を活用して、地域の魅力を戦略的に発信しています。","story_p2":"広報紙やウェブサイト、SNSなどを通じて市政情報をタイムリーに発信し、市民の72.7%が情報提供に満足していますが、市民が興味を持つ情報の発信がさらに充実する必要があります。","story_impact":"判断できない","pdf_page":23,"cls":"23　行政経営"},{"no":"7","name":"基金管理事務事業（財政調整基金）","bureau":"総務部","dept":"総務部　財政課","budget":300827,"root":"法定義務なし","ev":"現状継続","story_p1":"将来の財政需要に備えるため、財政調整基金の利子分を基金に積み立てています。","story_p2":"財政調整基金の管理事務を実施し、年度末残高を成果指標として設定しています。基金の適切な管理を通じて、財政の安定化に向けた取り組みが行われています。","story_impact":"判断できない","pdf_page":24,"cls":"23　行政経営"},{"no":"8","name":"基金管理事務事業（公共施設整備基金）","bureau":"総務部","dept":"総務部　財政課","budget":46439,"root":"法定義務なし","ev":"現状継続","story_p1":"公共施設を計画的に整備するため、基金の利子や入札で生じた余剰金を積み立てています。","story_p2":"公共施設整備基金の管理事務を実施し、年度末時点での基金残高を成果指標として設定しています。基金を通じて公共施設の整備に必要な財源の確保に取り組みました。","story_impact":"判断できない","pdf_page":25,"cls":"23　行政経営"},{"no":"9","name":"企画推進事業","bureau":"企画部","dept":"企画部　企画政策課","budget":41366,"root":"法定義務なし","ev":"現状継続","story_p1":"地域の将来像を実現するため、総合計画の策定・進捗管理、行財政改革の推進、県や国との連携調整、市民意識調査などに取り組んでいます。","story_p2":"要望活動や市民意識調査、地区振興補助金、企業版ふるさと納税積立金など複数の活動を展開しました。事務事業評価において必要性・有効性・効率性の評価が57.6%の事業で全て良好であり、企画推進機能が着実に機能していることが確認されました。","story_impact":"判断できない","pdf_page":26,"cls":"23　行政経営"},{"no":"10","name":"移住定住促進事業","bureau":"企画部","dept":"企画部　企画政策課","budget":44417,"root":"法定義務なし","ev":"現状継続","story_p1":"人口減少に対応するため、住宅取得補助や新生活応援金などで転入を促進し、若い世代の定住を支援しています。移住定住に関するプロモーションも積極的に実施しています。","story_p2":"移住就業支援金5人の支給、各種フェアへの6回の参加出展、婚活支援事業における23件のチケット発行など、多角的な施策を実施しました。これらの取り組みにより、住もっか・新婚さん・わ～くわく支援制度による転入者は累計808人に達しています。","story_impact":"判断できない","pdf_page":27,"cls":"21　移住定住促進"},{"no":"11","name":"公共施設マネジメント推進事業","bureau":"企画部","dept":"企画部　資産経営課","budget":184325,"root":"法定義務なし","ev":"現状継続","story_p1":"公共施設を効率的に管理し、住民サービスを持続的に提供するために、施設の最適配置、定期点検、一括管理運営を進めています。","story_p2":"公共施設マネジメント推進事業として、公共施設の最適化に向けた取組を実施しました。公共施設延床面積縮減率(累計)は5.9%の実績が報告されており、施設の効率的な活用と規模の適正化が進められています。","story_impact":"判断できない","pdf_page":28,"cls":"データなし"},{"no":"12","name":"会計事務費","bureau":"データなし","dept":"会計課","budget":30508,"root":"法定義務なし","ev":"現状継続","story_p1":"住民の皆さんからお預かりした税金や料金を適切に管理し、正当な支払いを期日通りに行うために、収納処理と支払処理、資金運用を効率的に実施しています。","story_p2":"3か月の収支予定把握と職員への支払遅延防止意識啓発により、事務体制を見直しました。監査委員からの会計事務に関する指摘件数は0件となっています。","story_impact":"判断できない","pdf_page":29,"cls":"23　行政経営"},{"no":"13","name":"財産管理費","bureau":"企画部","dept":"企画部　資産経営課","budget":97927,"root":"法定義務なし","ev":"現状継続","story_p1":"公共施設や土地などの財産を適切に管理し、新しい施設の取得や不要な財産の売却に対応するために、登記事務などの手続きを行っています。","story_p2":"旧表鷲津公会堂の解体工事、普通財産整備工事、登記事務を実施しました。普通財産の公売入札では7件の実績があり、遊休資産の活用を進めました。","story_impact":"判断できない","pdf_page":30,"cls":"データなし"},{"no":"14","name":"交通安全推進事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":11979,"root":"法定義務なし","ev":"現状継続","story_p1":"交通事故を減らし、誰もが安全に暮らせるまちをつくるために、交通安全運動や啓発活動、交通指導隊の支援など、年間を通じた総合的な交通安全対策を実施しています。","story_p2":"街頭指導や入学児童・保護者への啓発活動を実施しました。交通事故（人身事故）の年間発生件数は231件でしたが、詳細な評価データが不足しており、事業の成果を十分に判断することができません。","story_impact":"判断できない","pdf_page":31,"cls":"2　交通安全・防犯"},{"no":"15","name":"防犯まちづくり事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":23796,"root":"法定義務なし","ev":"現状継続","story_p1":"安全で安心して暮らせるまちづくりを実現するために、防犯会議の開催や防犯協会の活動支援、青色パトロール、防犯灯の整備などを実施しています。","story_p2":"防犯灯設置工事の負担金支援を実施し、青色防犯パトロールは97回の実施実績をあげました。地域の防犯体制強化に向けた活動を推進しています。","story_impact":"判断できない","pdf_page":32,"cls":"2　交通安全・防犯"},{"no":"16","name":"電子市役所推進費","bureau":"企画部","dept":"企画部　ＤＸ推進課","budget":357346,"root":"法定義務なし","ev":"現状継続","story_p1":"デジタル化による行政サービスの利便性向上と業務効率化を実現するために、情報システムの管理・運用とセキュリティ対策を行い、デジタル人材の育成に取り組んでいます。","story_p2":"ガバメントクラウド運用管理やシステム基盤の整備により、行政手続きのオンライン利用件数は40,304件となりました。書かない窓口システムなどの導入を通じ、住民の利便性向上を進めています。","story_impact":"判断できない","pdf_page":33,"cls":"22　デジタル・スマートシティの実現"},{"no":"17","name":"自治会活動費","bureau":"市民安全部","dept":"市民安全部　市民課","budget":46149,"root":"法定義務なし","ev":"現状継続","story_p1":"地域の自治会活動を支援するため、各自治会への交付金、自治会連合会の運営支援、公会堂などの施設整備に対する補助金を交付しています。","story_p2":"41の自治会に対して運営費交付金を交付し、自治会連合会の運営を支援しました。自治会加入世帯数は19,725世帯となっており、地域コミュニティの維持・発展に貢献しています。","story_impact":"判断できない","pdf_page":34,"cls":"13　共生社会"},{"no":"18","name":"多文化共生事業","bureau":"市民安全部","dept":"市民安全部　市民課","budget":25626,"root":"法定義務なし","ev":"拡大","story_p1":"外国人住民が安心して生活できる環境づくりのために、言語サポートや日本語教育、国際交流の場の提供などの支援を行っています。","story_p2":"多言語ビデオ通訳サービスや実態調査を通じた多文化共生社会の推進に取り組み、国際交流イベントには2,659人の参加を得ました。","story_impact":"判断できない","pdf_page":35,"cls":"13　共生社会"},{"no":"19","name":"新居地域センター管理運営費","bureau":"市民安全部","dept":"市民安全部　新居支所","budget":457463,"root":"法定義務なし","ev":"拡大","story_p1":"地域住民が安心して施設を利用できるようにするために、新居地域センターの貸館受付や調整業務、施設・設備の維持管理を行っています。","story_p2":"新居地域センターの管理運営では、修繕や施設改修等の活動を行い、施設利用件数は1086件の実績を得ました。地域住民の交流と利用促進が図られています。","story_impact":"判断できない","pdf_page":36,"cls":"データなし"},{"no":"20","name":"新庁舎建設事業","bureau":"企画部","dept":"企画部　資産経営課","budget":13945,"root":"法定義務なし","ev":"現状継続","story_p1":"老朽化した現庁舎の機能向上と安全性確保のため、新庁舎建設に向けた調査・検討を実施しています。","story_p2":"オフィス状況調査と新庁舎建設基本計画策定を実施し、各年度毎の業務進捗率は66.0%となりました。計画に基づき、着実に事業を推進しています。","story_impact":"判断できない","pdf_page":37,"cls":"データなし"},{"no":"21","name":"市県民税課税業務","bureau":"総務部","dept":"総務部　税務課","budget":19718,"root":"法定義務あり","ev":"現状継続","story_p1":"住民と企業の皆様が適正に税金を納めていただくために、提出いただいた申告書や支払報告書などの課税資料を確認したうえで、個人市民税と法人市民税の賦課を行っています。","story_p2":"当初課税において、所得割納税義務者29,003人、均等割納税義務者33,900人、退職分離納税義務者99人の賦課業務を実施しました。成果指標の実績データは収集されていません。","story_impact":"判断できない","pdf_page":38,"cls":"データなし"},{"no":"22","name":"固定資産税課税業務","bureau":"総務部","dept":"総務部　税務課","budget":30043,"root":"法定義務あり","ev":"現状継続","story_p1":"固定資産税を適正に課税するために、法務局からの登記情報確認と現地調査を行い、毎年1月1日時点で所有する土地・家屋・償却資産を評価しています。","story_p2":"償却資産の納税義務者は1,187人に対して課税業務を実施しました。成果指標については評価データが記録されていない状況です。","story_impact":"判断できない","pdf_page":39,"cls":"データなし"},{"no":"23","name":"市税収納業務","bureau":"総務部","dept":"総務部　税務課","budget":60442,"root":"法定義務あり","ev":"現状継続","story_p1":"市民の皆さんが納めた税金を適正に管理し、行政サービスの財源を確保するために、税金の納付受付や滞納整理などの収納業務を行っています。","story_p2":"市税収納業務では、静岡地方税滞納整理機構への移管が15件となりました。成果指標については、設定された指標の実績値が確認されていない状況にあります。","story_impact":"判断できない","pdf_page":40,"cls":"データなし"},{"no":"24","name":"定額減税補足臨時給付金支援事業","bureau":"総務部","dept":"総務部　税務課","budget":426178,"root":"法定義務あり","ev":"廃止方向","story_p1":"定額減税により生じた減税枠の残額を給付金として支給するために、対象者の所得税課税状況と市県民税課税情報に基づき、1人につき最大4万円を1万円単位で給付しています。","story_p2":"定額減税補足臨時給付金として7,970人に対する給付事業を実施しました。成果指標については評価データが得られていない状況です。","story_impact":"判断できない","pdf_page":41,"cls":"データなし"},{"no":"25","name":"戸籍住民基本台帳事務","bureau":"市民安全部","dept":"市民安全部　市民課","budget":37046,"root":"法定義務あり","ev":"現状継続","story_p1":"住民の皆様が安心して生活するために、戸籍や住民基本台帳の届出受理、各種証明書の発行、印鑑登録などの基本的な行政サービスを提供しています。","story_p2":"戸籍住民基本台帳事務では、旅券申請・交付事務、人口動態調査事務を実施し、戸籍住民基本台帳システムの整備とふりがなシステム改修に取り組みました。","story_impact":"判断できない","pdf_page":42,"cls":"データなし"},{"no":"26","name":"静岡県知事選挙事務費","bureau":"総務部","dept":"総務部　総務課","budget":16260,"root":"法定義務あり","ev":"廃止方向","story_p1":"県知事の辞職に伴い、新しい知事を決めるための選挙を実施します。住民の皆様の投票により、県政を担う知事を選出するための事務を行っています。","story_p2":"知事選挙事務費として必要な経費が執行されました。成果指標については具体的なデータが記録されていない状況にあります。","story_impact":"判断できない","pdf_page":43,"cls":"23　行政経営"},{"no":"27","name":"衆議院議員選挙事務費","bureau":"総務部","dept":"総務部　総務課","budget":18694,"root":"法定義務あり","ev":"廃止方向","story_p1":"民主主義の根幹である選挙を適切に実施するために、衆議院解散に伴う衆議院議員総選挙の執行事務を行っています。","story_p2":"衆議院議員選挙事務に関する活動が行われました。成果指標の具体的な実績値は記録されていませんが、選挙事務の執行を通じて適切に対応されています。","story_impact":"判断できない","pdf_page":44,"cls":"23　行政経営"},{"no":"28","name":"社会福祉事務事業","bureau":"健康福祉部","dept":"健康福祉部","budget":56304,"root":"法定義務なし","ev":"現状継続","story_p1":"地域の福祉をより充実させるために、福祉関係団体への支援と地域福祉推進事業を実施しています。","story_p2":"避難行動要支援者に対して個別避難計画の作成を進め、希望者6人分の計画策定に取り組みました。成果指標として設定された個別避難計画の作成実績に基づき、要支援者の避難体制整備を着実に推進しています。","story_impact":"判断できない","pdf_page":45,"cls":"6　福祉"},{"no":"29","name":"令和６年度非課税世帯給付金支給事業","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":133263,"root":"法定義務あり","ev":"廃止方向","story_p1":"物価高騰の影響を受ける低所得世帯を支援するため、非課税世帯に給付金を支給しています。世帯当たり3万円、また世帯内の18歳以下のお子さん1人当たり2万円をお渡しします。","story_p2":"非課税世帯給付金支給事業に係る事務費を支出しました。成果指標の測定データが得られていない状況にあります。","story_impact":"判断できない","pdf_page":46,"cls":"6　福祉"},{"no":"30","name":"国民健康保険事業費","bureau":"市民安全部","dept":"市民安全部　保険年金課","budget":303406,"root":"法定義務あり","ev":"現状継続","story_p1":"誰もが安心して医療を受けられるよう、国民健康保険の財政を支え、保険料の負担を軽くするために、保険事業に必要な資金を繰り出しています。","story_p2":"成果を測る指標が設定されていません。","story_impact":"判断できない","pdf_page":47,"cls":"データなし"},{"no":"31","name":"介護保険事業特別会計繰出金","bureau":"健康福祉部","dept":"健康福祉部　高齢者福祉課","budget":642139,"root":"法定義務あり","ev":"現状継続","story_p1":"介護が必要な高齢者や障害者の方々が安心して介護サービスを利用できるよう、介護保険事業に必要な給付費や事務費、地域支援事業費などの負担を行っています。","story_p2":"介護保険事業特別会計への繰出金により、介護保険制度の安定的な運営を支援しました。成果指標については具体的な実績データが記録されていない状況となっています。","story_impact":"判断できない","pdf_page":48,"cls":"6　福祉"},{"no":"32","name":"重度障害者（児）医療費助成事業","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":92653,"root":"法定義務あり","ev":"現状継続","story_p1":"重度の障害がある方の医療費負担を軽減するために、身体障害者手帳1・2級、療育手帳A・B、精神障害者保健福祉手帳1級の交付者などを対象に、保険診療分の医療費を助成しています。","story_p2":"重度障害者（児）を対象とした医療費助成事業を実施しています。成果指標については数値データが記録されていない状況となっています。","story_impact":"判断できない","pdf_page":49,"cls":"6　福祉"},{"no":"33","name":"心身障害者福祉費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":41898,"root":"法定義務なし","ev":"現状継続","story_p1":"心身障害者とその家族の生活を支援するため、扶養共済の助成、タクシー利用の補助、各種手当の支給、相談員の設置など、多角的な福祉サービスを提供しています。","story_p2":"身体障害者福祉協会や手をつなぐ育成会への助成、タクシー券の助成、各種手当の支給など、複数の障害者福祉事業を実施しました。タクシー料金割引乗車券の利用率は9.5%となっています。","story_impact":"判断できない","pdf_page":50,"cls":"6　福祉"},{"no":"34","name":"浜名学園負担金","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":54057,"root":"法定義務あり","ev":"現状継続","story_p1":"児童生徒に質の高い教育環境を提供するため、浜名学園組合に対して負担金を支出しています。","story_p2":"浜名学園への負担金について、活動指標の実績は把握されていますが、事業の成果を測定するための具体的な指標が設定されていない状況です。成果の詳細な評価が難しい段階にあります。","story_impact":"判断できない","pdf_page":51,"cls":"6　福祉"},{"no":"35","name":"地域生活支援関係経費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":35437,"root":"法定義務なし","ev":"現状継続","story_p1":"障害のある人が地域で自立した生活を送れるよう、移動支援や日中の居場所確保、生活用具給付など、7つの支援事業を総合的に実施しています。","story_p2":"日常生活用具給付1,151件、訪問入浴サービス476回など、様々な生活支援事業を実施しました。相談支援件数は1,806件の実績があり、障害者の生活課題解決に向けた支援体制を整備しています。","story_impact":"判断できない","pdf_page":52,"cls":"6　福祉"},{"no":"36","name":"介護・訓練等給付費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":948480,"root":"法定義務あり","ev":"現状継続","story_p1":"障害のある方が日常生活を送るために必要な介護や訓練などのサービスを提供し、その費用を支給しています。","story_p2":"介護・訓練等給付費事業では、障害者の日中活動の場や訓練の場を提供してきました。成果指標については、実績値のデータが収集されていない状況です。","story_impact":"判断できない","pdf_page":53,"cls":"6　福祉"},{"no":"37","name":"自立支援医療費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":46129,"root":"法定義務あり","ev":"現状継続","story_p1":"障害や疾病のある方が、日常生活を送るために必要な医療費を支援しています。更生医療、育成医療、療養介護医療費の給付を行い、自立と社会参加を応援します。","story_p2":"療養介護医療の自立支援医療費について、6人の返還金が発生しました。成果指標の実績値は記録されていませんが、対象者への支援が実施されています。","story_impact":"判断できない","pdf_page":54,"cls":"6　福祉"},{"no":"38","name":"補装具給付費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":11475,"root":"法定義務あり","ev":"現状継続","story_p1":"身体の不自由な方が日常生活や仕事をしやすくするために、義肢や補聴器などの補装具の購入・修理にかかる費用を助成しています。","story_p2":"補装具給付費については、身体障害者等の日常生活における移動や活動を支援するため、必要な補装具の給付を実施しています。成果の詳細なデータはありませんが、利用者の生活の質向上に貢献する事業です。","story_impact":"判断できない","pdf_page":55,"cls":"6　福祉"},{"no":"39","name":"障害児通所給付費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":252890,"root":"法定義務あり","ev":"現状継続","story_p1":"障害のある子どもたちの成長と発達を支援するために、児童発達支援や放課後デイサービスなど必要な福祉サービスの利用費を給付しています。","story_p2":"障害児通所給付費は、障害のある児童の発達支援等を実施する事業です。成果指標については現在データが集計中であり、今後の評価を通じて事業の効果を検証してまいります。","story_impact":"判断できない","pdf_page":56,"cls":"6　福祉"},{"no":"40","name":"後期高齢者医療事業費","bureau":"市民安全部","dept":"市民安全部　保険年金課","budget":754275,"root":"法定義務あり","ev":"現状継続","story_p1":"75歳以上の高齢者が安心して医療を受けられるよう、後期高齢者医療制度の運営に必要な費用を負担しています。","story_p2":"後期高齢者医療事業については、活動指標および成果指標の実績データが記録されていません。事業の実施状況と成果の把握が必要とされています。","story_impact":"判断できない","pdf_page":57,"cls":"データなし"},{"no":"41","name":"後期高齢者健康診査事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":23721,"root":"法定義務あり","ev":"現状継続","story_p1":"高齢者の健康寿命を延ばすために、75歳以上の後期高齢者医療制度加入者を対象に、健康診査を実施しています。","story_p2":"4月から1月にかけて後期高齢者を対象に健康診査を実施し、未受診者2,140人に対して受診勧奨を行いました。成果指標については具体的な数値評価は記録されていません。","story_impact":"判断できない","pdf_page":58,"cls":"5　健康"},{"no":"42","name":"児童健全育成事業","bureau":"こども未来部","dept":"こども未来部　こども政策課","budget":21304,"root":"法定義務あり","ev":"縮小","story_p1":"すべての子どもが健やかに育つ環境を整備するため、子ども・子育て会議の運営やこども計画の策定を行うとともに、児童手当やこども医療費などの給付・福祉サービスを総合的に管理・運用しています。","story_p2":"こども計画の策定が実施されました。成果指標については実績データが記録されていないため、事業による具体的な成果の把握が課題となっています。","story_impact":"判断できない","pdf_page":59,"cls":"10　結婚・出産・子育て"},{"no":"43","name":"発達支援事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":98020,"root":"法定義務なし","ev":"現状継続","story_p1":"発達に課題のある乳幼児とその保護者が安心して成長できるよう、発達支援教室の開催と相談対応を行っています。また、保育士などの支援者への研修や市民への啓蒙活動を通じて、地域全体で子どもの発達を支える環境づくりに取り組んでいます。","story_p2":"発達支援の部屋を公立3園で延べ180人を対象に9回開催し、出張相談会を33件実施するなど、多角的な支援活動を展開しました。発達相談支援事業を利用した件数は206件となり、就学に向けた講座やペアレントプログラムなどを通じて、保護者支援と児童の発達段階に応じた相談支援体制の充実を図りました。","story_impact":"判断できない","pdf_page":60,"cls":"10　結婚・出産・子育て"},{"no":"44","name":"新居子育て支援センター運営事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":15905,"root":"法定義務なし","ev":"現状継続","story_p1":"子育ての不安を軽くするために、遊びの広場や講座の提供、保育士による相談援助、預かり保育を実施しています。","story_p2":"出張広場「にこにこ」は88回開催し1,773人が利用、のびのび預かり保育は152日間実施して869人が利用するなど、多くの子育て家庭に支援を提供しました。支援センター全体では18,874人の来館者を記録しています。","story_impact":"判断できない","pdf_page":61,"cls":"10　結婚・出産・子育て"},{"no":"45","name":"児童手当支給事業費","bureau":"こども未来部","dept":"こども未来部　こども政策課","budget":913678,"root":"法定義務あり","ev":"現状継続","story_p1":"子育て家庭の経済的負担を軽減するために、高校生年代までの子どもを養育している方に児童手当を支給しています。令和6年10月から所得制限を撤廃し、支給額の拡充や支払回数の増加など制度を充実させました。","story_p2":"児童手当支給事業では、対象となる児童への手当支給を実施しました。成果指標については具体的な数値データが記録されていませんが、事業を通じて子育て世帯への経済的支援が行われています。","story_impact":"判断できない","pdf_page":62,"cls":"10　結婚・出産・子育て"},{"no":"46","name":"こども医療費助成事業","bureau":"こども未来部","dept":"こども未来部　こども政策課","budget":304577,"root":"法定義務なし","ev":"現状継続","story_p1":"子どもの健やかな成長を支援するため、0歳から18歳までの医療費の一部を助成しています。通院・入院時の保険診療費と入院食事代を対象としています。","story_p2":"こども医療費助成事業では、受給対象者の申請率が100に達しました。本事業を通じて、対象となる児童の医療費支援が適切に実施されています。","story_impact":"判断できない","pdf_page":63,"cls":"10　結婚・出産・子育て"},{"no":"47","name":"放課後児童健全育成事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":70602,"root":"法定義務なし","ev":"現状継続","story_p1":"昼間保護者がいない小学生が安心して過ごせる居場所を確保するため、小学校の空き教室等を活用して放課後の生活の場を提供しています。","story_p2":"放課後児童クラブの定員数は629人となっており、放課後児童健全育成事業として児童の安全・安心な居場所の確保に取り組んでいます。","story_impact":"判断できない","pdf_page":64,"cls":"10　結婚・出産・子育て"},{"no":"48","name":"児童扶養手当給付事業","bureau":"こども未来部","dept":"こども未来部　こども政策課","budget":122516,"root":"法定義務あり","ev":"現状継続","story_p1":"ひとり親家庭の経済的負担を軽減し、児童の生活を支援するために、一定の低所得の要件を満たす監護者に児童扶養手当を支給しています。","story_p2":"児童扶養手当給付事業では、対象となる児童家庭への手当給付を実施しました。事業の成果を測定するための指標データが記録されていない状況となっています。","story_impact":"判断できない","pdf_page":65,"cls":"10　結婚・出産・子育て"},{"no":"49","name":"民間保育所等助成事業","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":1314921,"root":"法定義務なし","ev":"縮小","story_p1":"子どもたちが安心して過ごせる保育環境を整備し、働く保護者を支援するために、民間保育施設の運営費や整備費の補助、保育士の資質向上支援など包括的な助成を行っています。","story_p2":"保育の質向上に向けて9園への補助、3園の施設整備費補給、認可外保育施設や一時預かりの利用料助成などを実施しました。待機児童ゼロを達成し、保育環境の充実に貢献しています。","story_impact":"判断できない","pdf_page":66,"cls":"10　結婚・出産・子育て"},{"no":"50","name":"公立保育所施設管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":99682,"root":"法定義務なし","ev":"廃止方向","story_p1":"老朽化した旧鷲津保育園の跡地を有効活用するため、施設の解体工事を実施しています。","story_p2":"成果を測る指標が設定されていません。","story_impact":"判断できない","pdf_page":67,"cls":"データなし"},{"no":"51","name":"生活保護実施事業","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":380439,"root":"法定義務あり","ev":"現状継続","story_p1":"生活に困っている方が最低限度の生活を送られるよう支援するために、生活保護法に基づいた給付と自立に向けた支援を行っています。","story_p2":"生活保護実施事業では、生活に困窮する住民に対して必要な保護を実施しています。成果指標については、その測定内容の詳細なデータが整備されていない状況にあります。","story_impact":"判断できない","pdf_page":68,"cls":"6　福祉"},{"no":"52","name":"生活困窮者自立支援事業","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":14992,"root":"法定義務あり","ev":"現状継続","story_p1":"生活保護が必要になる前の段階で、生活が困難な方々を支援し、自立を促進するために、専門の相談支援や就労支援などの各種サービスを提供しています。","story_p2":"生活困窮者を対象とした自立相談支援を実施し、相談者のための自立支援プランの作成を行いました。自立相談支援プラン作成者の生活保護への移行数については、評価に必要なデータが確認できていない状況です。","story_impact":"判断できない","pdf_page":69,"cls":"6　福祉"},{"no":"53","name":"管理運営事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":10189,"root":"法定義務なし","ev":"現状継続","story_p1":"市民の健康保持と増進を図るため、健康増進課の事業を円滑に推進しています。関係団体への財政支援のほか、若年がん患者や骨髄ドナーへの支援を行います。","story_p2":"若年がん患者等支援事業・骨髄移植ドナー支援事業について、標準化準拠システムへの移行作業を進めました。成果指標については評価対象として設定されていません。","story_impact":"判断できない","pdf_page":70,"cls":"5　健康"},{"no":"54","name":"健康福祉センター管理運営事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":162223,"root":"法定義務なし","ev":"現状継続","story_p1":"住民の健康増進と福祉向上を実現するために、健康福祉センターの適切な施設管理と運営に必要な経費を確保しています。","story_p2":"健康福祉センターの施設・設備について、保守点検料による定期的なメンテナンスを実施し、施設の適切な管理運営を行いました。","story_impact":"判断できない","pdf_page":71,"cls":"5　健康"},{"no":"55","name":"母子保健事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":44372,"root":"法定義務なし","ev":"現状継続","story_p1":"妊娠中から乳幼児期のお子さんと保護者の健康を守るため、妊産婦健診や乳幼児健診、育児相談、各種教室を実施しています。","story_p2":"母子保健事業では、3歳以下の子を持つ親が育てにくさを感じたときに相談先を知っているかを成果指標として設定し、実績値85.7%を得ました。相談体制の整備により、多くの保護者が必要な支援にアクセスできる環境が構築されています。","story_impact":"判断できない","pdf_page":72,"cls":"10　結婚・出産・子育て"},{"no":"56","name":"出産・子育て応援事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":32131,"root":"法定義務あり","ev":"現状継続","story_p1":"妊娠から出産・育児までの不安を軽くするために、妊婦への給付金支給と専門家による伴走型の相談支援を行っています。","story_p2":"出産・子育て応援事業を実施しました。活動指標と成果指標の実績が記録されており、事業の実行状況を把握できる体制が整えられています。","story_impact":"判断できない","pdf_page":73,"cls":"10　結婚・出産・子育て"},{"no":"57","name":"小児等予防接種事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":118623,"root":"法定義務あり","ev":"拡大","story_p1":"お子さんの健やかな成長を守るため、予防接種法に基づいて乳幼児から学童を対象とした各種予防接種を実施しています。","story_p2":"HPVワクチン1529回、五種混合646回の予防接種を実施しました。成果指標については測定データが記録されていないため、具体的な成果の評価を行うことができません。","story_impact":"判断できない","pdf_page":74,"cls":"データなし"},{"no":"58","name":"地域医療対策事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":21390,"root":"法定義務なし","ev":"現状継続","story_p1":"いつでも安心して医療を受けられる地域づくりのために、夜間・休日診療体制の確保と救急医療の充実を進めています。また、医療機関との連携強化や看護師確保に取り組んでいます。","story_p2":"地域医療対策事業では、休日夜間の医療体制の充実に向けた取組を実施しました。成果指標である休日夜間の医療体制について、実績値100.0を記録しており、住民への必要な医療提供体制の確保に貢献しています。","story_impact":"判断できない","pdf_page":75,"cls":"5　健康"},{"no":"59","name":"疾病対策事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":173553,"root":"法定義務なし","ev":"現状継続","story_p1":"住民の健康寿命を延ばすために、各種検診や予防接種、健康相談、健康教育などの予防・健康づくり事業を実施しています。また自殺対策や熱中症対策など、様々な角度から住民の健康を守ります。","story_p2":"自殺対策事業として講演会や講話等を実施し、延べ699人の参加がありました。特定健診受診率については成果指標として設定されており、38.8%の実績となっています。","story_impact":"判断できない","pdf_page":76,"cls":"5　健康"},{"no":"60","name":"斎場管理運営事業","bureau":"環境部","dept":"環境部　環境課","budget":60316,"root":"法定義務なし","ev":"現状継続","story_p1":"適切な火葬サービスを提供するため、新居斎場やすらぎ苑の効率的かつ適切な運営を行っています。","story_p2":"炉前ホール照明設備修繕などの火葬場施設管理を行い、火葬場使用料の収納率は100.0％を達成しました。安定した施設運営と適切な収納管理により、事業の目標が達成されています。","story_impact":"判断できない","pdf_page":77,"cls":"データなし"},{"no":"61","name":"斎場整備事業","bureau":"環境部","dept":"環境部　環境課","budget":179199,"root":"法定義務なし","ev":"廃止方向","story_p1":"住民の皆様に必要な斎場施設を提供するため、内山65号線の1期工事を実施し、数年後の供用開始を目指しています。","story_p2":"斎場整備事業では、市道内山65号線の進捗率が66.8%に達しました。事業の着実な進行が確認されており、整備工事が予定通り進められています。","story_impact":"判断できない","pdf_page":78,"cls":"データなし"},{"no":"62","name":"合併処理浄化槽補助事業","bureau":"環境部","dept":"環境部　廃棄物対策課","budget":17838,"root":"法定義務なし","ev":"現状継続","story_p1":"公共下水道が整備されていない地域の生活環境を改善するため、くみ取りトイレや単独浄化槽を合併浄化槽に転換する際の費用の一部を補助しています。","story_p2":"合併処理浄化槽補助事業により、単独浄化槽・くみ取り便槽から合併処理浄化槽への転換が22件実現し、生活排水処理の環境改善を着実に進めました。","story_impact":"判断できない","pdf_page":79,"cls":"7　廃棄物・上下水"},{"no":"63","name":"廃棄物対策事業","bureau":"環境部","dept":"環境部　廃棄物対策課","budget":362569,"root":"法定義務なし","ev":"拡大","story_p1":"安心で清潔な生活環境を守り、限られた資源を有効活用するために、家庭や事業所の廃棄物の適正な収集運搬と分別・減量化に取り組んでいます。","story_p2":"家庭系一般廃棄物の収集運搬、草木チップ化、生ごみ減量化容器等の購入補助、リサイクル資源集団回収奨励金などの多角的な廃棄物対策を実施しました。生ごみ減量化容器購入基数は46基の実績があり、1人1日当たりのごみ排出量削減に向けて有効な取組となっています。","story_impact":"判断できない","pdf_page":80,"cls":"7　廃棄物・上下水"},{"no":"64","name":"ごみ処理施設管理運営事業","bureau":"環境部","dept":"環境部　廃棄物対策課","budget":1783162,"root":"法定義務なし","ev":"現状継続","story_p1":"安全で清潔な生活環境を守るため、環境センターの運営管理と廃棄物処分場の適切な維持管理・運営、施設の拡張を進めています。","story_p2":"ＰＦＩ事業モニタリングと環境センター、リサイクルプラザ火災復旧事業を実施し、一般廃棄物の処理量は17075.0トンの実績を上げました。","story_impact":"判断できない","pdf_page":81,"cls":"7　廃棄物・上下水"},{"no":"65","name":"し尿処理施設管理運営事業","bureau":"環境部","dept":"環境部　廃棄物対策課","budget":159706,"root":"法定義務なし","ev":"現状継続","story_p1":"快適で衛生的な生活環境を守るため、し尿処理施設の安全かつ効率的な管理運営を行っています。","story_p2":"バイオガス発電可能性調査に負担金を支出し、生し尿・浄化槽汚泥の処理量は82.5トンの実績がありました。し尿処理施設の安定的な運営を通じて、生活衛生の維持に貢献しています。","story_impact":"判断できない","pdf_page":82,"cls":"7　廃棄物・上下水"},{"no":"66","name":"脱炭素推進事業","bureau":"環境部","dept":"環境部　環境課","budget":73605,"root":"法定義務なし","ev":"現状継続","story_p1":"二酸化炭素の排出を減らし、地球環境を守るために、家庭や企業の脱炭素化を支援しています。太陽光発電などの再生可能エネルギーや電気自動車の導入補助、環境学習の実施などを通じて、カーボンニュートラルの実現を目指しています。","story_p2":"気候変動適応計画の策定、省エネ設備導入86件、省エネ家電導入555件の補助実績を上げ、161人がアースキッズに参加しました。家庭用蓄電池やV2H等の導入支援により、脱炭素社会実現に向けた市民の取組を促進しています。","story_impact":"判断できない","pdf_page":83,"cls":"19　自然環境"},{"no":"67","name":"花と緑のまちづくり推進事業","bureau":"環境部","dept":"環境部　環境課","budget":11545,"root":"法定義務なし","ev":"現状継続","story_p1":"花と緑あふれるまちを実現するため、春秋の緑花フェア開催、公共花壇の維持管理、地域の花壇用に年3回の花苗生産を行っています。","story_p2":"花と緑のまちづくり推進事業では、花苗の配布を成果指標として設定し、約29万7千本の花苗を配布しました。地域の花と緑の充実に向けた取り組みが実施されています。","story_impact":"判断できない","pdf_page":84,"cls":"19　自然環境"},{"no":"68","name":"湖西市立病院事業繰出金","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":832887,"root":"法定義務なし","ev":"現状継続","story_p1":"市立病院の安定した経営を支援するために、一般会計から必要な経費と医学修学基金への繰入金を支出しています。","story_p2":"病院事業の経営支援として繰出金を配分しました。入院の病床利用率は68.1%となり、病床の有効活用が進められています。","story_impact":"判断できない","pdf_page":85,"cls":"5　健康"},{"no":"69","name":"勤労者定着促進事業","bureau":"産業部","dept":"産業部　産業振興課","budget":12524,"root":"法定義務なし","ev":"現状継続","story_p1":"勤労者が住宅ローンの返済負担を軽減し、定住を促進するために、利子の一部を補給しています。","story_p2":"成果を測る指標が設定されていません。","story_impact":"判断できない","pdf_page":86,"cls":"15　就業支援"},{"no":"70","name":"高齢者能力活用支援事業","bureau":"産業部","dept":"産業部　産業振興課","budget":15060,"root":"法定義務なし","ev":"現状継続","story_p1":"高齢者の生きがいづくりと就業機会の創出を支援するため、シルバー人材センターの運営を補助し、地域の活性化を図っています。","story_p2":"高齢者の能力活用を支援する事業として、補助対象事業費に占める補助金の割合は29.7%となりました。事業の実施を通じて、高齢者の活躍の場づくりを進めています。","story_impact":"判断できない","pdf_page":87,"cls":"15　就業支援"},{"no":"71","name":"技術・技能開発事業","bureau":"産業部","dept":"産業部　産業振興課","budget":23457,"root":"法定義務なし","ev":"現状継続","story_p1":"地域の産業を支える人材育成のため、企業の技術者や求職者、外国人労働者を対象とした職業訓練や技能向上訓練を実施しています。","story_p2":"職業訓練センターの人件費負担により、施設利用者数は8441人となりました。技術・技能開発の拠点として、多くの住民に訓練機会を提供できています。","story_impact":"判断できない","pdf_page":88,"cls":"14　モノづくり産業の活性"},{"no":"72","name":"農業委員会運営事業","bureau":"産業部","dept":"産業部　産業振興課","budget":12436,"root":"法定義務あり","ev":"現状継続","story_p1":"農地を有効活用し、秩序ある農政と農業従事者の生活安定を実現するために、農地法に基づく調整と農地台帳の適正な整備を行っています。","story_p2":"農地台帳システムの目標地図機能追加業務に取り組みました。成果指標については具体的な実績データの記録がありませんが、農地管理の効率化に向けた機能拡張を進めています。","story_impact":"判断できない","pdf_page":89,"cls":"データなし"},{"no":"73","name":"農業振興推進事業","bureau":"産業部","dept":"産業部　産業振興課","budget":18660,"root":"法定義務なし","ev":"現状継続","story_p1":"地域の農業を活発にするために、国や県、農協などと力を合わせて様々な支援や対策に取り組んでいます。","story_p2":"省エネ機械設備等の導入支援により36件の事業者を支援しました。防護柵設置件数は12件の実績があり、農業経営の効率化と野生動物対策の推進が図られています。","story_impact":"判断できない","pdf_page":90,"cls":"17　農業・漁業"},{"no":"74","name":"畜産振興対策事業","bureau":"産業部","dept":"産業部　産業振興課","budget":64334,"root":"法定義務なし","ev":"現状継続","story_p1":"畜産経営を安定させ、環境への負荷を軽減するために、畜産農家に対して経営や環境対策の支援を行っています。","story_p2":"食肉センター整備に向けた負担金を計上し、施設整備を進めました。生活の中で悪臭を感じる人の割合は62.3%と報告されており、今後の施設改善による改善効果の検証が課題です。","story_impact":"判断できない","pdf_page":91,"cls":"18　住環境"},{"no":"75","name":"土地改良整備事業","bureau":"産業部","dept":"産業部　産業振興課","budget":86875,"root":"法定義務なし","ev":"拡大","story_p1":"農業用施設を適切に保全し、農業の持続的な発展を支援するために、県や土地改良区、農業者団体に対して負担金や補助金を行っています。","story_p2":"湖西用水土地改良区への補助を通じた土地改良整備事業を展開しました。多面的機能支払交付金の交付団体数は13団体となり、農地の保全と地域の多面的機能の維持に取り組みました。","story_impact":"判断できない","pdf_page":92,"cls":"データなし"},{"no":"76","name":"森林保護整備事業","bureau":"産業部","dept":"産業部　産業振興課","budget":29757,"root":"法定義務なし","ev":"現状継続","story_p1":"森林と保安林を守るために、不法投棄されたゴミの処理や草刈りを行うとともに、松くい虫の被害拡大を防ぐための防除作業を実施しています。","story_p2":"松くい虫被害の拡大防止に向け、約14.9haの薬剤地上散布と樹幹注入などの対策を実施しました。松くい虫薬剤地上散布面積は10.2haの実績となっており、被害拡大防止のための施策が講じられています。","story_impact":"判断できない","pdf_page":93,"cls":"データなし"},{"no":"77","name":"水産業振興事業","bureau":"産業部","dept":"産業部　産業振興課","budget":14812,"root":"法定義務なし","ev":"縮小","story_p1":"地域の水産業を活性化させるために、鷲津漁港の施設整備とアサリやクルマエビなどの資源回復に取り組んでいます。","story_p2":"製氷機の導入と鷲津漁港の深浅測量業務を実施し、水産施設の整備を進めました。年間水揚高は103,932万円の実績があります。","story_impact":"判断できない","pdf_page":94,"cls":"17　農業・漁業"},{"no":"78","name":"商工業振興事業","bureau":"産業部","dept":"産業部　産業振興課","budget":50879,"root":"法定義務なし","ev":"現状継続","story_p1":"地域の中小企業の成長を促進するため、新製品の展示会出展や商店街イベントに対して補助金を交付しています。","story_p2":"商店街イベント活動強化事業と物流等円滑化支援補助金により商工業の振興を図りました。空き家利活用マッチング数は累計29件の実績があります。","story_impact":"判断できない","pdf_page":95,"cls":"16　工業・商業"},{"no":"79","name":"観光振興事業","bureau":"産業部","dept":"産業部　文化観光課","budget":30573,"root":"法定義務なし","ev":"現状継続","story_p1":"浜名湖の魅力を活かした観光地域づくりを進めるために、県やDMO、地域の観光協会と連携して、市内外からの誘客に取り組んでいます。","story_p2":"観光振興事業として、おいでん祭事業や地域おこし協力隊などの施策に取り組みました。公式ウェブサイトのビュー数は591,008件となっています。","story_impact":"判断できない","pdf_page":96,"cls":"20　観光振興"},{"no":"80","name":"道の駅潮見坂管理運営事業","bureau":"産業部","dept":"産業部　文化観光課","budget":16430,"root":"法定義務なし","ev":"現状継続","story_p1":"道の駅潮見坂を拠点として、特産物の提供と情報発信を通じて地域をPRし、観光施設への来訪者増加と交流人口の拡大による賑わい創出を目指しています。","story_p2":"施設修繕、インターネット・電話代、施設管理手数料、施設管理委託により道の駅を運営し、約76万人の来場者がありました。","story_impact":"判断できない","pdf_page":97,"cls":"20　観光振興"},{"no":"81","name":"新居今切体験の里管理運営事業","bureau":"産業部","dept":"産業部　文化観光課","budget":52110,"root":"法定義務なし","ev":"現状継続","story_p1":"浜名湖の豊かな環境と文化、水産物の魅力を広く発信し、観光拠点としてのブランドイメージを高めるために、体験施設や海湖館などの管理運営を行っています。","story_p2":"駐車券・サービス券印刷、施設管理委託、枯れ松伐採工事などの管理運営を実施しました。来訪者満足度は94.9%と高い評価を得ています。","story_impact":"判断できない","pdf_page":98,"cls":"20　観光振興"},{"no":"82","name":"ふるさと納税推進事業","bureau":"産業部","dept":"産業部　文化観光課","budget":234137,"root":"法定義務なし","ev":"拡大","story_p1":"全国にふるさとの魅力をPRするとともに、寄付への返礼品として地元特産品を贈呈することで、地域産業の振興と発展を図っています。","story_p2":"ふるさと納税推進事業として広告料やサイト使用料等の運営費を活用し、ふるさと納税寄附金の獲得に取り組みました。寄附金額は実績が記録されており、事業を通じた財源確保が図られています。","story_impact":"判断できない","pdf_page":99,"cls":"データなし"},{"no":"83","name":"企業立地促進事業","bureau":"産業部","dept":"産業部　産業振興課","budget":154177,"root":"法定義務なし","ev":"現状継続","story_p1":"地域経済の活性化と雇用機会の創出のために、市内に新たに進出した企業に対して、用地取得費や雇用、税負担などを支援する補助金を交付しています。","story_p2":"企業立地促進事業では、制度を利用した立地件数が23件の実績となりました。本制度を通じて、地域への企業誘致が一定程度進展したことが確認できます。","story_impact":"判断できない","pdf_page":100,"cls":"16　工業・商業"},{"no":"84","name":"庶務及び管理費","bureau":"都市整備部","dept":"都市整備部　土木課","budget":34242,"root":"法定義務あり","ev":"現状継続","story_p1":"道路や河川の境界を適切に管理し、未登記物件の解消を進めるとともに、道路台帳を修正・更新することで、道路管理業務を円滑に行っています。","story_p2":"境界プレートやプリンター用トナーなどの消耗品購入のほか、道路台帳の経年変化修正業務及び道路情報システムの保守業務を実施しました。成果指標については実績データが記録されていません。","story_impact":"判断できない","pdf_page":101,"cls":"データなし"},{"no":"85","name":"地元要望事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":69299,"root":"法定義務なし","ev":"拡大","story_p1":"地元自治会からの要望をもとに、住民の安全と利便性を向上させるために、必要な整備・補修工事を実施しています。","story_p2":"地元からの要望に対して、事業の予算執行率が80.0%となりました。予定していた事業のほぼ大部分が実施され、住民の要望に応える形で事業が進められています。","story_impact":"判断できない","pdf_page":102,"cls":"8　道路"},{"no":"86","name":"地籍調査事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":17596,"root":"法定義務あり","ev":"拡大","story_p1":"災害復旧や公共事業を円滑に進めるために、土地の境界位置と面積を正確に測量する地籍調査を実施しています。","story_p2":"地籍調査事業では、システムリース及び国土調査協議会関連業務のほか、港町・栄町地区の地籍調査業務を委託により進めた。成果指標の実績データはないため、事業の成果を数値で把握できていない。","story_impact":"判断できない","pdf_page":103,"cls":"データなし"},{"no":"87","name":"道路維持補修事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":393196,"root":"法定義務あり","ev":"拡大","story_p1":"道路を安全で使いやすい状態に保つために、市道の点検・修理・清掃などの維持管理を実施しています。","story_p2":"道路照明灯リースやダンプトラックリースのほか、区画線修繕工事、橋梁補修工事、舗装補修工事などを実施し、鷲津跨線人道橋の補修工事と点検・診断業務を進めました。成果指標の実績データは提供されていません。","story_impact":"判断できない","pdf_page":104,"cls":"8　道路"},{"no":"88","name":"新所原笠子線道路改良事業","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":120050,"root":"法定義務なし","ev":"拡大","story_p1":"県道新所原停車場日の岡線と県道新所原停車場白須賀線を結ぶ幹線市道について、利用者の利便性向上と地域の交通安全を図るため、道路改良事業を実施しています。","story_p2":"新所原笠子線道路改良事業は、事業費ベースで53.1%の進捗率に達しており、計画に基づいて事業が進行しています。","story_impact":"判断できない","pdf_page":105,"cls":"2　交通安全・防犯"},{"no":"89","name":"（都）大倉戸茶屋松線整備事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":45982,"root":"法定義務なし","ev":"廃止方向","story_p1":"浜名湖西岸地区の新産業拠点へのアクセス向上と地域振興のため、都市計画道路大倉戸茶屋松線を含む周辺道路の整備を進めています。総延長1.6km、幅員16mの道路を整備します。","story_p2":"（都）大倉戸茶屋松線整備事業は、進捗率（事業費ベース）が99.0%に達し、事業がほぼ完了段階にあります。計画に基づいた着実な整備が進められています。","story_impact":"判断できない","pdf_page":106,"cls":"8　道路"},{"no":"90","name":"道路改良関係事務費","bureau":"都市整備部","dept":"都市整備部","budget":22443,"root":"法定義務なし","ev":"廃止方向","story_p1":"地域の道路をより安全で快適にするために、道路改良事業に必要な調査を実施し、関係する期成同盟会への参加を通じて事業を進めています。","story_p2":"道路改良関係事務費の活動実施率は100%となり、計画された事業が予定通り実施されました。成果指標である活動実施率により、道路改良事業の着実な進捗が確認されています。","story_impact":"判断できない","pdf_page":107,"cls":"8　道路"},{"no":"91","name":"河川・排水路維持補修事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":50330,"root":"法定義務あり","ev":"拡大","story_p1":"河川や排水路が正常に機能し、住民が安心で快適に暮らせる環境を実現するために、準用河川や普通河川、排水路などの維持補修を行っています。","story_p2":"浜名川の松枯れ伐採工事に着手しました。成果指標については、実績値の記録がありませんが、河川環境の保全に向けた取り組みを進めています。","story_impact":"判断できない","pdf_page":108,"cls":"データなし"},{"no":"92","name":"河川整備関係経費","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":45614,"root":"法定義務なし","ev":"拡大","story_p1":"安全で暮らしやすい河川環境を実現するために、河川の改修や維持管理に必要な事務手続きや調査業務を行っています。","story_p2":"境田川河川整備工事と市地第２排水路整備工事を実施し、測量業務・修正設計業務も進めました。活動実施率は100%を達成し、計画通りに事業を遂行できました。","story_impact":"判断できない","pdf_page":109,"cls":"データなし"},{"no":"93","name":"地域公共交通対策事業","bureau":"都市整備部","dept":"都市整備部　都市計画課","budget":95744,"root":"法定義務なし","ev":"現状継続","story_p1":"通勤通学や通院、買い物など日常生活に必要な移動手段を確保するため、コミュニティバスやデマンド型乗合タクシーの運行、新しいモビリティサービスの検証などに取り組んでいます。","story_p2":"地域公共交通会議や利用者の意見を聞く会を開催し、市民の声を事業に反映させました。デマンド型乗合タクシーの利用は8439人となり、地域の交通ニーズに応える移動手段として機能しています。","story_impact":"判断できない","pdf_page":110,"cls":"9　公共交通"},{"no":"94","name":"天竜浜名湖鉄道対策事業","bureau":"都市整備部","dept":"都市整備部　都市計画課","budget":38237,"root":"法定義務なし","ev":"現状継続","story_p1":"天竜浜名湖鉄道の経営を長期的に安定させるために、利用促進活動と財政支援を計画的に行い、住民のマイレール意識を高めています。","story_p2":"成果を測る指標が設定されていません。","story_impact":"判断できない","pdf_page":111,"cls":"9　公共交通"},{"no":"95","name":"都市計画関係事務費","bureau":"都市整備部","dept":"都市整備部　都市計画課","budget":554122,"root":"法定義務なし","ev":"拡大","story_p1":"都市の健全な発展と秩序ある整備を実現するために、都市計画に基づいた円滑な行政運営を行っています。これにより、公共の福祉増進と国土の均衡ある発展に寄与しています。","story_p2":"開発可能性調査や民間宅地開発補助金、工業団地整備負担金などの施策を展開し、市街化区域内の人口は36889人となりました。各種開発関連事業を通じた都市計画の推進が図られています。","story_impact":"判断できない","pdf_page":112,"cls":"18　住環境"},{"no":"96","name":"鷲津駅谷上線整備事業","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":83144,"root":"法定義務なし","ev":"現状継続","story_p1":"鷲津駅と谷上地区を結ぶ都市計画道路の未整備区間を整備することで、通勤通学者や商業施設利用者の安全確保と地域の生活環境改善を図っています。","story_p2":"鷲津駅谷上線整備事業は、進捗率（事業費ベース）が53.1%となっており、事業は計画に沿って進行中です。今後の継続的な整備推進により、事業完了に向けた着実な進展が期待されます。","story_impact":"判断できない","pdf_page":113,"cls":"8　道路"},{"no":"97","name":"浜名弁天線整備事業","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":14019,"root":"法定義務あり","ev":"拡大","story_p1":"浜名バイパス新居弁天ICのフルインター化に対応し、自動車利用者の利便性向上と歩行者の安全確保のため、国道1号と都市計画道路を結ぶ浜名弁天線の整備を進めています。","story_p2":"浜名弁天線整備事業について、成果指標の実績値および評価内容が記録されていないため、事業の成果を具体的に測定することができません。事業の効果判定には、指標となるデータの整備が必要です。","story_impact":"判断できない","pdf_page":114,"cls":"データなし"},{"no":"98","name":"表鷲津漁港線整備事業","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":29546,"root":"法定義務あり","ev":"拡大","story_p1":"鷲津漁港へアクセスする都市計画道路の未整備区間を整備し、自動車利用者の利便性向上と歩行者の安全確保を図っています。","story_p2":"表鷲津漁港線整備事業については、活動指標および成果指標の実績データが記録されていない状況にあります。事業の進捗状況と成果の達成状況を把握するためには、具体的な測定データの整備が必要です。","story_impact":"判断できない","pdf_page":115,"cls":"データなし"},{"no":"99","name":"都市公園維持管理業務","bureau":"都市整備部","dept":"都市整備部　土木課","budget":88964,"root":"法定義務あり","ev":"拡大","story_p1":"市民の皆さんが快適に過ごせる公園環境を保つために、市内の公園や緑地の施設点検や樹木の手入れなど、維持管理業務を行っています。","story_p2":"新居文化公園の複合遊具設置工事および公園維持整備工事を実施しました。成果指標については測定データが記録されていませんが、施設の整備を通じて公園機能の充実を図りました。","story_impact":"判断できない","pdf_page":116,"cls":"データなし"},{"no":"100","name":"公園施設整備費","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":31585,"root":"法定義務なし","ev":"縮小","story_p1":"より良い公園環境を整備するために、公園施設の整備事業に必要な事務手続きや調査設計などの関連費用を支出しています。","story_p2":"公園施設整備事業について、計画された整備活動が実施率100%で完了しました。設定された成果指標に基づき、予定されていた公園施設の整備が予定通り実施されたことが確認されています。","story_impact":"判断できない","pdf_page":117,"cls":"データなし"},{"no":"101","name":"組合土地区画整理事業事務費","bureau":"都市整備部","dept":"都市整備部　都市計画課","budget":111783,"root":"法定義務なし","ev":"現状継続","story_p1":"組合が行う土地区画整理事業を支援するため、事業に必要な技術的サポートと公共施設の建設費について補助金を交付しています。","story_p2":"浜名湖西岸土地区画整理事業への技術支援を実施しました。工業用地の引渡率は93.0%となっており、事業の進捗が着実に進んでいます。","story_impact":"判断できない","pdf_page":118,"cls":"16　工業・商業"},{"no":"102","name":"公共下水道整備事業","bureau":"環境部","dept":"環境部　上下水道課","budget":633098,"root":"法定義務あり","ev":"現状継続","story_p1":"生活環境を改善し、河川などの公共用水域を汚濁から守るため、公共下水道事業の経営を安定させ、その経営基盤を強化しています。","story_p2":"公共下水道整備事業では、下水道整備面積累計で590.7の実績があり、着実に下水道の整備が進められています。整備の進捗状況を着実に把握し、今後も継続的に下水道網の拡張を進めていく予定です。","story_impact":"判断できない","pdf_page":119,"cls":"7　廃棄物・上下水"},{"no":"103","name":"市営住宅建設事業","bureau":"都市整備部","dept":"都市整備部　建築住宅課","budget":45800,"root":"法定義務なし","ev":"現状継続","story_p1":"誰もが安心して暮らせる住まいを提供するため、市営住宅の新築と既存施設の長寿命化に向けた設計・工事を実施しています。","story_p2":"市営住宅建設事業について、予算化された事業の実施率は100.0%となり、計画された事業が全て実施されました。","story_impact":"判断できない","pdf_page":120,"cls":"データなし"},{"no":"104","name":"港湾施設管理運営費","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":47042,"root":"法定義務あり","ev":"現状継続","story_p1":"地域の海運や物流を支える港湾機能を充実させるために、港湾施設の整備要望に対応し、県が実施する浜名港修築事業の費用負担をしています。","story_p2":"港湾施設の管理運営業務を実施しました。成果指標については数値データが記録されていない状況となっています。","story_impact":"判断できない","pdf_page":121,"cls":"データなし"},{"no":"105","name":"消防団運営費","bureau":"消防本部","dept":"消防本部　消防総務課","budget":57793,"root":"法定義務あり","ev":"現状継続","story_p1":"地域防災力の向上のため、消防団の活動を支援し、充実した訓練や研修会を実施しています。","story_p2":"訓練資器材や被服の購入、広報誌2回の発行、退職報償金や各種負担金の負担、分団への補助金交付、運転免許取得助成などの活動を実施しました。成果指標については数値が示されていません。","story_impact":"判断できない","pdf_page":122,"cls":"3　消防・救急"},{"no":"106","name":"防災推進事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":50167,"root":"法定義務なし","ev":"拡大","story_p1":"大規模地震や津波に備え、防災対策を総合的に推し進めています。備蓄品の整備、情報システムの構築、火災予防設備の導入促進など、地域全体の防災力を高めるための取組を行っています。","story_p2":"要援護者世帯の家具転倒防止工事12件、急傾斜地崩壊対策工事、津波防災地域づくり推進計画策定などの取り組みを行いました。災害への備えができている住民の割合は66.5%となっており、防災意識の向上が課題です。","story_impact":"判断できない","pdf_page":123,"cls":"1　防災"},{"no":"107","name":"自主防災振興事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":11841,"root":"法定義務なし","ev":"現状継続","story_p1":"地域の防災力を高めるために、防災指導員の育成、防災倉庫の整備、訓練や資機材整備への支援を行っています。","story_p2":"防災倉庫の整備、地域防災訓練、夜間防災訓練を実施しました。防災訓練等に参加した人の割合は18.6%となりましたが、成果を測る指標の詳細評価データは設定されていません。","story_impact":"判断できない","pdf_page":124,"cls":"1　防災"},{"no":"108","name":"無線設備事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":27831,"root":"法定義務なし","ev":"現状継続","story_p1":"防災行政無線などの無線設備を安全かつ正常に機能させるために、定期的な保守点検と維持管理を行っています。","story_p2":"無線設備事業では、同報無線整備率が100.0%に達し、163基の無線設備が計画通り整備されました。住民への情報伝達体制の整備が完了し、災害時などの重要な情報配信体制が確保されています。","story_impact":"判断できない","pdf_page":125,"cls":"1　防災"},{"no":"109","name":"消防総務費","bureau":"消防本部","dept":"消防本部　消防総務課","budget":530982,"root":"法定義務なし","ev":"現状継続","story_p1":"消防職員の専門性を高め、安全で効率的な消防体制を構築するために、職員の研修派遣や資格取得支援、庁舎の整備と維持管理を行っています。","story_p2":"職員38人へのインフルエンザ予防ワクチン接種、消防学校・消防大学校・救急救命士養成研修への延べ25名の派遣、庁舎修繕7件の実施など、人材育成と職場環境整備を進めました。職員の人材育成が成果指標として設定されており、継続的な教育訓練体制を構築しています。","story_impact":"判断できない","pdf_page":126,"cls":"3　消防・救急"},{"no":"110","name":"通信指令装置・消防救急無線整備事業","bureau":"消防本部","dept":"消防本部　警防課","budget":49138,"root":"法定義務なし","ev":"縮小","story_p1":"火災や救急などの緊急事態に迅速に対応するため、119番通報の受信から出動指令までを一元管理し、災害情報や気象情報を関係機関に伝達しています。","story_p2":"119番通報受信、災害出動指令、車両動態管理、関係機関連絡調整など、通信指令装置及び消防救急無線システムの機能を継続稼働させ、各種業務委託を通じた緊急対応体制を維持しました。","story_impact":"判断できない","pdf_page":127,"cls":"3　消防・救急"},{"no":"111","name":"公用車維持管理費","bureau":"消防本部","dept":"消防本部　消防署","budget":10833,"root":"法定義務なし","ev":"現状継続","story_p1":"消防車両を安全かつ最適な状態に保つために、燃料費や法定点検、特殊装備の維持管理、故障・損傷の修繕を行っています。","story_p2":"公用車の維持管理事業として、消防車両の法定点検等を58件実施しました。適切な点検実施により、消防車両の安全性と稼働率の維持に努めています。","story_impact":"判断できない","pdf_page":128,"cls":"3　消防・救急"},{"no":"112","name":"会計年度任用職員雇用経費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":56356,"root":"法定義務なし","ev":"現状継続","story_p1":"子どもたちの学習環境を整備し、学校運営を円滑に進めるため、各小中学校の会計年度任用職員の雇用経費を負担しています。","story_p2":"会計年度任用職員の雇用経費として予算を執行しました。成果指標として設定された内容については、実績データが記録されていない状態です。","story_impact":"判断できない","pdf_page":129,"cls":"データなし"},{"no":"113","name":"学校教育運営事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":27150,"root":"法定義務なし","ev":"縮小","story_p1":"子どもたちが質の高い教育を受けられるよう、教科書の整備や卒業記念品の授与、学校への専門的サポートを行っています。また、スクールロイヤーや相談員の配置、部活動の地域展開検討を通じて、学校運営を総合的に支援しています。","story_p2":"指導主事等が研修会・協議会に39回参加し、学校教育の動向把握と各校への反映を実現しました。教師用指導書の購入により授業改善が進むとともに、教科書改訂への対応や生徒指導支援体制の強化が図られています。","story_impact":"判断できない","pdf_page":130,"cls":"11　学校教育"},{"no":"114","name":"生きた英語教育推進事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":20460,"root":"法定義務なし","ev":"現状継続","story_p1":"子どもたちが実践的な英語スキルを身につけるために、外国語指導助手4名を小中学校に巡回配置し、英語科や外国語活動の授業をサポートしています。","story_p2":"生きた英語教育推進事業では、学校教育課事業調査における成果の割合が100となり、事業の成果が確認されました。英語教育の充実に向けた取組が進められています。","story_impact":"判断できない","pdf_page":131,"cls":"11　学校教育"},{"no":"115","name":"外国人児童生徒支援事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":11301,"root":"法定義務なし","ev":"現状継続","story_p1":"外国人児童生徒が学校生活に適応し、学習を進められるようにするため、日本語習得支援と保護者向けの通訳・翻訳サービスを提供しています。","story_p2":"外国人児童生徒支援事業の成果について、学校教育課事業調査では100%の成果が報告されています。成果を測る指標の詳細なデータは設定されていません。","story_impact":"判断できない","pdf_page":132,"cls":"11　学校教育"},{"no":"116","name":"特別支援教育推進事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":41425,"root":"法定義務なし","ev":"現状継続","story_p1":"障害のある子どもたちが安心して学校生活を送れるよう、各小中学校に支援員を配置し、専門家による巡回相談も実施しています。","story_p2":"特別支援教育推進事業において、巡回相談員が22回の訪問活動を実施し、各学校の特別支援教育の充実に向けた支援を行いました。","story_impact":"判断できない","pdf_page":133,"cls":"11　学校教育"},{"no":"117","name":"学校保健衛生費","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":23826,"root":"法定義務なし","ev":"現状継続","story_p1":"児童生徒と教職員の健康を守るため、学校保健安全法に基づいた定期健康診断を実施しています。また結核予防法に基づき結核対策委員会を設置し、児童生徒の健康保持に努めています。","story_p2":"教職員の健康診断や学校医・薬剤師への報酬支給、各種保険加入など学校保健衛生体制の充実に取り組みました。就学時および児童生徒健康診断の実施を通じて、子どもたちの健康状態の把握と疾病予防に努めています。","story_impact":"判断できない","pdf_page":134,"cls":"11　学校教育"},{"no":"118","name":"特別支援教育推進事業（幼稚園）","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":15164,"root":"法定義務なし","ev":"現状継続","story_p1":"発達障害のある園児が安心して園生活を送れるよう、各園に支援員を配置するとともに、専門家による巡回相談を実施し、個別支援の方法や保護者連携について助言しています。","story_p2":"特別支援教育推進事業として研修会を実施し、巡回相談員による園への訪問を23回実施しました。巡回相談員の訪問を通じて、幼稚園における特別支援教育体制の充実を図りました。","story_impact":"判断できない","pdf_page":135,"cls":"10　結婚・出産・子育て"},{"no":"119","name":"学校給食推進事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":195042,"root":"法定義務なし","ev":"拡大","story_p1":"安全で栄養のある給食を安定的に提供するために、衛生管理の強化と給食費の負担軽減を行っています。検査体制の充実と中学校給食の無償化により、すべての生徒が安心して学校生活を送られるようにしています。","story_p2":"学校薬剤師による衛生検査点検を実施し、保菌・食品検査の実施率は100.0%に達しました。また、物価高騰対策補助金等により学校給食費の負担軽減を図り、安全で安定した学校給食の提供に努めました。","story_impact":"判断できない","pdf_page":136,"cls":"11　学校教育"},{"no":"120","name":"学校再編事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":11243,"root":"法定義務なし","ev":"拡大","story_p1":"児童生徒の教育環境を整備するために、白須賀地区では学校再編の基本計画を策定し、北部地区では小中学校統合に向けた設計と準備を進めています。","story_p2":"学校再編事業では、白須賀地区と北部地区で計4回の学校再編検討委員会を開催しました。地域における学校再編について検討を重ね、住民との協議を通じた事業推進が行われています。","story_impact":"判断できない","pdf_page":137,"cls":"11　学校教育"},{"no":"121","name":"学校給食施設整備事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":24860,"root":"法定義務なし","ev":"現状継続","story_p1":"安全で衛しい学校給食を提供するため、新しい給食センター施設をPFI事業により整備しています。事業者選定から設計・建設を経て、数年後の開業に向けて段階的に進めていきます。","story_p2":"学校給食センター整備・運営事業のPFIアドバイザリー業務を委託し、事業化に向けた支援を実施しました。湖西市学校給食センター整備・運営事業における成果指標について、評価データの収集を進めています。","story_impact":"判断できない","pdf_page":138,"cls":"データなし"},{"no":"122","name":"教育施設管理事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":47777,"root":"法定義務なし","ev":"現状継続","story_p1":"子どもたちが安全で快適に学べる環境を整えるため、こども園2園、幼稚園3園、小学校6校、中学校5校の施設維持管理を行っています。","story_p2":"教育施設の維持管理において、95件の修繕を実施しました。修繕の実施件数を成果指標として設定し、施設の適切な維持管理に取り組んでいます。","story_impact":"判断できない","pdf_page":139,"cls":"データなし"},{"no":"123","name":"鷲津小学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":13059,"root":"法定義務なし","ev":"現状継続","story_p1":"鷲津小学校の子どもたちが安全で快適な環境で学べるよう、校舎の維持管理に必要な消耗品、燃料費、修繕費、備品などの経費を確保しています。","story_p2":"鷲津小学校の管理運営により、学校の日常的な運営が行われました。成果指標は設定されていないため、具体的な成果データは計測されていません。","story_impact":"判断できない","pdf_page":140,"cls":"データなし"},{"no":"124","name":"東小学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":10410,"root":"法定義務なし","ev":"現状継続","story_p1":"東小学校の児童が安心して学べる環境を整備するため、教室の消耗品や冷暖房燃料、施設の修繕、学習に必要な備品購入などの経費を計上しています。","story_p2":"東小学校の管理運営に関する事業です。学校施設の維持管理と運営に必要な各種業務が実施されていますが、成果を測る指標は設定されていません。","story_impact":"判断できない","pdf_page":141,"cls":"データなし"},{"no":"125","name":"岡崎小学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":11695,"root":"法定義務なし","ev":"現状継続","story_p1":"岡崎小学校の児童が安全で快適に学べる教育環境を整えるために、校舎の修繕、教材用品の購入、冷暖房などの運営に必要な経費を支出しています。","story_p2":"岡崎小学校の管理運営に必要な経費を計上し、学校施設の維持管理を実施しました。成果指標は設定されていないため、具体的な成果数値の測定は行われていません。","story_impact":"判断できない","pdf_page":142,"cls":"データなし"},{"no":"126","name":"新居小学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":13225,"root":"法定義務なし","ev":"現状継続","story_p1":"新居小学校の児童が充実した環境で学べるよう、校舎の維持管理に必要な消耗品、燃料、修繕、備品購入などの経費を確保しています。","story_p2":"新居小学校の管理運営に関する事業について、成果指標は設定されていません。活動内容の実績についても詳細なデータが記録されていない状況です。","story_impact":"判断できない","pdf_page":143,"cls":"データなし"},{"no":"127","name":"学校運営費（小学校）","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":134122,"root":"法定義務なし","ev":"現状継続","story_p1":"子どもたちが安全で快適に学べる教育環境を整えるため、6校の小学校の施設維持管理と保守点検を行っています。","story_p2":"ICT支援員の派遣、コンピューター保守点検、機器借上、ソフトウェアライセンス更新などを実施し、小学校のICT教育環境を維持しました。成果指標は設定されていません。","story_impact":"判断できない","pdf_page":144,"cls":"データなし"},{"no":"128","name":"小学校施設整備事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":70634,"root":"法定義務なし","ev":"現状継続","story_p1":"児童が安全・安心で快適な環境で学習できるようにするために、小学校の施設整備を進めています。特にトイレの洋式化を推進し、教育環境の向上と児童の安全確保を図ります。","story_p2":"小学校施設整備事業として、小・中学校トイレの洋式化に取り組みました。トイレの洋式化率は56.2％となり、児童生徒の利便性向上と衛生環境の改善が進められています。","story_impact":"判断できない","pdf_page":145,"cls":"11　学校教育"},{"no":"129","name":"鷲津中学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":11810,"root":"法定義務なし","ev":"現状継続","story_p1":"鷲津中学校の生徒が安心して学べる教育環境を整備するために、校舎の維持管理に必要な消耗品や燃料費、備品の修繕・購入などの経費を計上しています。","story_p2":"鷲津中学校の管理運営に関する活動を実施しました。成果指標は設定されており、学校運営の継続的な改善に向けた取り組みが行われています。","story_impact":"判断できない","pdf_page":146,"cls":"データなし"},{"no":"130","name":"岡崎中学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":15134,"root":"法定義務なし","ev":"現状継続","story_p1":"岡崎中学校の生徒たちが安心して学べる環境を整えるために、教室の消耗品や暖房燃料の購入、設備の修繕や新しい備品の購入などの経費を支援しています。","story_p2":"岡崎中学校の管理運営に関する事業では、成果指標が設定されておりません。学校の日常的な運営を通じて、教育環境の維持に努めています。","story_impact":"判断できない","pdf_page":147,"cls":"データなし"},{"no":"131","name":"新居中学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":11488,"root":"法定義務なし","ev":"現状継続","story_p1":"新居中学校に通う生徒たちが快適に学べる環境を整えるために、学校の運営に必要な消耗品や燃料、備品の修繕・購入などの費用を計上しています。","story_p2":"新居中学校の管理運営に関する事業として、学校施設の維持管理と教育環境の整備を行いました。成果指標については設定されていない状況です。","story_impact":"判断できない","pdf_page":148,"cls":"データなし"},{"no":"132","name":"学校運営費（中学校）","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":114060,"root":"法定義務なし","ev":"現状継続","story_p1":"生徒が安全で快適に学校生活を送れるようにするため、5校の中学校施設の維持管理と保守点検を実施しています。","story_p2":"中学校の教育環境を支えるため、ICT支援員の派遣、コンピューター機器の保守点検、ICT関連ソフトのライセンス管理等の業務を実施しました。成果指標は設定されていません。","story_impact":"判断できない","pdf_page":149,"cls":"データなし"},{"no":"133","name":"中学校施設整備事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":677962,"root":"法定義務なし","ev":"拡大","story_p1":"生徒が安全・安心で快適な環境で学習できるよう、中学校の施設整備を進めています。トイレの洋式化などを通じて、教育環境の向上と生徒の安全確保を図っています。","story_p2":"岡崎中学校南校舎1階特別支援教室の新設工事を実施しました。小・中学校トイレの洋式化率は56.2%となっており、施設整備を通じて教育環境の改善を進めています。","story_impact":"判断できない","pdf_page":150,"cls":"11　学校教育"},{"no":"134","name":"岡崎幼稚園管理運営費","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":42578,"root":"法定義務なし","ev":"拡大","story_p1":"子どもたちが安心して学べる環境を整えるために、岡崎幼稚園の施設管理と円滑な運営に必要な経費を支出しています。","story_p2":"岡崎幼稚園の管理運営では、給食調理等業務の委託や印刷機などの使用料、テントやエアコンなどの備品購入により、園の運営環境を整備しました。成果指標は設定されていません。","story_impact":"判断できない","pdf_page":151,"cls":"10　結婚・出産・子育て"},{"no":"135","name":"新居幼稚園管理運営費","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":43546,"root":"法定義務なし","ev":"現状継続","story_p1":"幼い子どもたちが安心して学べる環境を整えるために、新居幼稚園の施設管理や職員配置、教育活動に必要な経費を負担しています。","story_p2":"新居幼稚園の管理運営では、給食調理等業務の委託及び印刷機や複写機などの機器賃借により、園の円滑な運営を支援しました。成果指標に基づく実績データは報告されていません。","story_impact":"判断できない","pdf_page":152,"cls":"10　結婚・出産・子育て"},{"no":"136","name":"幼稚園・こども園総務費","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":94552,"root":"法定義務なし","ev":"現状継続","story_p1":"公立幼稚園2園とこども園2園の運営管理に必要な共通経費を一括で管理し、質の高い幼児教育と保育サービスを安定的に提供するために必要な事務を実施しています。","story_p2":"幼稚園・こども園の運営に必要な被服や教育指導書、衛生用品などの需用費や、園と保護者間の連絡システム利用料などの役務費、子ども子育て支援システムの運用保守委託料、職員研修などの負担金を支出しました。成果指標は設定されていません。","story_impact":"判断できない","pdf_page":153,"cls":"10　結婚・出産・子育て"},{"no":"137","name":"新居関所史料館管理運営費","bureau":"産業部","dept":"産業部　文化観光課","budget":19628,"root":"法定義務なし","ev":"拡大","story_p1":"江戸時代の重要な歴史遺産である新居関所を後世に伝えるため、建物の保全と史料館の維持管理を行い、企画展などの展示活動を通じて住民の学習と交流を促進しています。","story_p2":"新居関所史料館の管理運営により、館の入館者数は17,062人の実績を記録しました。地域の重要な文化施設として、着実に来館者を受け入れることができています。","story_impact":"判断できない","pdf_page":154,"cls":"12　生涯学習・スポーツ振興"},{"no":"138","name":"西部地域センター管理運営事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　スポーツ・生涯学習課","budget":165118,"root":"法定義務なし","ev":"現状継続","story_p1":"西部地域センターは、市民が安全で安心して施設を利用できるよう維持管理するとともに、学習機会の提供や地域交流を促進するため、講座の開設とまつりの開催を行っています。","story_p2":"センターまつりの開催講座を通じて、生涯学習講座の受講者数847人に学ぶ機会を提供しました。一方で、人が集まらず非開催となった講座があり、企画段階での精査強化が課題です。","story_impact":"判断できない","pdf_page":155,"cls":"12　生涯学習・スポーツ振興"},{"no":"139","name":"図書館運営事業","bureau":"教育委員会","dept":"教育委員会　図書館","budget":44229,"root":"法定義務なし","ev":"現状継続","story_p1":"住民の皆様が必要とする知識や情報を得られるようにするために、図書や雑誌などの資料を充実させ、図書館を運営しています。","story_p2":"学校図書室支援や団体貸出、電子図書館事業を実施しました。市民一人当たりの貸出冊数は5.0冊の実績となっています。","story_impact":"判断できない","pdf_page":156,"cls":"12　生涯学習・スポーツ振興"},{"no":"140","name":"図書館運営事業（新居図書館）","bureau":"教育委員会","dept":"教育委員会　図書館","budget":15989,"root":"法定義務なし","ev":"現状継続","story_p1":"誰もが気軽に本との出会いを楽しめる環境を整えるために、図書館の図書や雑誌などの資料を充実させています。","story_p2":"図書館では他機関との連携を通じた団体貸出に取り組み、市民1人あたりの貸出冊数は5.0冊となりました。地域の読書活動を支援する基盤が形成されています。","story_impact":"判断できない","pdf_page":157,"cls":"10　結婚・出産・子育て"},{"no":"141","name":"社会体育施設維持管理事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　スポーツ・生涯学習課","budget":342418,"root":"法定義務なし","ev":"現状継続","story_p1":"市民がスポーツ施設を快適かつ安全に利用できるようにするため、運動公園やスポーツ広場などの社会体育施設について、指定管理者による維持管理を行っています。","story_p2":"旧新居町温水プール解体工事や土地購入、アメニティプラザ券売機購入などの施設維持管理を実施しました。体育施設の利用者数は505,376人に達し、地域住民の運動・健康増進の場として機能しています。","story_impact":"判断できない","pdf_page":158,"cls":"12　生涯学習・スポーツ振興"},{"no":"142","name":"スポーツ活動推進及び大会運営事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　スポーツ・生涯学習課","budget":13354,"root":"法定義務なし","ev":"現状継続","story_p1":"市民の健康増進と競技力向上を図るため、スポーツ大会やスポーツ教室の開催、ジュニアスポーツクラブの育成、高齢者向けのスポーツ活動の場を提供しています。","story_p2":"野球4クラブをはじめ陸上競技、柔道、ソフトテニス、サッカー、バレーボールなど複数競技のジュニアスポーツクラブ事業と10種目以上のスポーツ大会運営を実施し、みんなのスポーツ教室・ジュニアスポーツクラブの参加者は346人となりました。","story_impact":"判断できない","pdf_page":159,"cls":"12　生涯学習・スポーツ振興"}];
-const LABELS = {"bureau": "データなし", "dept": "担当課", "cls": "施策", "budget_col": "R6決算(千円)", "no_col": "事業番号", "tool_title": "湖西市 事務事業優先度評価ツール", "card_title": "湖西市 令和7年度実施 事務事業評価", "summary_title": "湖西市 令和7年度 事務事業優先度評価結果", "output_file": "kosai_index.html", "csv_filename": "湖西市_令和7年度_事務事業優先度評価結果.csv", "source_url": "https://www.city.kosai.shizuoka.jp/soshikiichiran/kikakuseisakuka/gyomuannai/5/2/17411.html", "population": 57216, "local_storage_key": "kosai7_ratings", "pdf_url": "https://www.city.kosai.shizuoka.jp/material/files/group/7/2025jimujigyouhyouka.pdf", "bureau_to_url": {}, "personnel_cost": "含まない"};
+const EVENTS = [{"no":"1","name":"議会運営費","bureau":"議会事務局","dept":"議会事務局　議会事務局","budget":30735,"root":"法定義務あり","ev":"現状継続","ptype":"8","story_p1":"議会が円滑に機能し、住民の声を適切に反映した行政運営を実現するため、議会の運営に必要な庶務、議事進行、調査研究に関する各種事務を行っています。","story_p2":"定例会4回、臨時会3回の開催に加え、議員研修1回の実施と17人への政務活動費交付により議員の資質向上を支援しました。会議録は年4回発行し、議会だより年4回各20,000部を全戸配布することで、議会情報の透明性と住民への周知を図りました。","story_impact":"判断できない","pdf_page":18,"cls":"データなし"},{"no":"2","name":"庁舎維持管理費","bureau":"企画部","dept":"企画部　資産経営課","budget":63711,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"住民の皆さんが安心して利用できる行政サービスを提供するために、庁舎の施設や機器の適切な管理、修繕、改修を行っています。","story_p2":"庁舎維持管理では、庁舎の良好な整備率が100.0%の実績となりました。住民サービスの拠点として、庁舎の適切な維持管理が実現されています。","story_impact":"判断できない","pdf_page":19,"cls":"データなし"},{"no":"3","name":"車両維持管理費","bureau":"企画部","dept":"企画部　資産経営課","budget":19535,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"公用車を安全かつ効率的に運用するために、定期的な車検・点検を実施し、必要に応じて部品交換や修繕を行っています。","story_p2":"燃料費、修繕料、保険料、リース料などの経費により公用車を維持管理した結果、公用車の良好な整備率は100%を達成しました。","story_impact":"判断できない","pdf_page":20,"cls":"データなし"},{"no":"4","name":"文書・行政管理費","bureau":"総務部","dept":"総務部　総務課","budget":17084,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"住民の皆様がより良い行政サービスを受けられるように、法的サポートや相談体制の充実、効率的な行政運営を実現するための体制を整備しています。","story_p2":"訴訟事務に関して顧問弁護士への相談が実施されました。成果指標については具体的な数値が記録されていませんが、法的課題への対応体制が整備されています。","story_impact":"判断できない","pdf_page":21,"cls":"23　行政経営"},{"no":"5","name":"人事・研修費","bureau":"総務部","dept":"総務部　総務課","budget":69094,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"職員の採用や研修、安全衛生管理を行うことで、法令遵守と職場の安全・健康を確保し、職員の能力向上と組織力強化を図っています。","story_p2":"職員派遣研修や新規採用、安全衛生管理、人事給与システムの運用などを実施しました。市職員の接客態度・仕事に対する満足度は50.4%となっており、職員の資質向上と住民サービスの質的向上を図っています。","story_impact":"判断できない","pdf_page":22,"cls":"23　行政経営"},{"no":"6","name":"広報推進事業","bureau":"企画部","dept":"企画部　秘書広報課","budget":20417,"root":"法定義務なし","ev":"現状継続","ptype":"11","story_p1":"市民の皆様に暮らしに役立つ情報をお届けするとともに、移住・定住を促進するため、広報紙やウェブサイト、SNSなどの多様な手段を活用して、地域の魅力を戦略的に発信しています。","story_p2":"広報紙やウェブサイト、SNSなどを通じて市政情報をタイムリーに発信し、市民の72.7%が情報提供に満足していますが、市民が興味を持つ情報の発信がさらに充実する必要があります。","story_impact":"判断できない","pdf_page":23,"cls":"23　行政経営"},{"no":"7","name":"基金管理事務事業（財政調整基金）","bureau":"総務部","dept":"総務部　財政課","budget":300827,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"将来の財政需要に備えるため、財政調整基金の利子分を基金に積み立てています。","story_p2":"財政調整基金の管理事務を実施し、年度末残高を成果指標として設定しています。基金の適切な管理を通じて、財政の安定化に向けた取り組みが行われています。","story_impact":"判断できない","pdf_page":24,"cls":"23　行政経営"},{"no":"8","name":"基金管理事務事業（公共施設整備基金）","bureau":"総務部","dept":"総務部　財政課","budget":46439,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"公共施設を計画的に整備するため、基金の利子や入札で生じた余剰金を積み立てています。","story_p2":"公共施設整備基金の管理事務を実施し、年度末時点での基金残高を成果指標として設定しています。基金を通じて公共施設の整備に必要な財源の確保に取り組みました。","story_impact":"判断できない","pdf_page":25,"cls":"23　行政経営"},{"no":"9","name":"企画推進事業","bureau":"企画部","dept":"企画部　企画政策課","budget":41366,"root":"法定義務なし","ev":"現状継続","ptype":"10","story_p1":"地域の将来像を実現するため、総合計画の策定・進捗管理、行財政改革の推進、県や国との連携調整、市民意識調査などに取り組んでいます。","story_p2":"要望活動や市民意識調査、地区振興補助金、企業版ふるさと納税積立金など複数の活動を展開しました。事務事業評価において必要性・有効性・効率性の評価が57.6%の事業で全て良好であり、企画推進機能が着実に機能していることが確認されました。","story_impact":"判断できない","pdf_page":26,"cls":"23　行政経営"},{"no":"10","name":"移住定住促進事業","bureau":"企画部","dept":"企画部　企画政策課","budget":44417,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"人口減少に対応するため、住宅取得補助や新生活応援金などで転入を促進し、若い世代の定住を支援しています。移住定住に関するプロモーションも積極的に実施しています。","story_p2":"移住就業支援金5人の支給、各種フェアへの6回の参加出展、婚活支援事業における23件のチケット発行など、多角的な施策を実施しました。これらの取り組みにより、住もっか・新婚さん・わ～くわく支援制度による転入者は累計808人に達しています。","story_impact":"判断できない","pdf_page":27,"cls":"21　移住定住促進"},{"no":"11","name":"公共施設マネジメント推進事業","bureau":"企画部","dept":"企画部　資産経営課","budget":184325,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"公共施設を効率的に管理し、住民サービスを持続的に提供するために、施設の最適配置、定期点検、一括管理運営を進めています。","story_p2":"公共施設マネジメント推進事業として、公共施設の最適化に向けた取組を実施しました。公共施設延床面積縮減率(累計)は5.9%の実績が報告されており、施設の効率的な活用と規模の適正化が進められています。","story_impact":"判断できない","pdf_page":28,"cls":"データなし"},{"no":"12","name":"会計事務費","bureau":"データなし","dept":"会計課","budget":30508,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"住民の皆さんからお預かりした税金や料金を適切に管理し、正当な支払いを期日通りに行うために、収納処理と支払処理、資金運用を効率的に実施しています。","story_p2":"3か月の収支予定把握と職員への支払遅延防止意識啓発により、事務体制を見直しました。監査委員からの会計事務に関する指摘件数は0件となっています。","story_impact":"判断できない","pdf_page":29,"cls":"23　行政経営"},{"no":"13","name":"財産管理費","bureau":"企画部","dept":"企画部　資産経営課","budget":97927,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"公共施設や土地などの財産を適切に管理し、新しい施設の取得や不要な財産の売却に対応するために、登記事務などの手続きを行っています。","story_p2":"旧表鷲津公会堂の解体工事、普通財産整備工事、登記事務を実施しました。普通財産の公売入札では7件の実績があり、遊休資産の活用を進めました。","story_impact":"判断できない","pdf_page":30,"cls":"データなし"},{"no":"14","name":"交通安全推進事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":11979,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"交通事故を減らし、誰もが安全に暮らせるまちをつくるために、交通安全運動や啓発活動、交通指導隊の支援など、年間を通じた総合的な交通安全対策を実施しています。","story_p2":"街頭指導や入学児童・保護者への啓発活動を実施しました。交通事故（人身事故）の年間発生件数は231件でしたが、詳細な評価データが不足しており、事業の成果を十分に判断することができません。","story_impact":"判断できない","pdf_page":31,"cls":"2　交通安全・防犯"},{"no":"15","name":"防犯まちづくり事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":23796,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"安全で安心して暮らせるまちづくりを実現するために、防犯会議の開催や防犯協会の活動支援、青色パトロール、防犯灯の整備などを実施しています。","story_p2":"防犯灯設置工事の負担金支援を実施し、青色防犯パトロールは97回の実施実績をあげました。地域の防犯体制強化に向けた活動を推進しています。","story_impact":"判断できない","pdf_page":32,"cls":"2　交通安全・防犯"},{"no":"16","name":"電子市役所推進費","bureau":"企画部","dept":"企画部　ＤＸ推進課","budget":357346,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"デジタル化による行政サービスの利便性向上と業務効率化を実現するために、情報システムの管理・運用とセキュリティ対策を行い、デジタル人材の育成に取り組んでいます。","story_p2":"ガバメントクラウド運用管理やシステム基盤の整備により、行政手続きのオンライン利用件数は40,304件となりました。書かない窓口システムなどの導入を通じ、住民の利便性向上を進めています。","story_impact":"判断できない","pdf_page":33,"cls":"22　デジタル・スマートシティの実現"},{"no":"17","name":"自治会活動費","bureau":"市民安全部","dept":"市民安全部　市民課","budget":46149,"root":"法定義務なし","ev":"現状継続","ptype":"7","story_p1":"地域の自治会活動を支援するため、各自治会への交付金、自治会連合会の運営支援、公会堂などの施設整備に対する補助金を交付しています。","story_p2":"41の自治会に対して運営費交付金を交付し、自治会連合会の運営を支援しました。自治会加入世帯数は19,725世帯となっており、地域コミュニティの維持・発展に貢献しています。","story_impact":"判断できない","pdf_page":34,"cls":"13　共生社会"},{"no":"18","name":"多文化共生事業","bureau":"市民安全部","dept":"市民安全部　市民課","budget":25626,"root":"法定義務なし","ev":"拡大","ptype":"13","story_p1":"外国人住民が安心して生活できる環境づくりのために、言語サポートや日本語教育、国際交流の場の提供などの支援を行っています。","story_p2":"多言語ビデオ通訳サービスや実態調査を通じた多文化共生社会の推進に取り組み、国際交流イベントには2,659人の参加を得ました。","story_impact":"判断できない","pdf_page":35,"cls":"13　共生社会"},{"no":"19","name":"新居地域センター管理運営費","bureau":"市民安全部","dept":"市民安全部　新居支所","budget":457463,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"地域住民が安心して施設を利用できるようにするために、新居地域センターの貸館受付や調整業務、施設・設備の維持管理を行っています。","story_p2":"新居地域センターの管理運営では、修繕や施設改修等の活動を行い、施設利用件数は1086件の実績を得ました。地域住民の交流と利用促進が図られています。","story_impact":"判断できない","pdf_page":36,"cls":"データなし"},{"no":"20","name":"新庁舎建設事業","bureau":"企画部","dept":"企画部　資産経営課","budget":13945,"root":"法定義務なし","ev":"現状継続","ptype":"10","story_p1":"老朽化した現庁舎の機能向上と安全性確保のため、新庁舎建設に向けた調査・検討を実施しています。","story_p2":"オフィス状況調査と新庁舎建設基本計画策定を実施し、各年度毎の業務進捗率は66.0%となりました。計画に基づき、着実に事業を推進しています。","story_impact":"判断できない","pdf_page":37,"cls":"データなし"},{"no":"21","name":"市県民税課税業務","bureau":"総務部","dept":"総務部　税務課","budget":19718,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"住民と企業の皆様が適正に税金を納めていただくために、提出いただいた申告書や支払報告書などの課税資料を確認したうえで、個人市民税と法人市民税の賦課を行っています。","story_p2":"当初課税において、所得割納税義務者29,003人、均等割納税義務者33,900人、退職分離納税義務者99人の賦課業務を実施しました。成果指標の実績データは収集されていません。","story_impact":"判断できない","pdf_page":38,"cls":"データなし"},{"no":"22","name":"固定資産税課税業務","bureau":"総務部","dept":"総務部　税務課","budget":30043,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"固定資産税を適正に課税するために、法務局からの登記情報確認と現地調査を行い、毎年1月1日時点で所有する土地・家屋・償却資産を評価しています。","story_p2":"償却資産の納税義務者は1,187人に対して課税業務を実施しました。成果指標については評価データが記録されていない状況です。","story_impact":"判断できない","pdf_page":39,"cls":"データなし"},{"no":"23","name":"市税収納業務","bureau":"総務部","dept":"総務部　税務課","budget":60442,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"市民の皆さんが納めた税金を適正に管理し、行政サービスの財源を確保するために、税金の納付受付や滞納整理などの収納業務を行っています。","story_p2":"市税収納業務では、静岡地方税滞納整理機構への移管が15件となりました。成果指標については、設定された指標の実績値が確認されていない状況にあります。","story_impact":"判断できない","pdf_page":40,"cls":"データなし"},{"no":"24","name":"定額減税補足臨時給付金支援事業","bureau":"総務部","dept":"総務部　税務課","budget":426178,"root":"法定義務あり","ev":"廃止方向","ptype":"1","story_p1":"定額減税により生じた減税枠の残額を給付金として支給するために、対象者の所得税課税状況と市県民税課税情報に基づき、1人につき最大4万円を1万円単位で給付しています。","story_p2":"定額減税補足臨時給付金として7,970人に対する給付事業を実施しました。成果指標については評価データが得られていない状況です。","story_impact":"判断できない","pdf_page":41,"cls":"データなし"},{"no":"25","name":"戸籍住民基本台帳事務","bureau":"市民安全部","dept":"市民安全部　市民課","budget":37046,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"住民の皆様が安心して生活するために、戸籍や住民基本台帳の届出受理、各種証明書の発行、印鑑登録などの基本的な行政サービスを提供しています。","story_p2":"戸籍住民基本台帳事務では、旅券申請・交付事務、人口動態調査事務を実施し、戸籍住民基本台帳システムの整備とふりがなシステム改修に取り組みました。","story_impact":"判断できない","pdf_page":42,"cls":"データなし"},{"no":"26","name":"静岡県知事選挙事務費","bureau":"総務部","dept":"総務部　総務課","budget":16260,"root":"法定義務あり","ev":"廃止方向","ptype":"9","story_p1":"県知事の辞職に伴い、新しい知事を決めるための選挙を実施します。住民の皆様の投票により、県政を担う知事を選出するための事務を行っています。","story_p2":"知事選挙事務費として必要な経費が執行されました。成果指標については具体的なデータが記録されていない状況にあります。","story_impact":"判断できない","pdf_page":43,"cls":"23　行政経営"},{"no":"27","name":"衆議院議員選挙事務費","bureau":"総務部","dept":"総務部　総務課","budget":18694,"root":"法定義務あり","ev":"廃止方向","ptype":"9","story_p1":"民主主義の根幹である選挙を適切に実施するために、衆議院解散に伴う衆議院議員総選挙の執行事務を行っています。","story_p2":"衆議院議員選挙事務に関する活動が行われました。成果指標の具体的な実績値は記録されていませんが、選挙事務の執行を通じて適切に対応されています。","story_impact":"判断できない","pdf_page":44,"cls":"23　行政経営"},{"no":"28","name":"社会福祉事務事業","bureau":"健康福祉部","dept":"健康福祉部","budget":56304,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"地域の福祉をより充実させるために、福祉関係団体への支援と地域福祉推進事業を実施しています。","story_p2":"避難行動要支援者に対して個別避難計画の作成を進め、希望者6人分の計画策定に取り組みました。成果指標として設定された個別避難計画の作成実績に基づき、要支援者の避難体制整備を着実に推進しています。","story_impact":"判断できない","pdf_page":45,"cls":"6　福祉"},{"no":"29","name":"令和６年度非課税世帯給付金支給事業","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":133263,"root":"法定義務あり","ev":"廃止方向","ptype":"1","story_p1":"物価高騰の影響を受ける低所得世帯を支援するため、非課税世帯に給付金を支給しています。世帯当たり3万円、また世帯内の18歳以下のお子さん1人当たり2万円をお渡しします。","story_p2":"非課税世帯給付金支給事業に係る事務費を支出しました。成果指標の測定データが得られていない状況にあります。","story_impact":"判断できない","pdf_page":46,"cls":"6　福祉"},{"no":"30","name":"国民健康保険事業費","bureau":"市民安全部","dept":"市民安全部　保険年金課","budget":303406,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"誰もが安心して医療を受けられるよう、国民健康保険の財政を支え、保険料の負担を軽くするために、保険事業に必要な資金を繰り出しています。","story_p2":"成果を測る指標が設定されていません。","story_impact":"判断できない","pdf_page":47,"cls":"データなし"},{"no":"31","name":"介護保険事業特別会計繰出金","bureau":"健康福祉部","dept":"健康福祉部　高齢者福祉課","budget":642139,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"介護が必要な高齢者や障害者の方々が安心して介護サービスを利用できるよう、介護保険事業に必要な給付費や事務費、地域支援事業費などの負担を行っています。","story_p2":"介護保険事業特別会計への繰出金により、介護保険制度の安定的な運営を支援しました。成果指標については具体的な実績データが記録されていない状況となっています。","story_impact":"判断できない","pdf_page":48,"cls":"6　福祉"},{"no":"32","name":"重度障害者（児）医療費助成事業","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":92653,"root":"法定義務あり","ev":"現状継続","ptype":"1","story_p1":"重度の障害がある方の医療費負担を軽減するために、身体障害者手帳1・2級、療育手帳A・B、精神障害者保健福祉手帳1級の交付者などを対象に、保険診療分の医療費を助成しています。","story_p2":"重度障害者（児）を対象とした医療費助成事業を実施しています。成果指標については数値データが記録されていない状況となっています。","story_impact":"判断できない","pdf_page":49,"cls":"6　福祉"},{"no":"33","name":"心身障害者福祉費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":41898,"root":"法定義務なし","ev":"現状継続","ptype":"1","story_p1":"心身障害者とその家族の生活を支援するため、扶養共済の助成、タクシー利用の補助、各種手当の支給、相談員の設置など、多角的な福祉サービスを提供しています。","story_p2":"身体障害者福祉協会や手をつなぐ育成会への助成、タクシー券の助成、各種手当の支給など、複数の障害者福祉事業を実施しました。タクシー料金割引乗車券の利用率は9.5%となっています。","story_impact":"判断できない","pdf_page":50,"cls":"6　福祉"},{"no":"34","name":"浜名学園負担金","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":54057,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"児童生徒に質の高い教育環境を提供するため、浜名学園組合に対して負担金を支出しています。","story_p2":"浜名学園への負担金について、活動指標の実績は把握されていますが、事業の成果を測定するための具体的な指標が設定されていない状況です。成果の詳細な評価が難しい段階にあります。","story_impact":"判断できない","pdf_page":51,"cls":"6　福祉"},{"no":"35","name":"地域生活支援関係経費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":35437,"root":"法定義務なし","ev":"現状継続","ptype":"5","story_p1":"障害のある人が地域で自立した生活を送れるよう、移動支援や日中の居場所確保、生活用具給付など、7つの支援事業を総合的に実施しています。","story_p2":"日常生活用具給付1,151件、訪問入浴サービス476回など、様々な生活支援事業を実施しました。相談支援件数は1,806件の実績があり、障害者の生活課題解決に向けた支援体制を整備しています。","story_impact":"判断できない","pdf_page":52,"cls":"6　福祉"},{"no":"36","name":"介護・訓練等給付費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":948480,"root":"法定義務あり","ev":"現状継続","ptype":"4","story_p1":"障害のある方が日常生活を送るために必要な介護や訓練などのサービスを提供し、その費用を支給しています。","story_p2":"介護・訓練等給付費事業では、障害者の日中活動の場や訓練の場を提供してきました。成果指標については、実績値のデータが収集されていない状況です。","story_impact":"判断できない","pdf_page":53,"cls":"6　福祉"},{"no":"37","name":"自立支援医療費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":46129,"root":"法定義務あり","ev":"現状継続","ptype":"1","story_p1":"障害や疾病のある方が、日常生活を送るために必要な医療費を支援しています。更生医療、育成医療、療養介護医療費の給付を行い、自立と社会参加を応援します。","story_p2":"療養介護医療の自立支援医療費について、6人の返還金が発生しました。成果指標の実績値は記録されていませんが、対象者への支援が実施されています。","story_impact":"判断できない","pdf_page":54,"cls":"6　福祉"},{"no":"38","name":"補装具給付費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":11475,"root":"法定義務あり","ev":"現状継続","ptype":"3","story_p1":"身体の不自由な方が日常生活や仕事をしやすくするために、義肢や補聴器などの補装具の購入・修理にかかる費用を助成しています。","story_p2":"補装具給付費については、身体障害者等の日常生活における移動や活動を支援するため、必要な補装具の給付を実施しています。成果の詳細なデータはありませんが、利用者の生活の質向上に貢献する事業です。","story_impact":"判断できない","pdf_page":55,"cls":"6　福祉"},{"no":"39","name":"障害児通所給付費","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":252890,"root":"法定義務あり","ev":"現状継続","ptype":"4","story_p1":"障害のある子どもたちの成長と発達を支援するために、児童発達支援や放課後デイサービスなど必要な福祉サービスの利用費を給付しています。","story_p2":"障害児通所給付費は、障害のある児童の発達支援等を実施する事業です。成果指標については現在データが集計中であり、今後の評価を通じて事業の効果を検証してまいります。","story_impact":"判断できない","pdf_page":56,"cls":"6　福祉"},{"no":"40","name":"後期高齢者医療事業費","bureau":"市民安全部","dept":"市民安全部　保険年金課","budget":754275,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"75歳以上の高齢者が安心して医療を受けられるよう、後期高齢者医療制度の運営に必要な費用を負担しています。","story_p2":"後期高齢者医療事業については、活動指標および成果指標の実績データが記録されていません。事業の実施状況と成果の把握が必要とされています。","story_impact":"判断できない","pdf_page":57,"cls":"データなし"},{"no":"41","name":"後期高齢者健康診査事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":23721,"root":"法定義務あり","ev":"現状継続","ptype":"4","story_p1":"高齢者の健康寿命を延ばすために、75歳以上の後期高齢者医療制度加入者を対象に、健康診査を実施しています。","story_p2":"4月から1月にかけて後期高齢者を対象に健康診査を実施し、未受診者2,140人に対して受診勧奨を行いました。成果指標については具体的な数値評価は記録されていません。","story_impact":"判断できない","pdf_page":58,"cls":"5　健康"},{"no":"42","name":"児童健全育成事業","bureau":"こども未来部","dept":"こども未来部　こども政策課","budget":21304,"root":"法定義務あり","ev":"縮小","ptype":"13","story_p1":"すべての子どもが健やかに育つ環境を整備するため、子ども・子育て会議の運営やこども計画の策定を行うとともに、児童手当やこども医療費などの給付・福祉サービスを総合的に管理・運用しています。","story_p2":"こども計画の策定が実施されました。成果指標については実績データが記録されていないため、事業による具体的な成果の把握が課題となっています。","story_impact":"判断できない","pdf_page":59,"cls":"10　結婚・出産・子育て"},{"no":"43","name":"発達支援事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":98020,"root":"法定義務なし","ev":"現状継続","ptype":"5","story_p1":"発達に課題のある乳幼児とその保護者が安心して成長できるよう、発達支援教室の開催と相談対応を行っています。また、保育士などの支援者への研修や市民への啓蒙活動を通じて、地域全体で子どもの発達を支える環境づくりに取り組んでいます。","story_p2":"発達支援の部屋を公立3園で延べ180人を対象に9回開催し、出張相談会を33件実施するなど、多角的な支援活動を展開しました。発達相談支援事業を利用した件数は206件となり、就学に向けた講座やペアレントプログラムなどを通じて、保護者支援と児童の発達段階に応じた相談支援体制の充実を図りました。","story_impact":"判断できない","pdf_page":60,"cls":"10　結婚・出産・子育て"},{"no":"44","name":"新居子育て支援センター運営事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":15905,"root":"法定義務なし","ev":"現状継続","ptype":"5","story_p1":"子育ての不安を軽くするために、遊びの広場や講座の提供、保育士による相談援助、預かり保育を実施しています。","story_p2":"出張広場「にこにこ」は88回開催し1,773人が利用、のびのび預かり保育は152日間実施して869人が利用するなど、多くの子育て家庭に支援を提供しました。支援センター全体では18,874人の来館者を記録しています。","story_impact":"判断できない","pdf_page":61,"cls":"10　結婚・出産・子育て"},{"no":"45","name":"児童手当支給事業費","bureau":"こども未来部","dept":"こども未来部　こども政策課","budget":913678,"root":"法定義務あり","ev":"現状継続","ptype":"1","story_p1":"子育て家庭の経済的負担を軽減するために、高校生年代までの子どもを養育している方に児童手当を支給しています。令和6年10月から所得制限を撤廃し、支給額の拡充や支払回数の増加など制度を充実させました。","story_p2":"児童手当支給事業では、対象となる児童への手当支給を実施しました。成果指標については具体的な数値データが記録されていませんが、事業を通じて子育て世帯への経済的支援が行われています。","story_impact":"判断できない","pdf_page":62,"cls":"10　結婚・出産・子育て"},{"no":"46","name":"こども医療費助成事業","bureau":"こども未来部","dept":"こども未来部　こども政策課","budget":304577,"root":"法定義務なし","ev":"現状継続","ptype":"1","story_p1":"子どもの健やかな成長を支援するため、0歳から18歳までの医療費の一部を助成しています。通院・入院時の保険診療費と入院食事代を対象としています。","story_p2":"こども医療費助成事業では、受給対象者の申請率が100に達しました。本事業を通じて、対象となる児童の医療費支援が適切に実施されています。","story_impact":"判断できない","pdf_page":63,"cls":"10　結婚・出産・子育て"},{"no":"47","name":"放課後児童健全育成事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":70602,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"昼間保護者がいない小学生が安心して過ごせる居場所を確保するため、小学校の空き教室等を活用して放課後の生活の場を提供しています。","story_p2":"放課後児童クラブの定員数は629人となっており、放課後児童健全育成事業として児童の安全・安心な居場所の確保に取り組んでいます。","story_impact":"判断できない","pdf_page":64,"cls":"10　結婚・出産・子育て"},{"no":"48","name":"児童扶養手当給付事業","bureau":"こども未来部","dept":"こども未来部　こども政策課","budget":122516,"root":"法定義務あり","ev":"現状継続","ptype":"1","story_p1":"ひとり親家庭の経済的負担を軽減し、児童の生活を支援するために、一定の低所得の要件を満たす監護者に児童扶養手当を支給しています。","story_p2":"児童扶養手当給付事業では、対象となる児童家庭への手当給付を実施しました。事業の成果を測定するための指標データが記録されていない状況となっています。","story_impact":"判断できない","pdf_page":65,"cls":"10　結婚・出産・子育て"},{"no":"49","name":"民間保育所等助成事業","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":1314921,"root":"法定義務なし","ev":"縮小","ptype":"13","story_p1":"子どもたちが安心して過ごせる保育環境を整備し、働く保護者を支援するために、民間保育施設の運営費や整備費の補助、保育士の資質向上支援など包括的な助成を行っています。","story_p2":"保育の質向上に向けて9園への補助、3園の施設整備費補給、認可外保育施設や一時預かりの利用料助成などを実施しました。待機児童ゼロを達成し、保育環境の充実に貢献しています。","story_impact":"判断できない","pdf_page":66,"cls":"10　結婚・出産・子育て"},{"no":"50","name":"公立保育所施設管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":99682,"root":"法定義務なし","ev":"廃止方向","ptype":"6","story_p1":"老朽化した旧鷲津保育園の跡地を有効活用するため、施設の解体工事を実施しています。","story_p2":"成果を測る指標が設定されていません。","story_impact":"判断できない","pdf_page":67,"cls":"データなし"},{"no":"51","name":"生活保護実施事業","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":380439,"root":"法定義務あり","ev":"現状継続","ptype":"13","story_p1":"生活に困っている方が最低限度の生活を送られるよう支援するために、生活保護法に基づいた給付と自立に向けた支援を行っています。","story_p2":"生活保護実施事業では、生活に困窮する住民に対して必要な保護を実施しています。成果指標については、その測定内容の詳細なデータが整備されていない状況にあります。","story_impact":"判断できない","pdf_page":68,"cls":"6　福祉"},{"no":"52","name":"生活困窮者自立支援事業","bureau":"健康福祉部","dept":"健康福祉部　地域福祉課","budget":14992,"root":"法定義務あり","ev":"現状継続","ptype":"4","story_p1":"生活保護が必要になる前の段階で、生活が困難な方々を支援し、自立を促進するために、専門の相談支援や就労支援などの各種サービスを提供しています。","story_p2":"生活困窮者を対象とした自立相談支援を実施し、相談者のための自立支援プランの作成を行いました。自立相談支援プラン作成者の生活保護への移行数については、評価に必要なデータが確認できていない状況です。","story_impact":"判断できない","pdf_page":69,"cls":"6　福祉"},{"no":"53","name":"管理運営事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":10189,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"市民の健康保持と増進を図るため、健康増進課の事業を円滑に推進しています。関係団体への財政支援のほか、若年がん患者や骨髄ドナーへの支援を行います。","story_p2":"若年がん患者等支援事業・骨髄移植ドナー支援事業について、標準化準拠システムへの移行作業を進めました。成果指標については評価対象として設定されていません。","story_impact":"判断できない","pdf_page":70,"cls":"5　健康"},{"no":"54","name":"健康福祉センター管理運営事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":162223,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"住民の健康増進と福祉向上を実現するために、健康福祉センターの適切な施設管理と運営に必要な経費を確保しています。","story_p2":"健康福祉センターの施設・設備について、保守点検料による定期的なメンテナンスを実施し、施設の適切な管理運営を行いました。","story_impact":"判断できない","pdf_page":71,"cls":"5　健康"},{"no":"55","name":"母子保健事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":44372,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"妊娠中から乳幼児期のお子さんと保護者の健康を守るため、妊産婦健診や乳幼児健診、育児相談、各種教室を実施しています。","story_p2":"母子保健事業では、3歳以下の子を持つ親が育てにくさを感じたときに相談先を知っているかを成果指標として設定し、実績値85.7%を得ました。相談体制の整備により、多くの保護者が必要な支援にアクセスできる環境が構築されています。","story_impact":"判断できない","pdf_page":72,"cls":"10　結婚・出産・子育て"},{"no":"56","name":"出産・子育て応援事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":32131,"root":"法定義務あり","ev":"現状継続","ptype":"13","story_p1":"妊娠から出産・育児までの不安を軽くするために、妊婦への給付金支給と専門家による伴走型の相談支援を行っています。","story_p2":"出産・子育て応援事業を実施しました。活動指標と成果指標の実績が記録されており、事業の実行状況を把握できる体制が整えられています。","story_impact":"判断できない","pdf_page":73,"cls":"10　結婚・出産・子育て"},{"no":"57","name":"小児等予防接種事業","bureau":"こども未来部","dept":"こども未来部　こども未来課","budget":118623,"root":"法定義務あり","ev":"拡大","ptype":"4","story_p1":"お子さんの健やかな成長を守るため、予防接種法に基づいて乳幼児から学童を対象とした各種予防接種を実施しています。","story_p2":"HPVワクチン1529回、五種混合646回の予防接種を実施しました。成果指標については測定データが記録されていないため、具体的な成果の評価を行うことができません。","story_impact":"判断できない","pdf_page":74,"cls":"データなし"},{"no":"58","name":"地域医療対策事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":21390,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"いつでも安心して医療を受けられる地域づくりのために、夜間・休日診療体制の確保と救急医療の充実を進めています。また、医療機関との連携強化や看護師確保に取り組んでいます。","story_p2":"地域医療対策事業では、休日夜間の医療体制の充実に向けた取組を実施しました。成果指標である休日夜間の医療体制について、実績値100.0を記録しており、住民への必要な医療提供体制の確保に貢献しています。","story_impact":"判断できない","pdf_page":75,"cls":"5　健康"},{"no":"59","name":"疾病対策事業","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":173553,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"住民の健康寿命を延ばすために、各種検診や予防接種、健康相談、健康教育などの予防・健康づくり事業を実施しています。また自殺対策や熱中症対策など、様々な角度から住民の健康を守ります。","story_p2":"自殺対策事業として講演会や講話等を実施し、延べ699人の参加がありました。特定健診受診率については成果指標として設定されており、38.8%の実績となっています。","story_impact":"判断できない","pdf_page":76,"cls":"5　健康"},{"no":"60","name":"斎場管理運営事業","bureau":"環境部","dept":"環境部　環境課","budget":60316,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"適切な火葬サービスを提供するため、新居斎場やすらぎ苑の効率的かつ適切な運営を行っています。","story_p2":"炉前ホール照明設備修繕などの火葬場施設管理を行い、火葬場使用料の収納率は100.0％を達成しました。安定した施設運営と適切な収納管理により、事業の目標が達成されています。","story_impact":"判断できない","pdf_page":77,"cls":"データなし"},{"no":"61","name":"斎場整備事業","bureau":"環境部","dept":"環境部　環境課","budget":179199,"root":"法定義務なし","ev":"廃止方向","ptype":"6","story_p1":"住民の皆様に必要な斎場施設を提供するため、内山65号線の1期工事を実施し、数年後の供用開始を目指しています。","story_p2":"斎場整備事業では、市道内山65号線の進捗率が66.8%に達しました。事業の着実な進行が確認されており、整備工事が予定通り進められています。","story_impact":"判断できない","pdf_page":78,"cls":"データなし"},{"no":"62","name":"合併処理浄化槽補助事業","bureau":"環境部","dept":"環境部　廃棄物対策課","budget":17838,"root":"法定義務なし","ev":"現状継続","ptype":"3","story_p1":"公共下水道が整備されていない地域の生活環境を改善するため、くみ取りトイレや単独浄化槽を合併浄化槽に転換する際の費用の一部を補助しています。","story_p2":"合併処理浄化槽補助事業により、単独浄化槽・くみ取り便槽から合併処理浄化槽への転換が22件実現し、生活排水処理の環境改善を着実に進めました。","story_impact":"判断できない","pdf_page":79,"cls":"7　廃棄物・上下水"},{"no":"63","name":"廃棄物対策事業","bureau":"環境部","dept":"環境部　廃棄物対策課","budget":362569,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"安心で清潔な生活環境を守り、限られた資源を有効活用するために、家庭や事業所の廃棄物の適正な収集運搬と分別・減量化に取り組んでいます。","story_p2":"家庭系一般廃棄物の収集運搬、草木チップ化、生ごみ減量化容器等の購入補助、リサイクル資源集団回収奨励金などの多角的な廃棄物対策を実施しました。生ごみ減量化容器購入基数は46基の実績があり、1人1日当たりのごみ排出量削減に向けて有効な取組となっています。","story_impact":"判断できない","pdf_page":80,"cls":"7　廃棄物・上下水"},{"no":"64","name":"ごみ処理施設管理運営事業","bureau":"環境部","dept":"環境部　廃棄物対策課","budget":1783162,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"安全で清潔な生活環境を守るため、環境センターの運営管理と廃棄物処分場の適切な維持管理・運営、施設の拡張を進めています。","story_p2":"ＰＦＩ事業モニタリングと環境センター、リサイクルプラザ火災復旧事業を実施し、一般廃棄物の処理量は17075.0トンの実績を上げました。","story_impact":"判断できない","pdf_page":81,"cls":"7　廃棄物・上下水"},{"no":"65","name":"し尿処理施設管理運営事業","bureau":"環境部","dept":"環境部　廃棄物対策課","budget":159706,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"快適で衛生的な生活環境を守るため、し尿処理施設の安全かつ効率的な管理運営を行っています。","story_p2":"バイオガス発電可能性調査に負担金を支出し、生し尿・浄化槽汚泥の処理量は82.5トンの実績がありました。し尿処理施設の安定的な運営を通じて、生活衛生の維持に貢献しています。","story_impact":"判断できない","pdf_page":82,"cls":"7　廃棄物・上下水"},{"no":"66","name":"脱炭素推進事業","bureau":"環境部","dept":"環境部　環境課","budget":73605,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"二酸化炭素の排出を減らし、地球環境を守るために、家庭や企業の脱炭素化を支援しています。太陽光発電などの再生可能エネルギーや電気自動車の導入補助、環境学習の実施などを通じて、カーボンニュートラルの実現を目指しています。","story_p2":"気候変動適応計画の策定、省エネ設備導入86件、省エネ家電導入555件の補助実績を上げ、161人がアースキッズに参加しました。家庭用蓄電池やV2H等の導入支援により、脱炭素社会実現に向けた市民の取組を促進しています。","story_impact":"判断できない","pdf_page":83,"cls":"19　自然環境"},{"no":"67","name":"花と緑のまちづくり推進事業","bureau":"環境部","dept":"環境部　環境課","budget":11545,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"花と緑あふれるまちを実現するため、春秋の緑花フェア開催、公共花壇の維持管理、地域の花壇用に年3回の花苗生産を行っています。","story_p2":"花と緑のまちづくり推進事業では、花苗の配布を成果指標として設定し、約29万7千本の花苗を配布しました。地域の花と緑の充実に向けた取り組みが実施されています。","story_impact":"判断できない","pdf_page":84,"cls":"19　自然環境"},{"no":"68","name":"湖西市立病院事業繰出金","bureau":"健康福祉部","dept":"健康福祉部　健康増進課","budget":832887,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"市立病院の安定した経営を支援するために、一般会計から必要な経費と医学修学基金への繰入金を支出しています。","story_p2":"病院事業の経営支援として繰出金を配分しました。入院の病床利用率は68.1%となり、病床の有効活用が進められています。","story_impact":"判断できない","pdf_page":85,"cls":"5　健康"},{"no":"69","name":"勤労者定着促進事業","bureau":"産業部","dept":"産業部　産業振興課","budget":12524,"root":"法定義務なし","ev":"現状継続","ptype":"1","story_p1":"勤労者が住宅ローンの返済負担を軽減し、定住を促進するために、利子の一部を補給しています。","story_p2":"成果を測る指標が設定されていません。","story_impact":"判断できない","pdf_page":86,"cls":"15　就業支援"},{"no":"70","name":"高齢者能力活用支援事業","bureau":"産業部","dept":"産業部　産業振興課","budget":15060,"root":"法定義務なし","ev":"現状継続","ptype":"7","story_p1":"高齢者の生きがいづくりと就業機会の創出を支援するため、シルバー人材センターの運営を補助し、地域の活性化を図っています。","story_p2":"高齢者の能力活用を支援する事業として、補助対象事業費に占める補助金の割合は29.7%となりました。事業の実施を通じて、高齢者の活躍の場づくりを進めています。","story_impact":"判断できない","pdf_page":87,"cls":"15　就業支援"},{"no":"71","name":"技術・技能開発事業","bureau":"産業部","dept":"産業部　産業振興課","budget":23457,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"地域の産業を支える人材育成のため、企業の技術者や求職者、外国人労働者を対象とした職業訓練や技能向上訓練を実施しています。","story_p2":"職業訓練センターの人件費負担により、施設利用者数は8441人となりました。技術・技能開発の拠点として、多くの住民に訓練機会を提供できています。","story_impact":"判断できない","pdf_page":88,"cls":"14　モノづくり産業の活性"},{"no":"72","name":"農業委員会運営事業","bureau":"産業部","dept":"産業部　産業振興課","budget":12436,"root":"法定義務あり","ev":"現状継続","ptype":"8","story_p1":"農地を有効活用し、秩序ある農政と農業従事者の生活安定を実現するために、農地法に基づく調整と農地台帳の適正な整備を行っています。","story_p2":"農地台帳システムの目標地図機能追加業務に取り組みました。成果指標については具体的な実績データの記録がありませんが、農地管理の効率化に向けた機能拡張を進めています。","story_impact":"判断できない","pdf_page":89,"cls":"データなし"},{"no":"73","name":"農業振興推進事業","bureau":"産業部","dept":"産業部　産業振興課","budget":18660,"root":"法定義務なし","ev":"現状継続","ptype":"7","story_p1":"地域の農業を活発にするために、国や県、農協などと力を合わせて様々な支援や対策に取り組んでいます。","story_p2":"省エネ機械設備等の導入支援により36件の事業者を支援しました。防護柵設置件数は12件の実績があり、農業経営の効率化と野生動物対策の推進が図られています。","story_impact":"判断できない","pdf_page":90,"cls":"17　農業・漁業"},{"no":"74","name":"畜産振興対策事業","bureau":"産業部","dept":"産業部　産業振興課","budget":64334,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"畜産経営を安定させ、環境への負荷を軽減するために、畜産農家に対して経営や環境対策の支援を行っています。","story_p2":"食肉センター整備に向けた負担金を計上し、施設整備を進めました。生活の中で悪臭を感じる人の割合は62.3%と報告されており、今後の施設改善による改善効果の検証が課題です。","story_impact":"判断できない","pdf_page":91,"cls":"18　住環境"},{"no":"75","name":"土地改良整備事業","bureau":"産業部","dept":"産業部　産業振興課","budget":86875,"root":"法定義務なし","ev":"拡大","ptype":"7","story_p1":"農業用施設を適切に保全し、農業の持続的な発展を支援するために、県や土地改良区、農業者団体に対して負担金や補助金を行っています。","story_p2":"湖西用水土地改良区への補助を通じた土地改良整備事業を展開しました。多面的機能支払交付金の交付団体数は13団体となり、農地の保全と地域の多面的機能の維持に取り組みました。","story_impact":"判断できない","pdf_page":92,"cls":"データなし"},{"no":"76","name":"森林保護整備事業","bureau":"産業部","dept":"産業部　産業振興課","budget":29757,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"森林と保安林を守るために、不法投棄されたゴミの処理や草刈りを行うとともに、松くい虫の被害拡大を防ぐための防除作業を実施しています。","story_p2":"松くい虫被害の拡大防止に向け、約14.9haの薬剤地上散布と樹幹注入などの対策を実施しました。松くい虫薬剤地上散布面積は10.2haの実績となっており、被害拡大防止のための施策が講じられています。","story_impact":"判断できない","pdf_page":93,"cls":"データなし"},{"no":"77","name":"水産業振興事業","bureau":"産業部","dept":"産業部　産業振興課","budget":14812,"root":"法定義務なし","ev":"縮小","ptype":"13","story_p1":"地域の水産業を活性化させるために、鷲津漁港の施設整備とアサリやクルマエビなどの資源回復に取り組んでいます。","story_p2":"製氷機の導入と鷲津漁港の深浅測量業務を実施し、水産施設の整備を進めました。年間水揚高は103,932万円の実績があります。","story_impact":"判断できない","pdf_page":94,"cls":"17　農業・漁業"},{"no":"78","name":"商工業振興事業","bureau":"産業部","dept":"産業部　産業振興課","budget":50879,"root":"法定義務なし","ev":"現状継続","ptype":"7","story_p1":"地域の中小企業の成長を促進するため、新製品の展示会出展や商店街イベントに対して補助金を交付しています。","story_p2":"商店街イベント活動強化事業と物流等円滑化支援補助金により商工業の振興を図りました。空き家利活用マッチング数は累計29件の実績があります。","story_impact":"判断できない","pdf_page":95,"cls":"16　工業・商業"},{"no":"79","name":"観光振興事業","bureau":"産業部","dept":"産業部　文化観光課","budget":30573,"root":"法定義務なし","ev":"現状継続","ptype":"11","story_p1":"浜名湖の魅力を活かした観光地域づくりを進めるために、県やDMO、地域の観光協会と連携して、市内外からの誘客に取り組んでいます。","story_p2":"観光振興事業として、おいでん祭事業や地域おこし協力隊などの施策に取り組みました。公式ウェブサイトのビュー数は591,008件となっています。","story_impact":"判断できない","pdf_page":96,"cls":"20　観光振興"},{"no":"80","name":"道の駅潮見坂管理運営事業","bureau":"産業部","dept":"産業部　文化観光課","budget":16430,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"道の駅潮見坂を拠点として、特産物の提供と情報発信を通じて地域をPRし、観光施設への来訪者増加と交流人口の拡大による賑わい創出を目指しています。","story_p2":"施設修繕、インターネット・電話代、施設管理手数料、施設管理委託により道の駅を運営し、約76万人の来場者がありました。","story_impact":"判断できない","pdf_page":97,"cls":"20　観光振興"},{"no":"81","name":"新居今切体験の里管理運営事業","bureau":"産業部","dept":"産業部　文化観光課","budget":52110,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"浜名湖の豊かな環境と文化、水産物の魅力を広く発信し、観光拠点としてのブランドイメージを高めるために、体験施設や海湖館などの管理運営を行っています。","story_p2":"駐車券・サービス券印刷、施設管理委託、枯れ松伐採工事などの管理運営を実施しました。来訪者満足度は94.9%と高い評価を得ています。","story_impact":"判断できない","pdf_page":98,"cls":"20　観光振興"},{"no":"82","name":"ふるさと納税推進事業","bureau":"産業部","dept":"産業部　文化観光課","budget":234137,"root":"法定義務なし","ev":"拡大","ptype":"13","story_p1":"全国にふるさとの魅力をPRするとともに、寄付への返礼品として地元特産品を贈呈することで、地域産業の振興と発展を図っています。","story_p2":"ふるさと納税推進事業として広告料やサイト使用料等の運営費を活用し、ふるさと納税寄附金の獲得に取り組みました。寄附金額は実績が記録されており、事業を通じた財源確保が図られています。","story_impact":"判断できない","pdf_page":99,"cls":"データなし"},{"no":"83","name":"企業立地促進事業","bureau":"産業部","dept":"産業部　産業振興課","budget":154177,"root":"法定義務なし","ev":"現状継続","ptype":"7","story_p1":"地域経済の活性化と雇用機会の創出のために、市内に新たに進出した企業に対して、用地取得費や雇用、税負担などを支援する補助金を交付しています。","story_p2":"企業立地促進事業では、制度を利用した立地件数が23件の実績となりました。本制度を通じて、地域への企業誘致が一定程度進展したことが確認できます。","story_impact":"判断できない","pdf_page":100,"cls":"16　工業・商業"},{"no":"84","name":"庶務及び管理費","bureau":"都市整備部","dept":"都市整備部　土木課","budget":34242,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"道路や河川の境界を適切に管理し、未登記物件の解消を進めるとともに、道路台帳を修正・更新することで、道路管理業務を円滑に行っています。","story_p2":"境界プレートやプリンター用トナーなどの消耗品購入のほか、道路台帳の経年変化修正業務及び道路情報システムの保守業務を実施しました。成果指標については実績データが記録されていません。","story_impact":"判断できない","pdf_page":101,"cls":"データなし"},{"no":"85","name":"地元要望事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":69299,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"地元自治会からの要望をもとに、住民の安全と利便性を向上させるために、必要な整備・補修工事を実施しています。","story_p2":"地元からの要望に対して、事業の予算執行率が80.0%となりました。予定していた事業のほぼ大部分が実施され、住民の要望に応える形で事業が進められています。","story_impact":"判断できない","pdf_page":102,"cls":"8　道路"},{"no":"86","name":"地籍調査事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":17596,"root":"法定義務あり","ev":"拡大","ptype":"10","story_p1":"災害復旧や公共事業を円滑に進めるために、土地の境界位置と面積を正確に測量する地籍調査を実施しています。","story_p2":"地籍調査事業では、システムリース及び国土調査協議会関連業務のほか、港町・栄町地区の地籍調査業務を委託により進めた。成果指標の実績データはないため、事業の成果を数値で把握できていない。","story_impact":"判断できない","pdf_page":103,"cls":"データなし"},{"no":"87","name":"道路維持補修事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":393196,"root":"法定義務あり","ev":"拡大","ptype":"6","story_p1":"道路を安全で使いやすい状態に保つために、市道の点検・修理・清掃などの維持管理を実施しています。","story_p2":"道路照明灯リースやダンプトラックリースのほか、区画線修繕工事、橋梁補修工事、舗装補修工事などを実施し、鷲津跨線人道橋の補修工事と点検・診断業務を進めました。成果指標の実績データは提供されていません。","story_impact":"判断できない","pdf_page":104,"cls":"8　道路"},{"no":"88","name":"新所原笠子線道路改良事業","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":120050,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"県道新所原停車場日の岡線と県道新所原停車場白須賀線を結ぶ幹線市道について、利用者の利便性向上と地域の交通安全を図るため、道路改良事業を実施しています。","story_p2":"新所原笠子線道路改良事業は、事業費ベースで53.1%の進捗率に達しており、計画に基づいて事業が進行しています。","story_impact":"判断できない","pdf_page":105,"cls":"2　交通安全・防犯"},{"no":"89","name":"（都）大倉戸茶屋松線整備事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":45982,"root":"法定義務なし","ev":"廃止方向","ptype":"6","story_p1":"浜名湖西岸地区の新産業拠点へのアクセス向上と地域振興のため、都市計画道路大倉戸茶屋松線を含む周辺道路の整備を進めています。総延長1.6km、幅員16mの道路を整備します。","story_p2":"（都）大倉戸茶屋松線整備事業は、進捗率（事業費ベース）が99.0%に達し、事業がほぼ完了段階にあります。計画に基づいた着実な整備が進められています。","story_impact":"判断できない","pdf_page":106,"cls":"8　道路"},{"no":"90","name":"道路改良関係事務費","bureau":"都市整備部","dept":"都市整備部","budget":22443,"root":"法定義務なし","ev":"廃止方向","ptype":"10","story_p1":"地域の道路をより安全で快適にするために、道路改良事業に必要な調査を実施し、関係する期成同盟会への参加を通じて事業を進めています。","story_p2":"道路改良関係事務費の活動実施率は100%となり、計画された事業が予定通り実施されました。成果指標である活動実施率により、道路改良事業の着実な進捗が確認されています。","story_impact":"判断できない","pdf_page":107,"cls":"8　道路"},{"no":"91","name":"河川・排水路維持補修事業","bureau":"都市整備部","dept":"都市整備部　土木課","budget":50330,"root":"法定義務あり","ev":"拡大","ptype":"6","story_p1":"河川や排水路が正常に機能し、住民が安心で快適に暮らせる環境を実現するために、準用河川や普通河川、排水路などの維持補修を行っています。","story_p2":"浜名川の松枯れ伐採工事に着手しました。成果指標については、実績値の記録がありませんが、河川環境の保全に向けた取り組みを進めています。","story_impact":"判断できない","pdf_page":108,"cls":"データなし"},{"no":"92","name":"河川整備関係経費","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":45614,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"安全で暮らしやすい河川環境を実現するために、河川の改修や維持管理に必要な事務手続きや調査業務を行っています。","story_p2":"境田川河川整備工事と市地第２排水路整備工事を実施し、測量業務・修正設計業務も進めました。活動実施率は100%を達成し、計画通りに事業を遂行できました。","story_impact":"判断できない","pdf_page":109,"cls":"データなし"},{"no":"93","name":"地域公共交通対策事業","bureau":"都市整備部","dept":"都市整備部　都市計画課","budget":95744,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"通勤通学や通院、買い物など日常生活に必要な移動手段を確保するため、コミュニティバスやデマンド型乗合タクシーの運行、新しいモビリティサービスの検証などに取り組んでいます。","story_p2":"地域公共交通会議や利用者の意見を聞く会を開催し、市民の声を事業に反映させました。デマンド型乗合タクシーの利用は8439人となり、地域の交通ニーズに応える移動手段として機能しています。","story_impact":"判断できない","pdf_page":110,"cls":"9　公共交通"},{"no":"94","name":"天竜浜名湖鉄道対策事業","bureau":"都市整備部","dept":"都市整備部　都市計画課","budget":38237,"root":"法定義務なし","ev":"現状継続","ptype":"7","story_p1":"天竜浜名湖鉄道の経営を長期的に安定させるために、利用促進活動と財政支援を計画的に行い、住民のマイレール意識を高めています。","story_p2":"成果を測る指標が設定されていません。","story_impact":"判断できない","pdf_page":111,"cls":"9　公共交通"},{"no":"95","name":"都市計画関係事務費","bureau":"都市整備部","dept":"都市整備部　都市計画課","budget":554122,"root":"法定義務なし","ev":"拡大","ptype":"12","story_p1":"都市の健全な発展と秩序ある整備を実現するために、都市計画に基づいた円滑な行政運営を行っています。これにより、公共の福祉増進と国土の均衡ある発展に寄与しています。","story_p2":"開発可能性調査や民間宅地開発補助金、工業団地整備負担金などの施策を展開し、市街化区域内の人口は36889人となりました。各種開発関連事業を通じた都市計画の推進が図られています。","story_impact":"判断できない","pdf_page":112,"cls":"18　住環境"},{"no":"96","name":"鷲津駅谷上線整備事業","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":83144,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"鷲津駅と谷上地区を結ぶ都市計画道路の未整備区間を整備することで、通勤通学者や商業施設利用者の安全確保と地域の生活環境改善を図っています。","story_p2":"鷲津駅谷上線整備事業は、進捗率（事業費ベース）が53.1%となっており、事業は計画に沿って進行中です。今後の継続的な整備推進により、事業完了に向けた着実な進展が期待されます。","story_impact":"判断できない","pdf_page":113,"cls":"8　道路"},{"no":"97","name":"浜名弁天線整備事業","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":14019,"root":"法定義務あり","ev":"拡大","ptype":"6","story_p1":"浜名バイパス新居弁天ICのフルインター化に対応し、自動車利用者の利便性向上と歩行者の安全確保のため、国道1号と都市計画道路を結ぶ浜名弁天線の整備を進めています。","story_p2":"浜名弁天線整備事業について、成果指標の実績値および評価内容が記録されていないため、事業の成果を具体的に測定することができません。事業の効果判定には、指標となるデータの整備が必要です。","story_impact":"判断できない","pdf_page":114,"cls":"データなし"},{"no":"98","name":"表鷲津漁港線整備事業","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":29546,"root":"法定義務あり","ev":"拡大","ptype":"6","story_p1":"鷲津漁港へアクセスする都市計画道路の未整備区間を整備し、自動車利用者の利便性向上と歩行者の安全確保を図っています。","story_p2":"表鷲津漁港線整備事業については、活動指標および成果指標の実績データが記録されていない状況にあります。事業の進捗状況と成果の達成状況を把握するためには、具体的な測定データの整備が必要です。","story_impact":"判断できない","pdf_page":115,"cls":"データなし"},{"no":"99","name":"都市公園維持管理業務","bureau":"都市整備部","dept":"都市整備部　土木課","budget":88964,"root":"法定義務あり","ev":"拡大","ptype":"6","story_p1":"市民の皆さんが快適に過ごせる公園環境を保つために、市内の公園や緑地の施設点検や樹木の手入れなど、維持管理業務を行っています。","story_p2":"新居文化公園の複合遊具設置工事および公園維持整備工事を実施しました。成果指標については測定データが記録されていませんが、施設の整備を通じて公園機能の充実を図りました。","story_impact":"判断できない","pdf_page":116,"cls":"データなし"},{"no":"100","name":"公園施設整備費","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":31585,"root":"法定義務なし","ev":"縮小","ptype":"6","story_p1":"より良い公園環境を整備するために、公園施設の整備事業に必要な事務手続きや調査設計などの関連費用を支出しています。","story_p2":"公園施設整備事業について、計画された整備活動が実施率100%で完了しました。設定された成果指標に基づき、予定されていた公園施設の整備が予定通り実施されたことが確認されています。","story_impact":"判断できない","pdf_page":117,"cls":"データなし"},{"no":"101","name":"組合土地区画整理事業事務費","bureau":"都市整備部","dept":"都市整備部　都市計画課","budget":111783,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"組合が行う土地区画整理事業を支援するため、事業に必要な技術的サポートと公共施設の建設費について補助金を交付しています。","story_p2":"浜名湖西岸土地区画整理事業への技術支援を実施しました。工業用地の引渡率は93.0%となっており、事業の進捗が着実に進んでいます。","story_impact":"判断できない","pdf_page":118,"cls":"16　工業・商業"},{"no":"102","name":"公共下水道整備事業","bureau":"環境部","dept":"環境部　上下水道課","budget":633098,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"生活環境を改善し、河川などの公共用水域を汚濁から守るため、公共下水道事業の経営を安定させ、その経営基盤を強化しています。","story_p2":"公共下水道整備事業では、下水道整備面積累計で590.7の実績があり、着実に下水道の整備が進められています。整備の進捗状況を着実に把握し、今後も継続的に下水道網の拡張を進めていく予定です。","story_impact":"判断できない","pdf_page":119,"cls":"7　廃棄物・上下水"},{"no":"103","name":"市営住宅建設事業","bureau":"都市整備部","dept":"都市整備部　建築住宅課","budget":45800,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"誰もが安心して暮らせる住まいを提供するため、市営住宅の新築と既存施設の長寿命化に向けた設計・工事を実施しています。","story_p2":"市営住宅建設事業について、予算化された事業の実施率は100.0%となり、計画された事業が全て実施されました。","story_impact":"判断できない","pdf_page":120,"cls":"データなし"},{"no":"104","name":"港湾施設管理運営費","bureau":"都市整備部","dept":"都市整備部　都市政策課","budget":47042,"root":"法定義務あり","ev":"現状継続","ptype":"6","story_p1":"地域の海運や物流を支える港湾機能を充実させるために、港湾施設の整備要望に対応し、県が実施する浜名港修築事業の費用負担をしています。","story_p2":"港湾施設の管理運営業務を実施しました。成果指標については数値データが記録されていない状況となっています。","story_impact":"判断できない","pdf_page":121,"cls":"データなし"},{"no":"105","name":"消防団運営費","bureau":"消防本部","dept":"消防本部　消防総務課","budget":57793,"root":"法定義務あり","ev":"現状継続","ptype":"9","story_p1":"地域防災力の向上のため、消防団の活動を支援し、充実した訓練や研修会を実施しています。","story_p2":"訓練資器材や被服の購入、広報誌2回の発行、退職報償金や各種負担金の負担、分団への補助金交付、運転免許取得助成などの活動を実施しました。成果指標については数値が示されていません。","story_impact":"判断できない","pdf_page":122,"cls":"3　消防・救急"},{"no":"106","name":"防災推進事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":50167,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"大規模地震や津波に備え、防災対策を総合的に推し進めています。備蓄品の整備、情報システムの構築、火災予防設備の導入促進など、地域全体の防災力を高めるための取組を行っています。","story_p2":"要援護者世帯の家具転倒防止工事12件、急傾斜地崩壊対策工事、津波防災地域づくり推進計画策定などの取り組みを行いました。災害への備えができている住民の割合は66.5%となっており、防災意識の向上が課題です。","story_impact":"判断できない","pdf_page":123,"cls":"1　防災"},{"no":"107","name":"自主防災振興事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":11841,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"地域の防災力を高めるために、防災指導員の育成、防災倉庫の整備、訓練や資機材整備への支援を行っています。","story_p2":"防災倉庫の整備、地域防災訓練、夜間防災訓練を実施しました。防災訓練等に参加した人の割合は18.6%となりましたが、成果を測る指標の詳細評価データは設定されていません。","story_impact":"判断できない","pdf_page":124,"cls":"1　防災"},{"no":"108","name":"無線設備事業","bureau":"市民安全部","dept":"市民安全部　危機管理課","budget":27831,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"防災行政無線などの無線設備を安全かつ正常に機能させるために、定期的な保守点検と維持管理を行っています。","story_p2":"無線設備事業では、同報無線整備率が100.0%に達し、163基の無線設備が計画通り整備されました。住民への情報伝達体制の整備が完了し、災害時などの重要な情報配信体制が確保されています。","story_impact":"判断できない","pdf_page":125,"cls":"1　防災"},{"no":"109","name":"消防総務費","bureau":"消防本部","dept":"消防本部　消防総務課","budget":530982,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"消防職員の専門性を高め、安全で効率的な消防体制を構築するために、職員の研修派遣や資格取得支援、庁舎の整備と維持管理を行っています。","story_p2":"職員38人へのインフルエンザ予防ワクチン接種、消防学校・消防大学校・救急救命士養成研修への延べ25名の派遣、庁舎修繕7件の実施など、人材育成と職場環境整備を進めました。職員の人材育成が成果指標として設定されており、継続的な教育訓練体制を構築しています。","story_impact":"判断できない","pdf_page":126,"cls":"3　消防・救急"},{"no":"110","name":"通信指令装置・消防救急無線整備事業","bureau":"消防本部","dept":"消防本部　警防課","budget":49138,"root":"法定義務なし","ev":"縮小","ptype":"6","story_p1":"火災や救急などの緊急事態に迅速に対応するため、119番通報の受信から出動指令までを一元管理し、災害情報や気象情報を関係機関に伝達しています。","story_p2":"119番通報受信、災害出動指令、車両動態管理、関係機関連絡調整など、通信指令装置及び消防救急無線システムの機能を継続稼働させ、各種業務委託を通じた緊急対応体制を維持しました。","story_impact":"判断できない","pdf_page":127,"cls":"3　消防・救急"},{"no":"111","name":"公用車維持管理費","bureau":"消防本部","dept":"消防本部　消防署","budget":10833,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"消防車両を安全かつ最適な状態に保つために、燃料費や法定点検、特殊装備の維持管理、故障・損傷の修繕を行っています。","story_p2":"公用車の維持管理事業として、消防車両の法定点検等を58件実施しました。適切な点検実施により、消防車両の安全性と稼働率の維持に努めています。","story_impact":"判断できない","pdf_page":128,"cls":"3　消防・救急"},{"no":"112","name":"会計年度任用職員雇用経費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":56356,"root":"法定義務なし","ev":"現状継続","ptype":"9","story_p1":"子どもたちの学習環境を整備し、学校運営を円滑に進めるため、各小中学校の会計年度任用職員の雇用経費を負担しています。","story_p2":"会計年度任用職員の雇用経費として予算を執行しました。成果指標として設定された内容については、実績データが記録されていない状態です。","story_impact":"判断できない","pdf_page":129,"cls":"データなし"},{"no":"113","name":"学校教育運営事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":27150,"root":"法定義務なし","ev":"縮小","ptype":"13","story_p1":"子どもたちが質の高い教育を受けられるよう、教科書の整備や卒業記念品の授与、学校への専門的サポートを行っています。また、スクールロイヤーや相談員の配置、部活動の地域展開検討を通じて、学校運営を総合的に支援しています。","story_p2":"指導主事等が研修会・協議会に39回参加し、学校教育の動向把握と各校への反映を実現しました。教師用指導書の購入により授業改善が進むとともに、教科書改訂への対応や生徒指導支援体制の強化が図られています。","story_impact":"判断できない","pdf_page":130,"cls":"11　学校教育"},{"no":"114","name":"生きた英語教育推進事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":20460,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"子どもたちが実践的な英語スキルを身につけるために、外国語指導助手4名を小中学校に巡回配置し、英語科や外国語活動の授業をサポートしています。","story_p2":"生きた英語教育推進事業では、学校教育課事業調査における成果の割合が100となり、事業の成果が確認されました。英語教育の充実に向けた取組が進められています。","story_impact":"判断できない","pdf_page":131,"cls":"11　学校教育"},{"no":"115","name":"外国人児童生徒支援事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":11301,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"外国人児童生徒が学校生活に適応し、学習を進められるようにするため、日本語習得支援と保護者向けの通訳・翻訳サービスを提供しています。","story_p2":"外国人児童生徒支援事業の成果について、学校教育課事業調査では100%の成果が報告されています。成果を測る指標の詳細なデータは設定されていません。","story_impact":"判断できない","pdf_page":132,"cls":"11　学校教育"},{"no":"116","name":"特別支援教育推進事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":41425,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"障害のある子どもたちが安心して学校生活を送れるよう、各小中学校に支援員を配置し、専門家による巡回相談も実施しています。","story_p2":"特別支援教育推進事業において、巡回相談員が22回の訪問活動を実施し、各学校の特別支援教育の充実に向けた支援を行いました。","story_impact":"判断できない","pdf_page":133,"cls":"11　学校教育"},{"no":"117","name":"学校保健衛生費","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":23826,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"児童生徒と教職員の健康を守るため、学校保健安全法に基づいた定期健康診断を実施しています。また結核予防法に基づき結核対策委員会を設置し、児童生徒の健康保持に努めています。","story_p2":"教職員の健康診断や学校医・薬剤師への報酬支給、各種保険加入など学校保健衛生体制の充実に取り組みました。就学時および児童生徒健康診断の実施を通じて、子どもたちの健康状態の把握と疾病予防に努めています。","story_impact":"判断できない","pdf_page":134,"cls":"11　学校教育"},{"no":"118","name":"特別支援教育推進事業（幼稚園）","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":15164,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"発達障害のある園児が安心して園生活を送れるよう、各園に支援員を配置するとともに、専門家による巡回相談を実施し、個別支援の方法や保護者連携について助言しています。","story_p2":"特別支援教育推進事業として研修会を実施し、巡回相談員による園への訪問を23回実施しました。巡回相談員の訪問を通じて、幼稚園における特別支援教育体制の充実を図りました。","story_impact":"判断できない","pdf_page":135,"cls":"10　結婚・出産・子育て"},{"no":"119","name":"学校給食推進事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":195042,"root":"法定義務なし","ev":"拡大","ptype":"13","story_p1":"安全で栄養のある給食を安定的に提供するために、衛生管理の強化と給食費の負担軽減を行っています。検査体制の充実と中学校給食の無償化により、すべての生徒が安心して学校生活を送られるようにしています。","story_p2":"学校薬剤師による衛生検査点検を実施し、保菌・食品検査の実施率は100.0%に達しました。また、物価高騰対策補助金等により学校給食費の負担軽減を図り、安全で安定した学校給食の提供に努めました。","story_impact":"判断できない","pdf_page":136,"cls":"11　学校教育"},{"no":"120","name":"学校再編事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　学校教育課","budget":11243,"root":"法定義務なし","ev":"拡大","ptype":"10","story_p1":"児童生徒の教育環境を整備するために、白須賀地区では学校再編の基本計画を策定し、北部地区では小中学校統合に向けた設計と準備を進めています。","story_p2":"学校再編事業では、白須賀地区と北部地区で計4回の学校再編検討委員会を開催しました。地域における学校再編について検討を重ね、住民との協議を通じた事業推進が行われています。","story_impact":"判断できない","pdf_page":137,"cls":"11　学校教育"},{"no":"121","name":"学校給食施設整備事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":24860,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"安全で衛しい学校給食を提供するため、新しい給食センター施設をPFI事業により整備しています。事業者選定から設計・建設を経て、数年後の開業に向けて段階的に進めていきます。","story_p2":"学校給食センター整備・運営事業のPFIアドバイザリー業務を委託し、事業化に向けた支援を実施しました。湖西市学校給食センター整備・運営事業における成果指標について、評価データの収集を進めています。","story_impact":"判断できない","pdf_page":138,"cls":"データなし"},{"no":"122","name":"教育施設管理事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":47777,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"子どもたちが安全で快適に学べる環境を整えるため、こども園2園、幼稚園3園、小学校6校、中学校5校の施設維持管理を行っています。","story_p2":"教育施設の維持管理において、95件の修繕を実施しました。修繕の実施件数を成果指標として設定し、施設の適切な維持管理に取り組んでいます。","story_impact":"判断できない","pdf_page":139,"cls":"データなし"},{"no":"123","name":"鷲津小学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":13059,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"鷲津小学校の子どもたちが安全で快適な環境で学べるよう、校舎の維持管理に必要な消耗品、燃料費、修繕費、備品などの経費を確保しています。","story_p2":"鷲津小学校の管理運営により、学校の日常的な運営が行われました。成果指標は設定されていないため、具体的な成果データは計測されていません。","story_impact":"判断できない","pdf_page":140,"cls":"データなし"},{"no":"124","name":"東小学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":10410,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"東小学校の児童が安心して学べる環境を整備するため、教室の消耗品や冷暖房燃料、施設の修繕、学習に必要な備品購入などの経費を計上しています。","story_p2":"東小学校の管理運営に関する事業です。学校施設の維持管理と運営に必要な各種業務が実施されていますが、成果を測る指標は設定されていません。","story_impact":"判断できない","pdf_page":141,"cls":"データなし"},{"no":"125","name":"岡崎小学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":11695,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"岡崎小学校の児童が安全で快適に学べる教育環境を整えるために、校舎の修繕、教材用品の購入、冷暖房などの運営に必要な経費を支出しています。","story_p2":"岡崎小学校の管理運営に必要な経費を計上し、学校施設の維持管理を実施しました。成果指標は設定されていないため、具体的な成果数値の測定は行われていません。","story_impact":"判断できない","pdf_page":142,"cls":"データなし"},{"no":"126","name":"新居小学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":13225,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"新居小学校の児童が充実した環境で学べるよう、校舎の維持管理に必要な消耗品、燃料、修繕、備品購入などの経費を確保しています。","story_p2":"新居小学校の管理運営に関する事業について、成果指標は設定されていません。活動内容の実績についても詳細なデータが記録されていない状況です。","story_impact":"判断できない","pdf_page":143,"cls":"データなし"},{"no":"127","name":"学校運営費（小学校）","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":134122,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"子どもたちが安全で快適に学べる教育環境を整えるため、6校の小学校の施設維持管理と保守点検を行っています。","story_p2":"ICT支援員の派遣、コンピューター保守点検、機器借上、ソフトウェアライセンス更新などを実施し、小学校のICT教育環境を維持しました。成果指標は設定されていません。","story_impact":"判断できない","pdf_page":144,"cls":"データなし"},{"no":"128","name":"小学校施設整備事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":70634,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"児童が安全・安心で快適な環境で学習できるようにするために、小学校の施設整備を進めています。特にトイレの洋式化を推進し、教育環境の向上と児童の安全確保を図ります。","story_p2":"小学校施設整備事業として、小・中学校トイレの洋式化に取り組みました。トイレの洋式化率は56.2％となり、児童生徒の利便性向上と衛生環境の改善が進められています。","story_impact":"判断できない","pdf_page":145,"cls":"11　学校教育"},{"no":"129","name":"鷲津中学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":11810,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"鷲津中学校の生徒が安心して学べる教育環境を整備するために、校舎の維持管理に必要な消耗品や燃料費、備品の修繕・購入などの経費を計上しています。","story_p2":"鷲津中学校の管理運営に関する活動を実施しました。成果指標は設定されており、学校運営の継続的な改善に向けた取り組みが行われています。","story_impact":"判断できない","pdf_page":146,"cls":"データなし"},{"no":"130","name":"岡崎中学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":15134,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"岡崎中学校の生徒たちが安心して学べる環境を整えるために、教室の消耗品や暖房燃料の購入、設備の修繕や新しい備品の購入などの経費を支援しています。","story_p2":"岡崎中学校の管理運営に関する事業では、成果指標が設定されておりません。学校の日常的な運営を通じて、教育環境の維持に努めています。","story_impact":"判断できない","pdf_page":147,"cls":"データなし"},{"no":"131","name":"新居中学校管理運営費","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":11488,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"新居中学校に通う生徒たちが快適に学べる環境を整えるために、学校の運営に必要な消耗品や燃料、備品の修繕・購入などの費用を計上しています。","story_p2":"新居中学校の管理運営に関する事業として、学校施設の維持管理と教育環境の整備を行いました。成果指標については設定されていない状況です。","story_impact":"判断できない","pdf_page":148,"cls":"データなし"},{"no":"132","name":"学校運営費（中学校）","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":114060,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"生徒が安全で快適に学校生活を送れるようにするため、5校の中学校施設の維持管理と保守点検を実施しています。","story_p2":"中学校の教育環境を支えるため、ICT支援員の派遣、コンピューター機器の保守点検、ICT関連ソフトのライセンス管理等の業務を実施しました。成果指標は設定されていません。","story_impact":"判断できない","pdf_page":149,"cls":"データなし"},{"no":"133","name":"中学校施設整備事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　教育総務課","budget":677962,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"生徒が安全・安心で快適な環境で学習できるよう、中学校の施設整備を進めています。トイレの洋式化などを通じて、教育環境の向上と生徒の安全確保を図っています。","story_p2":"岡崎中学校南校舎1階特別支援教室の新設工事を実施しました。小・中学校トイレの洋式化率は56.2%となっており、施設整備を通じて教育環境の改善を進めています。","story_impact":"判断できない","pdf_page":150,"cls":"11　学校教育"},{"no":"134","name":"岡崎幼稚園管理運営費","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":42578,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"子どもたちが安心して学べる環境を整えるために、岡崎幼稚園の施設管理と円滑な運営に必要な経費を支出しています。","story_p2":"岡崎幼稚園の管理運営では、給食調理等業務の委託や印刷機などの使用料、テントやエアコンなどの備品購入により、園の運営環境を整備しました。成果指標は設定されていません。","story_impact":"判断できない","pdf_page":151,"cls":"10　結婚・出産・子育て"},{"no":"135","name":"新居幼稚園管理運営費","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":43546,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"幼い子どもたちが安心して学べる環境を整えるために、新居幼稚園の施設管理や職員配置、教育活動に必要な経費を負担しています。","story_p2":"新居幼稚園の管理運営では、給食調理等業務の委託及び印刷機や複写機などの機器賃借により、園の円滑な運営を支援しました。成果指標に基づく実績データは報告されていません。","story_impact":"判断できない","pdf_page":152,"cls":"10　結婚・出産・子育て"},{"no":"136","name":"幼稚園・こども園総務費","bureau":"こども未来部","dept":"こども未来部　保育幼稚園課","budget":94552,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"公立幼稚園2園とこども園2園の運営管理に必要な共通経費を一括で管理し、質の高い幼児教育と保育サービスを安定的に提供するために必要な事務を実施しています。","story_p2":"幼稚園・こども園の運営に必要な被服や教育指導書、衛生用品などの需用費や、園と保護者間の連絡システム利用料などの役務費、子ども子育て支援システムの運用保守委託料、職員研修などの負担金を支出しました。成果指標は設定されていません。","story_impact":"判断できない","pdf_page":153,"cls":"10　結婚・出産・子育て"},{"no":"137","name":"新居関所史料館管理運営費","bureau":"産業部","dept":"産業部　文化観光課","budget":19628,"root":"法定義務なし","ev":"拡大","ptype":"6","story_p1":"江戸時代の重要な歴史遺産である新居関所を後世に伝えるため、建物の保全と史料館の維持管理を行い、企画展などの展示活動を通じて住民の学習と交流を促進しています。","story_p2":"新居関所史料館の管理運営により、館の入館者数は17,062人の実績を記録しました。地域の重要な文化施設として、着実に来館者を受け入れることができています。","story_impact":"判断できない","pdf_page":154,"cls":"12　生涯学習・スポーツ振興"},{"no":"138","name":"西部地域センター管理運営事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　スポーツ・生涯学習課","budget":165118,"root":"法定義務なし","ev":"現状継続","ptype":"13","story_p1":"西部地域センターは、市民が安全で安心して施設を利用できるよう維持管理するとともに、学習機会の提供や地域交流を促進するため、講座の開設とまつりの開催を行っています。","story_p2":"センターまつりの開催講座を通じて、生涯学習講座の受講者数847人に学ぶ機会を提供しました。一方で、人が集まらず非開催となった講座があり、企画段階での精査強化が課題です。","story_impact":"判断できない","pdf_page":155,"cls":"12　生涯学習・スポーツ振興"},{"no":"139","name":"図書館運営事業","bureau":"教育委員会","dept":"教育委員会　図書館","budget":44229,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"住民の皆様が必要とする知識や情報を得られるようにするために、図書や雑誌などの資料を充実させ、図書館を運営しています。","story_p2":"学校図書室支援や団体貸出、電子図書館事業を実施しました。市民一人当たりの貸出冊数は5.0冊の実績となっています。","story_impact":"判断できない","pdf_page":156,"cls":"12　生涯学習・スポーツ振興"},{"no":"140","name":"図書館運営事業（新居図書館）","bureau":"教育委員会","dept":"教育委員会　図書館","budget":15989,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"誰もが気軽に本との出会いを楽しめる環境を整えるために、図書館の図書や雑誌などの資料を充実させています。","story_p2":"図書館では他機関との連携を通じた団体貸出に取り組み、市民1人あたりの貸出冊数は5.0冊となりました。地域の読書活動を支援する基盤が形成されています。","story_impact":"判断できない","pdf_page":157,"cls":"10　結婚・出産・子育て"},{"no":"141","name":"社会体育施設維持管理事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　スポーツ・生涯学習課","budget":342418,"root":"法定義務なし","ev":"現状継続","ptype":"6","story_p1":"市民がスポーツ施設を快適かつ安全に利用できるようにするため、運動公園やスポーツ広場などの社会体育施設について、指定管理者による維持管理を行っています。","story_p2":"旧新居町温水プール解体工事や土地購入、アメニティプラザ券売機購入などの施設維持管理を実施しました。体育施設の利用者数は505,376人に達し、地域住民の運動・健康増進の場として機能しています。","story_impact":"判断できない","pdf_page":158,"cls":"12　生涯学習・スポーツ振興"},{"no":"142","name":"スポーツ活動推進及び大会運営事業","bureau":"教育委員会事務局","dept":"教育委員会事務局　スポーツ・生涯学習課","budget":13354,"root":"法定義務なし","ev":"現状継続","ptype":"4","story_p1":"市民の健康増進と競技力向上を図るため、スポーツ大会やスポーツ教室の開催、ジュニアスポーツクラブの育成、高齢者向けのスポーツ活動の場を提供しています。","story_p2":"野球4クラブをはじめ陸上競技、柔道、ソフトテニス、サッカー、バレーボールなど複数競技のジュニアスポーツクラブ事業と10種目以上のスポーツ大会運営を実施し、みんなのスポーツ教室・ジュニアスポーツクラブの参加者は346人となりました。","story_impact":"判断できない","pdf_page":159,"cls":"12　生涯学習・スポーツ振興"}];
+const LABELS = {"bureau": "データなし", "dept": "担当課", "cls": "施策", "budget_col": "R6決算(千円)", "no_col": "事業番号", "tool_title": "湖西市 事務事業優先度評価ツール", "card_title": "湖西市 令和7年度実施 事務事業評価", "summary_title": "湖西市 令和7年度 事務事業優先度評価結果", "output_file": "kosai_v3_index.html", "csv_filename": "湖西市_令和7年度_事務事業優先度評価結果.csv", "source_url": "https://www.city.kosai.shizuoka.jp/soshikiichiran/kikakuseisakuka/gyomuannai/5/2/17411.html", "population": 57216, "local_storage_key": "kosai7_v3_ratings", "pdf_url": "https://www.city.kosai.shizuoka.jp/material/files/group/7/2025jimujigyouhyouka.pdf", "bureau_to_url": {}, "personnel_cost": "含まない"};
 const LS_KEY = LABELS.local_storage_key;
+const OLD_LS_KEY = 'kosai7_ratings'; // 旧v2版の保存キー（リニューアル案内の判定用）
 const SUPABASE_URL = 'https://unkhamvtfathmoxmikmp.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_UArsQ1bcdira6J91O8kXjA_nGJ6MGtz';
-const MUNICIPALITY_ID = 'kosai_r7';
+const MUNICIPALITY_ID = 'kosai_r7'; // v2と同一ID（本番昇格・投票履歴を引き継ぐため）
 const SUBMITTED_KEY = MUNICIPALITY_ID + '_submitted';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const ROOT_ORDER = ['法定義務あり','法定義務なし','判断できない','データなし'];
+const EV_PRIORITY = ['拡大','現状継続','改善（手段変更）','縮小','廃止方向','完了']; // ドリルダウンのグループ表示順（歳出削減につなげるため拡大→縮小→廃止の順）
+
+// 支援対象×提供形態 13分類（AI分類パイロット結果を row.ptype として反映。コードは1〜13に統一）
+// 並び：1-5個人向け（経由の度合い順）／6-8団体・地域・合議体向け（予算規模順）／9-10内部向け（予算規模順）／11-12広報・不明（Gは常に最後）／13は複数形態混在
+// 1/2/3は表示ラベルを統一（現金・引換券・モノは住民から見て同じ「支給」であるため。コードは今後の新規判定でも原則1を使う）
+const PTYPE_LABEL = {
+  '1': '住民へ現金・引換券・モノを支給', '2': '住民へ現金・引換券・モノを支給', '3': '住民へ現金・引換券・モノを支給', '4': '業者経由でサービスを提供',
+  '5': '住民へ直接サービスを提供',
+  '6': '施設・インフラを整備する', '7': '団体・事業者へ補助金を支給', '8': '会議体を運営する',
+  '9': '内部の事務を処理する', '10': '調査・計画を実施する',
+  '11': '住民へ情報を発信する', '12': '情報不足で分類できない',
+  '13': '複数の提供形態が混在'
+};
+// ドリルダウン表用の短縮ラベル（列幅が狭いため）。個別評価画面等は引き続きPTYPE_LABEL（フル文言）を使用
+const PTYPE_LABEL_SHORT = {
+  '1': '給付', '2': '給付', '3': '給付',
+  '4': '委託提供',
+  '5': '直接提供',
+  '6': 'ｲﾝﾌﾗ整備',
+  '7': '補助金',
+  '8': '会議運営',
+  '9': '内部事務',
+  '10': '調査計画',
+  '11': '情報発信',
+  '12': '分類不能',
+  '13': '形態混在',
+};
+// タグの配色を4階層（誰を支援しているか）に束ねる。グルーピングには使わず、バッジの色分けのみに使用
+const PTYPE_TIER = {
+  '1': 'green', '2': 'green', '3': 'green', '4': 'green', '5': 'green',
+  '6': 'blue', '7': 'blue', '8': 'blue',
+  '9': 'gray', '10': 'gray',
+  '11': 'amber', '12': 'amber',
+  '13': 'purple'
+};
 let ratings = {};
-let filter = { ev:'', root:'', cls:'', rating:'' };
-let cursor = 0;
-let filtered = [];
+let rootFilter = '';      // '' = 全事業 / ROOT_ORDERのいずれかで絞り込み（チャート・施策一覧・ドリルダウン全てに反映）
+let curCls = null;        // 現在ドリルダウン中の施策
+let selected = new Set(); // opt-in選択された事業番号
+let queue = [];           // 評価キュー（selectedから作る）
+let qCursor = 0;
+let openEvKeys = null;    // ドリルダウンの行政評価セクションの開閉状態（チェックボックス操作の再描画をまたいで保持。nullなら次回描画時に既定値で初期化）
+let peopleAgg = null;     // Supabase集計結果 {no: {続行,廃止,見直し}}（取得前はnull）
+let voteFilter = '';      // 評価結果一覧のフィルタ：'' 全事業 / '続行'/'廃止'/'見直し' / '未評価'（自分は未評価・みんなは投票済み）
+let curScreen = 'map';    // 現在表示中の画面（loadPeopleData完了後の再描画先を追跡）
 
 function load() {
   try { ratings = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(e) {}
-  filtered = EVENTS.slice();
-  render('filter');
+  showRenewalNoticeIfNeeded();
+  render('map');
+  loadPeopleData(); // ドリルダウンで「みんなの評価」を見せるため、投票前でも起動時に取得する
+}
+
+// 旧v2利用者向け：評価内容が引き継がれないことの一度きりの案内（v2の保存キーが残っている＝過去に利用した形跡がある場合のみ表示）
+function showRenewalNoticeIfNeeded() {
+  const NOTICE_KEY = LS_KEY + '_renewal_notice_shown';
+  if (localStorage.getItem(OLD_LS_KEY) && !localStorage.getItem(NOTICE_KEY)) {
+    alert('このツールは新しくなりました。恐れ入りますが、以前ご利用いただいた際の評価内容は引き継がれません。お手数をおかけしますが、改めてご覧いただければと思います。');
+    localStorage.setItem(NOTICE_KEY, '1');
+  }
 }
 
 function fmt(n) {
   if (!n) return '0';
   return n.toLocaleString();
 }
-
-function fmtDuration(sec) {
-  const h = Math.floor(sec / 3600);
-  const m = Math.round((sec % 3600) / 60);
-  if (h > 0) return `約${h}時間${m}分`;
-  if (m > 0) return `約${m}分`;
-  return `${sec}秒`;
-}
-
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-function totalBudgetHtml() {
-  const total = EVENTS.reduce((a,e) => a + e.budget, 0);
-  const per = Math.round(total * 1000 / LABELS.population);
-  return `事務事業評価対象事業費の合計：${fmt(total)}千円（住民1人あたり約${fmt(per)}円）`;
+function fracPct(count, total) {
+  const pct = total ? Math.round(count / total * 100) : 0;
+  return `${count}/${total}（${pct}%）`;
 }
 
 function personnelCostHtml() {
@@ -202,223 +271,231 @@ function personnelCostHtml() {
   return ['含む','含まない','確認取れず'].map(o => `${o===val?'☑':'☐'}${o}`).join('　');
 }
 
-function opts(key) {
-  const EV_ORDER = ['拡大','現状継続','改善（手段変更）','縮小','廃止方向','完了'];
-  if (key === 'ev') return EV_ORDER.filter(v => EVENTS.some(e => e.ev === v));
-  if (key === 'root') return [...new Set(EVENTS.map(e => e.root).filter(Boolean))].sort();
-  if (key === 'cls') return [...new Set(EVENTS.map(e => e.cls).filter(Boolean))].sort();
-  return [];
-}
-
-function selHtml(fkey, label, val) {
-  const os = opts(fkey).map(o => `<option value="${esc(o)}"${val===o?' selected':''}>${esc(o)}</option>`).join('');
-  const dis = (os && !(LABELS.cls === null && fkey === 'cls')) ? '' : 'disabled';
-  return `<select ${dis} title="${label}" onchange="setFilter('${fkey}',this.value)">
-    <option value="">全ての${label}</option>${os}</select>`;
-}
-
-function setFilter(key, val) {
-  filter[key] = val;
-  applyFilter();
-  render('filter');
-}
-
-function applyFilter() {
-  filtered = EVENTS.filter(e => {
-    if (filter.ev && e.ev !== filter.ev) return false;
-    if (filter.root && e.root !== filter.root) return false;
-    if (filter.cls && e.cls !== filter.cls) return false;
-    if (filter.rating) {
-      const r = ratings[e.no] || '';
-      if (filter.rating === '未評価' && r) return false;
-      if (filter.rating !== '未評価' && r !== filter.rating) return false;
-    }
-    return true;
-  });
-}
-
-function statusBar() {
-  const k = Object.values(ratings).filter(v=>v==='続行').length;
-  const h = Object.values(ratings).filter(v=>v==='廃止').length;
-  const f = Object.values(ratings).filter(v=>v==='見直し').length;
-  const u = EVENTS.length - k - h - f;
-  return `<div class="sbar">
-    <span class="sb sb-k">✓ 続行 ${k}</span>
-    <span class="sb sb-h">✕ 廃止 ${h}</span>
-    <span class="sb sb-f">△ 見直し ${f}</span>
-    <span class="sb sb-u">未評価 ${u}</span>
-  </div>`;
-}
-
 function rootTagHtml(root) {
-  const cls = 'troot-' + root;
-  return `<span class="tag ${cls}">${esc(root)}</span>`;
+  return `<span class="tag troot-${esc(root)}">${esc(root)}</span>`;
 }
-
 function evTagHtml(ev) {
-  const cls = 'tev-' + ev;
-  return `<span class="tag ${cls}">${esc(ev)}</span>`;
+  return `<span class="tag tev-${esc(ev)}">行政評価：${esc(ev)}</span>`;
+}
+// 表の列見出し（法定義務／行政評価）で文脈が既に示されている場合の短縮版タグ
+function rootTagShortHtml(root) {
+  const short = root.startsWith('法定義務') ? root.replace('法定義務', '') : root;
+  return `<span class="tag troot-${esc(root)}">${esc(short)}</span>`;
+}
+function evTagShortHtml(ev) {
+  return `<span class="tag tev-${esc(ev)}">${esc(ev)}</span>`;
+}
+function ptypeTagHtml(ptype) {
+  const tier = PTYPE_TIER[ptype] || 'amber';
+  const label = PTYPE_LABEL[ptype] || ptype;
+  return `<span class="tag tptype-${tier}">${esc(label)}</span>`;
+}
+// ドリルダウン表用：短縮ラベル版
+function ptypeTagShortHtml(ptype) {
+  const tier = PTYPE_TIER[ptype] || 'amber';
+  const label = PTYPE_LABEL_SHORT[ptype] || ptype;
+  return `<span class="tag tptype-${tier}">${esc(label)}</span>`;
+}
+function ratingTagHtml(r) {
+  return r ? `<span class="tag tev-${esc(r)}">あなたの評価：${esc(r)}</span>` : '';
 }
 
-function storyHtml(e) {
-  const impact = e.story_impact;
-  const hasImpact = impact && impact !== '判断できない';
-  const s3text = hasImpact
-    ? `この事業がなくなった場合、${impact}という問題が起きると想定されています。`
-    : `廃止した場合の影響が評価シートに記載されていません。`;
-  const s3cls = hasImpact ? 's3' : 's3-none';
-  return `<div class="story">
-    <p>${esc(e.story_p1)}</p>
-    <p>${esc(e.story_p2)}</p>
-    <p class="${s3cls}">${esc(s3text)}</p>
-  </div>`;
+// ── 施策(cls)別集計（常に全事業ベース）──────────────────────────────────
+function clsStats() {
+  const map = {};
+  let grandTotal = 0;
+  EVENTS.forEach(e => {
+    const c = e.cls || 'データなし';
+    if (!map[c]) map[c] = { cls: c, count: 0, budget: 0 };
+    map[c].count++;
+    map[c].budget += e.budget;
+    grandTotal += e.budget;
+  });
+  return { list: Object.values(map), grandTotal };
 }
 
-// ── フィルター画面 ──────────────────────────────────────────────────────
+// ── 法的根拠フィルタ（チャート・施策一覧・ドリルダウンすべてに反映） ─────────
+function setRootFilter(val) { rootFilter = val; render('map'); }
+function matchesFilter(e) { return !rootFilter || e.root === rootFilter; }
+function rootFilterOptions() {
+  const totals = {};
+  EVENTS.forEach(e => { totals[e.root] = (totals[e.root] || 0) + 1; });
+  return ROOT_ORDER.filter(r => totals[r] > 0);
+}
+function filteredClsBudgets() {
+  const map = {};
+  let total = 0;
+  EVENTS.forEach(e => {
+    if (!matchesFilter(e)) return;
+    const c = e.cls || 'データなし';
+    map[c] = (map[c] || 0) + e.budget;
+    total += e.budget;
+  });
+  return { map, total };
+}
+
+// ── 画面切替 ─────────────────────────────────────────────────────────────
 function render(screen) {
+  curScreen = screen;
   const app = document.getElementById('app');
-  if (screen === 'filter') renderFilter(app);
-  else if (screen === 'card') renderCard(app);
+  if (screen === 'map') renderMap(app);
+  else if (screen === 'cls') renderClsDrill(app);
+  else if (screen === 'eval') renderEval(app);
   else if (screen === 'summary') renderSummary(app);
-  else if (screen === 'guide') renderGuide(app);
 }
 
-function renderGuide(app) {
-  app.innerHTML = `
-    <div class="hd no-print">
-      <div class="card-nav">
-        <button class="cnav-btn" onclick="render('filter')">← フィルターに戻る</button>
-        <span style="font-size:.85rem">📖 カードの見方</span>
-        <span style="width:80px"></span>
-      </div>
-    </div>
-    <div class="card">
-      <div class="gitem">
-        <div class="glbl">${esc(LABELS.no_col)}・${esc(LABELS.dept)}</div>
-        <p>評価対象の事務事業を、市区町村が公開している評価シート上で特定するための情報です。</p>
-      </div>
-      <div class="gitem">
-        <div class="glbl">法的根拠タグ</div>
-        <p>
-          <span class="tag troot-法定義務あり">法定義務あり</span>法令・条例等でこの事業の実施が義務付けられています。<br>
-          <span class="tag troot-法定義務なし">法定義務なし</span>法令上の義務はなく、市区町村の裁量で実施しています。<br>
-          <span class="tag troot-判断できない">判断できない</span>評価シートの記載からは法的根拠の有無を判断できません。<br>
-          <span class="tag troot-データなし">データなし</span>評価シートに法的根拠に関する記載がありません。
-        </p>
-      </div>
-      <div class="gitem">
-        <div class="glbl">行政の評価結果タグ</div>
-        <p>市区町村自身による、次年度以降のこの事業の方向性の評価です（拡大・現状継続・改善（手段変更）・縮小・廃止方向・完了）。住民の評価とは別の指標です。</p>
-      </div>
-      <div class="gitem">
-        <div class="glbl">目的・事業内容</div>
-        <p>この事業が「何のために」「何を」行っているかを説明しています。</p>
-      </div>
-      <div class="gitem">
-        <div class="glbl">決算額・住民1人あたりコスト</div>
-        <p>直近年度のこの事業の決算額（または予算額）と、それを人口で割った住民1人あたりの年間コストです。この金額に職員の人件費が含まれているかどうかは自治体・評価シートによって異なるため、下の「人件費」欄で確認できます（☑が付いている項目が該当します）。</p>
-      </div>
-      <div class="gitem">
-        <div class="glbl">成果</div>
-        <p>活動の実績と、その活動によって住民にどんな成果・変化があったかを説明しています。「何件実施したか」だけでなく「その結果どうなったか」を示すことを意図しています。成果を測る指標が評価シートに設定されていない事業では、その旨を記載しています。</p>
-      </div>
-      <div class="gitem">
-        <div class="glbl">廃止した場合の影響</div>
-        <p>この事業をやめた場合に何が起きると想定されるかを、評価シートの記載から抽出しています。評価シートに記載がない事業では、その旨を表示しています。</p>
-      </div>
-      <div class="gitem">
-        <div class="glbl">AIによる自動生成について</div>
-        <p>「目的・事業内容」「成果」「廃止した場合の影響」は、市区町村が公開している評価シートの内容をもとにAIが自動生成した要約です。内容に違和感がある場合や詳細を確認したい場合は、カード下部のリンクから元の評価シートをご確認ください。</p>
-      </div>
-      <div class="gitem">
-        <div class="glbl">評価ボタン</div>
-        <p>
-          <span class="rbtn ak" style="display:inline-block;padding:4px 10px;margin:2px 4px 2px 0">✓ 続行</span>活動内容と予算に納得<br>
-          <span class="rbtn ah" style="display:inline-block;padding:4px 10px;margin:2px 4px 2px 0">✕ 廃止</span>活動内容に納得できない<br>
-          <span class="rbtn af" style="display:inline-block;padding:4px 10px;margin:2px 4px 2px 0">△ 見直し</span>予算に納得できない
-        </p>
-      </div>
-    </div>
-    <button class="btn btn-p btn-full no-print" onclick="render('filter')">← フィルターに戻る</button>`;
-}
+// ── ①全体像マップ ────────────────────────────────────────────────────────
+function renderMap(app) {
+  const { list: fullList } = clsStats();
+  const { map: filteredMap, total: filteredTotal } = filteredClsBudgets();
+  const visible = fullList.filter(s => (filteredMap[s.cls] || 0) > 0);
+  const sorted = visible.slice().sort((a,b) => (filteredMap[b.cls] || 0) - (filteredMap[a.cls] || 0));
+  const maxBudget = Math.max(...sorted.map(s => filteredMap[s.cls] || 0), 1);
+  const filteredCount = EVENTS.filter(matchesFilter).length;
 
-function renderFilter(app) {
-  const ratingOpts = ['続行','廃止','見直し','未評価'].map(v =>
-    `<option value="${v}"${filter.rating===v?' selected':''}>${v}</option>`).join('');
+  const filterBtns = [''].concat(rootFilterOptions()).map(r => {
+    const label = r || '全事業';
+    return `<button class="stbtn${rootFilter===r?' active':''}" onclick="setRootFilter('${esc(r)}')">${esc(label)}</button>`;
+  }).join('');
+
+  const cards = sorted.map(s => {
+    const fBudget = filteredMap[s.cls] || 0;
+    const evalTarget = EVENTS.filter(e => (e.cls || 'データなし') === s.cls && matchesFilter(e));
+    const evaluated = evalTarget.filter(e => ratings[e.no]).length;
+    const barPct = maxBudget ? (fBudget / maxBudget * 100).toFixed(1) : 0;
+    const sharePct = filteredTotal ? (fBudget / filteredTotal * 100).toFixed(1) : '0.0';
+    return `<div class="clsbox" onclick="openCls('${esc(s.cls)}')">
+      <div class="clstop">
+        <span class="clsname" title="${esc(s.cls)}">${esc(s.cls)}</span>
+        <span class="clsamt">${(fBudget/100000).toFixed(1)}億円 <b>${sharePct}%</b></span>
+      </div>
+      <div class="clsbar-wrap"><div class="clsbar" style="width:${barPct}%"></div></div>
+      <div class="clsmeta">${evalTarget.length}件中 評価済み${evaluated}件</div>
+    </div>`;
+  }).join('');
 
   app.innerHTML = `
     <div class="hd">
       <h1>${esc(LABELS.tool_title)}</h1>
-      <div class="sub">${esc(LABELS.card_title)}（${EVENTS.length}件）</div>
-    </div>
-    ${statusBar()}
-    <div class="card">
-      <div class="frow">
-        ${selHtml('ev','行政の評価結果',filter.ev)}
-        ${selHtml('root','法的根拠',filter.root)}
-        ${selHtml('cls', LABELS.cls || '事業分類', filter.cls)}
-        <select title="住民の評価結果" onchange="setFilter('rating',this.value)">
-          <option value="">全ての住民の評価結果</option>${ratingOpts}
-        </select>
-      </div>
-      <div class="fresult">${filtered.length} 件が該当</div>
-      <div class="ftime" style="font-size:.8rem;color:#6b7280;margin:-4px 0 10px">
-        事務事業1件につき、10秒で評価したとしても${fmtDuration(EVENTS.length*10)}かかります。評価途中でもサマリーを見られますし、投票できます。また、評価は自動でブラウザに保存されるので、いつでも中断・再開できます。
-      </div>
-      <div class="bbtns">
-        <button class="btn btn-p" onclick="startCards()">▶ カード評価を開始</button>
-        <button class="btn btn-o" onclick="render('summary')">📊 サマリーを見る</button>
-        <button class="btn btn-o" onclick="render('guide')">📖 カードの見方</button>
-        <button class="btn btn-o btn-sm" onclick="resetFilter()">フィルターをリセット</button>
-      </div>
+      <div class="sub">${esc(LABELS.card_title)}（全${EVENTS.length}件・${esc(LABELS.cls)}${fullList.length}区分）</div>
     </div>
     <div class="card">
-      <div class="batch">
-        <h3>一斉評価（絞り込み中の ${filtered.length} 件に適用）</h3>
-        <div class="bbtns">
-          <button class="btn btn-k btn-sm" onclick="batchRate('続行')">✓ 全件「続行」</button>
-          <button class="btn btn-h btn-sm" onclick="batchRate('廃止')">✕ 全件「廃止」</button>
-          <button class="btn btn-f btn-sm" onclick="batchRate('見直し')">△ 全件「見直し」</button>
-          <button class="btn btn-o btn-sm" onclick="batchRate('')">↩ 全件「未評価に戻す」</button>
-        </div>
-      </div>
+      <div class="filterrow">${filterBtns}</div>
+      <p class="maphint">「法定義務なし」を選ぶと、住民の裁量判断が及ぶ事業だけに絞って施策別に確認できます。バーの長さと％は、絞り込み対象の中でその施策が占める規模を表します。</p>
+      <div class="fresult">${filteredCount}件・${(filteredTotal/100000).toFixed(1)}億円が対象（${esc(LABELS.cls)}${sorted.length}区分・クリックで事業を選んで評価）</div>
+      <div class="clsgrid-wrap"><div class="clsgrid">${cards}</div></div>
     </div>
-    <div class="card no-print" style="font-size:.82rem;color:#6b7280;line-height:1.7">
-      <strong>出典：</strong><a href="${esc(LABELS.source_url)}" target="_blank">${esc(LABELS.source_url)}</a><br>
-      評価データは湖西市の令和7年度実施 事務事業評価（令和6年度決算データ）に基づきます。<br>
-      住民1人あたりコストは令和6年度の人口（57,216人・出典：<a href="https://www.digital.go.jp/resources/japandashboard/municipal-finance" target="_blank">デジタル庁 地方財政ダッシュボード</a>）で計算しています。<br>
-      ${totalBudgetHtml()}
+    <button class="btn btn-o btn-full" onclick="render('summary')">📊 サマリー・投票を見る</button>
+    <div class="card" style="font-size:.75rem;color:#6b7280;line-height:1.5">
+      <strong>出典：</strong><a href="${esc(LABELS.source_url)}" target="_blank">${esc(LABELS.source_url)}</a>／${esc(LABELS.card_title)}／住民1人あたりコストは人口${fmt(LABELS.population)}人（<a href="https://www.digital.go.jp/resources/japandashboard/municipal-finance" target="_blank">デジタル庁 地方財政ダッシュボード</a>）で計算
     </div>`;
 }
 
-function resetFilter() {
-  filter = { ev:'', root:'', cls:'', rating:'' };
-  applyFilter();
-  render('filter');
+// ── cls ドリルダウン（opt-in選択） ─────────────────────────────────────────
+function openCls(cls) {
+  curCls = cls;
+  selected = new Set();
+  openEvKeys = null; // 次回描画時に「現状継続」以外を開いた既定状態で初期化
+  render('cls');
 }
 
-function startCards() {
-  if (!filtered.length) { alert('該当する事業がありません。'); return; }
-  cursor = 0;
-  render('card');
+function renderClsDrill(app) {
+  const evs = EVENTS.filter(e => (e.cls || 'データなし') === curCls && matchesFilter(e));
+
+  // グルーピング軸は行政評価ev一本（現状継続のみ既定で折りたたみ）。
+  // 12分類（支援対象×提供形態）は行ごとのバッジで「何をしている事業か」を示すのみで、グルーピングには使わない。
+  const groups = {};
+  evs.forEach(e => {
+    const key = e.ev || 'データなし';
+    (groups[key] = groups[key] || []).push(e);
+  });
+  const orderedKeys = EV_PRIORITY.filter(k => groups[k]).concat(Object.keys(groups).filter(k => !EV_PRIORITY.includes(k)));
+
+  // 開閉状態は openEvKeys に保持し、チェックボックス操作による再描画をまたいで維持する（既定はすべて折りたたみ）
+  if (!openEvKeys) {
+    openEvKeys = new Set();
+  }
+
+  const evRowHtml = e => {
+    const checked = selected.has(e.no) ? 'checked' : '';
+    return `<tr>
+      <td class="evtd-chk"><input type="checkbox" ${checked} onchange="toggleSel('${e.no}')"></td>
+      <td class="evtd-name" onclick="toggleSel('${e.no}')">${esc(e.name)}</td>
+      <td class="evtd-budget">${(e.budget/100000).toFixed(1)}億円</td>
+      <td class="evtd-root">${rootTagShortHtml(e.root)}</td>
+      <td class="evtd-ptype">${ptypeTagShortHtml(e.ptype)}</td>
+      <td class="evtd-mine">${myRatingCellHtml(ratings[e.no])}</td>
+      <td class="evtd-vote">${voteCellStackHtml(peopleAgg && peopleAgg[e.no])}</td>
+    </tr>`;
+  };
+
+  const evTableHtml = list => `<div class="evtbl-wrap"><table class="evtbl">
+    <thead><tr><th></th><th>事務事業名</th><th>金額</th><th>法定義務</th><th>提供形態</th><th>自分の評価</th><th>みんなの評価</th></tr></thead>
+    <tbody>${list.map(evRowHtml).join('')}</tbody>
+  </table></div>`;
+
+  const sections = orderedKeys.map(key => {
+    const list = groups[key].slice().sort((a,b) => b.budget - a.budget);
+    const sumOku = (list.reduce((s,e)=>s+e.budget,0)/100000).toFixed(1);
+    const openAttr = openEvKeys.has(key) ? ' open' : '';
+    return `<details class="evsec" data-evkey="${esc(key)}"${openAttr} ontoggle="onEvToggle(this)">
+      <summary>行政による評価結果が${esc(key)}の事務事業（${list.length}件・${sumOku}億円）</summary>
+      <div class="evsec-body">${evTableHtml(list)}</div>
+    </details>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="hd no-print">
+      <div class="card-nav">
+        <button class="cnav-btn" onclick="render('map')">← マップに戻る</button>
+        <span class="cnav-mid-wrap" title="${esc(curCls)}">${esc(curCls)}${rootFilter ? `（${esc(rootFilter)}のみ）` : ''}</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="bbtns" style="margin-bottom:10px">
+        <button class="btn btn-o btn-sm" onclick="selectAllCls(true)">全選択</button>
+        <button class="btn btn-o btn-sm" onclick="selectAllCls(false)">全解除</button>
+        <span style="font-size:.8rem;color:#6b7280;align-self:center">${evs.length}件中 ${selected.size}件選択中</span>
+      </div>
+      <p class="maphint" style="margin-bottom:10px">行政による今後の方向性（廃止方向・縮小など変化がある区分）を先頭に表示しています。すべて折りたたんでいます。気になる区分をタップして展開してください。</p>
+      ${sections}
+    </div>
+    <div class="sticky-spacer no-print"></div>
+    <div class="sticky-actions no-print">
+      <div class="sticky-inner">
+        <button class="btn btn-o btn-full" onclick="render('summary')">📊 サマリー・投票を見る</button>
+        <button class="btn btn-p btn-full" ${selected.size ? '' : 'disabled'} onclick="startEvalQueue()">選択した事業を評価する（${selected.size}件）</button>
+      </div>
+    </div>`;
 }
 
-function batchRate(val) {
-  filtered.forEach(e => { ratings[e.no] = val; });
-  localStorage.setItem(LS_KEY, JSON.stringify(ratings));
-  applyFilter();
-  render('filter');
+function toggleSel(no) {
+  if (selected.has(no)) selected.delete(no); else selected.add(no);
+  render('cls');
+}
+function onEvToggle(detailsEl) {
+  const key = detailsEl.getAttribute('data-evkey');
+  if (detailsEl.open) openEvKeys.add(key); else openEvKeys.delete(key);
+}
+function selectAllCls(all) {
+  const evs = EVENTS.filter(e => (e.cls || 'データなし') === curCls && matchesFilter(e));
+  selected = all ? new Set(evs.map(e => e.no)) : new Set();
+  render('cls');
 }
 
-// ── カード評価画面 ────────────────────────────────────────────────────────
-function renderCard(app) {
-  if (cursor < 0) cursor = 0;
-  if (cursor >= filtered.length) cursor = filtered.length - 1;
-  const e = filtered[cursor];
+// ── ②個別評価（opt-inキュー） ───────────────────────────────────────────
+function startEvalQueue() {
+  if (!selected.size) return;
+  queue = EVENTS.filter(e => selected.has(e.no)).sort((a,b) => b.budget - a.budget);
+  qCursor = 0;
+  render('eval');
+}
+
+function renderEval(app) {
+  if (qCursor < 0) qCursor = 0;
+  if (qCursor >= queue.length) qCursor = queue.length - 1;
+  const e = queue[qCursor];
   const r = ratings[e.no] || '';
-  const pdfUrl = LABELS.pdf_url || LABELS.source_url;
-  const pct = Math.round((cursor + 1) / filtered.length * 100);
-
   const rcls = r === '続行' ? 'rk' : r === '廃止' ? 'rh' : r === '見直し' ? 'rf' : '';
   const budgetText = e.budget ? `${fmt(e.budget)}千円` : '—';
   const impact = e.story_impact;
@@ -426,23 +503,24 @@ function renderCard(app) {
   const s3text = hasImpact
     ? `この事業がなくなった場合、${impact}という問題が起きると想定されています。`
     : `評価シートに記載されていません。`;
+  const pct = Math.round((qCursor + 1) / queue.length * 100);
 
   app.innerHTML = `
     <div class="hd no-print">
       <div class="card-nav">
-        <button class="cnav-btn" onclick="render('filter')">← フィルター</button>
-        <span style="font-size:.85rem">${cursor+1} / ${filtered.length} 件目</span>
-        <button class="cnav-btn" onclick="render('summary')">サマリー →</button>
+        <button class="cnav-btn" onclick="render('cls')" title="${esc(curCls)}の一覧">← ${esc(curCls)}の一覧</button>
+        <span class="cnav-mid">${qCursor+1} / ${queue.length} 件目</span>
+        <button class="cnav-btn" onclick="render('map')">マップへ</button>
       </div>
     </div>
-    ${statusBar()}
     <div class="pbwrap no-print"><div class="pbfill" style="width:${pct}%"></div></div>
     <div class="ecard ${rcls}">
       <div class="ename">${esc(e.name)}</div>
       <div class="emeta">${esc(LABELS.no_col)}：${esc(e.no)}　${esc(LABELS.dept)}：${esc(e.dept)}</div>
       <div class="tags">
-        <span class="tag troot-${e.root}">法的根拠：${esc(e.root)}</span>
-        <span class="tag tev-${e.ev}">行政評価：${esc(e.ev)}</span>
+        ${rootTagHtml(e.root)}
+        ${evTagHtml(e.ev)}
+        ${ptypeTagHtml(e.ptype)}
       </div>
       <div class="story">
         <div class="story-label">目的・事業内容</div>
@@ -459,140 +537,87 @@ function renderCard(app) {
         <p>${esc(s3text)}</p>
       </div>
     </div>
-    <div class="sticky-spacer no-print"></div>
+    <div class="sticky-spacer tall no-print"></div>
     <div class="sticky-actions no-print">
       <div class="sticky-inner">
         <p class="ai-note">※目的・事業内容、成果、廃止した場合の影響の説明文は、評価シートを元にAIが自動生成しています。内容に違和感がある場合や詳細を確認したい場合は、下のリンクから評価シートをご確認ください。</p>
-        <a class="btn btn-p btn-full" href="${pdfUrl}#page=${e.pdf_page}" target="_blank">📄 評価シートを確認（p.${e.pdf_page}）</a>
+        <a class="btn btn-p btn-full" href="${esc(pdfUrl(e))}#page=${e.pdf_page}" target="_blank">📄 評価シートを確認（p.${e.pdf_page}）</a>
         <div class="rbtns">
-          <button class="rbtn${r==='続行'?' ak':''}" onclick="rate('続行')">✓ 続行<small>活動内容と予算に納得</small></button>
-          <button class="rbtn${r==='廃止'?' ah':''}" onclick="rate('廃止')">✕ 廃止<small>活動内容に納得できない</small></button>
-          <button class="rbtn${r==='見直し'?' af':''}" onclick="rate('見直し')">△ 見直し<small>予算に納得できない</small></button>
+          <button class="rbtn${r==='続行'?' ak':''}" onclick="rateQueue('続行')">✓ 続行<small>活動内容と予算に納得</small></button>
+          <button class="rbtn${r==='廃止'?' ah':''}" onclick="rateQueue('廃止')">✕ 廃止<small>活動内容に納得できない</small></button>
+          <button class="rbtn${r==='見直し'?' af':''}" onclick="rateQueue('見直し')">△ 見直し<small>予算に納得できない</small></button>
         </div>
         <div class="nav">
-          <button class="btn btn-o btn-sm" onclick="go(-1)" ${cursor===0?'disabled':''}>◀ 前へ</button>
-          <span class="cpos">${cursor+1} / ${filtered.length}</span>
-          <button class="btn btn-o btn-sm" onclick="go(1)" ${cursor===filtered.length-1?'disabled':''}>次へ ▶</button>
+          <button class="btn btn-o btn-sm" onclick="goQueue(-1)" ${qCursor===0?'disabled':''}>◀ 前へ</button>
+          <span class="cpos">${qCursor+1} / ${queue.length}</span>
+          <button class="btn btn-o btn-sm" onclick="goQueue(1)" ${qCursor===queue.length-1?'disabled':''}>次へ ▶</button>
         </div>
       </div>
     </div>`;
 }
 
-function rate(val) {
-  const e = filtered[cursor];
+// 事業ごとのPDFリンク先。個別に pdf_url が設定されていればそれを、なければ LABELS.pdf_url、
+// それも無ければ LABELS.source_url を使う（自治体固有ハードコードを避けるための汎用化）
+function pdfUrl(e) {
+  return e.pdf_url || LABELS.pdf_url || LABELS.source_url;
+}
+
+function rateQueue(val) {
+  const e = queue[qCursor];
   ratings[e.no] = val;
   localStorage.setItem(LS_KEY, JSON.stringify(ratings));
-  if (cursor < filtered.length - 1) {
-    cursor++;
-    render('card');
+  if (qCursor < queue.length - 1) {
+    qCursor++;
+    render('eval');
   } else {
-    applyFilter();
-    render('summary');
+    // 選んだ事業をすべて評価し終えたらマップに戻る（「評価しては戻ってきてを繰り返す」フロー）
+    selected = new Set();
+    render('cls');
   }
 }
-
-function go(dir) {
-  cursor += dir;
-  render('card');
+function goQueue(dir) {
+  qCursor += dir;
+  render('eval');
 }
 
-// ── サマリー画面 ──────────────────────────────────────────────────────────
+// ── ③サマリー・投票 ─────────────────────────────────────────────────────
 function renderSummary(app) {
   const k = EVENTS.filter(e => ratings[e.no] === '続行');
   const h = EVENTS.filter(e => ratings[e.no] === '廃止');
   const f = EVENTS.filter(e => ratings[e.no] === '見直し');
   const u = EVENTS.filter(e => !ratings[e.no]);
-  const sumBudget = arr => arr.reduce((a,e)=>a+e.budget,0);
-
-  function sec(label, arr, cls) {
-    if (!arr.length) return '';
-    const rows = arr.map(e => `<tr>
-      <td>${esc(e.no)}</td>
-      <td>${esc(e.name)}</td>
-      <td>${esc(e.dept)}</td>
-      <td>${rootTagHtml(e.root)}</td>
-      <td>${esc(e.cls)}</td>
-      <td>${evTagHtml(e.ev)}</td>
-      <td class="sbdg">${fmt(e.budget)}</td>
-      <td>${esc(ratings[e.no] || '')}</td>
-    </tr>`).join('');
-    return `<details class="ssec">
-      <summary>${label}（${arr.length}件・${fmt(sumBudget(arr))}千円）<span></span></summary>
-      <div><table class="stbl">
-        <thead><tr>
-          <th>${esc(LABELS.no_col)}</th><th>事業名</th><th>${esc(LABELS.dept)}</th>
-          <th>法的根拠</th><th>${esc(LABELS.cls || '事業分類')}</th><th>行政評価</th><th>${esc(LABELS.budget_col)}</th><th>評価結果</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table></div>
-    </details>`;
-  }
 
   app.innerHTML = `
     <div class="hd no-print">
-      <h1>${esc(LABELS.tool_title)}</h1>
+      <div class="card-nav">
+        <button class="cnav-btn" onclick="render('map')">← マップに戻る</button>
+        <span class="cnav-mid">📊 サマリー・投票</span>
+      </div>
     </div>
     <div class="card">
       <h2 style="font-size:1rem;font-weight:700;margin-bottom:12px">${esc(LABELS.summary_title)}</h2>
       <div class="kgrid">
-        <div class="kbox kh">
-          <div class="klbl">✕ 廃止</div>
-          <div class="knum">${h.length}</div>
-          <div class="kbdg">${fmt(sumBudget(h))}千円</div>
-        </div>
-        <div class="kbox kf">
-          <div class="klbl">△ 見直し</div>
-          <div class="knum">${f.length}</div>
-          <div class="kbdg">${fmt(sumBudget(f))}千円</div>
-        </div>
-        <div class="kbox kk">
-          <div class="klbl">✓ 続行</div>
-          <div class="knum">${k.length}</div>
-          <div class="kbdg">${fmt(sumBudget(k))}千円</div>
-        </div>
-        <div class="kbox ku">
-          <div class="klbl">未評価</div>
-          <div class="knum">${u.length}</div>
-          <div class="kbdg">${fmt(sumBudget(u))}千円</div>
-        </div>
+        <div class="kbox kh"><div class="klbl">✕ 廃止</div><div class="knum">${h.length}</div></div>
+        <div class="kbox kf"><div class="klbl">△ 見直し</div><div class="knum">${f.length}</div></div>
+        <div class="kbox kk"><div class="klbl">✓ 続行</div><div class="knum">${k.length}</div></div>
+        <div class="kbox ku"><div class="klbl">未評価</div><div class="knum">${u.length}</div></div>
       </div>
-      <div style="margin-bottom:12px" class="no-print">
+      <p style="font-size:.78rem;color:#6b7280;margin-bottom:12px">※事業ごとの評価件数のみを表示しています（金額換算は行っていません）。</p>
+      <div class="no-print">
         ${localStorage.getItem(SUBMITTED_KEY)
           ? `<button class="btn btn-o btn-sm" disabled>✓ 投票済み</button>`
           : `<button id="submit-btn" class="btn btn-p btn-sm" onclick="submitToSupabase()">📤 投票する</button>`}
         <span style="font-size:.8rem;color:#6b7280;margin-left:10px">投票すると、みんなの評価に反映されます。<br>送信されるのは事業番号・評価結果（続行/廃止/見直し）・送信日時のみです。個人情報は一切収集しません。<br>実際の収集情報は下の📥 生データCSVから閲覧できます。</span>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap" class="no-print">
-        <button class="btn btn-p btn-sm" onclick="render('filter')">← フィルターに戻る</button>
-        <button class="btn btn-o btn-sm" onclick="downloadCsv()">📥 自分のCSV</button>
-        <button class="btn btn-o btn-sm" onclick="window.print()">🖨 印刷</button>
-        <button class="btn btn-o btn-sm" onclick="if(confirm('評価をすべてリセットしますか？')){localStorage.removeItem(LS_KEY);localStorage.removeItem(SUBMITTED_KEY);ratings={};applyFilter();render('filter')}">🗑 リセット</button>
-      </div>
     </div>
-    ${sec('✕ 廃止', h, 'rh')}
-    ${sec('△ 見直し', f, 'rf')}
-    ${sec('✓ 続行', k, 'rk')}
-    ${sec('未評価', u, 'ru')}
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-        <h2 style="font-size:1rem;font-weight:700">📊 みんなの評価</h2>
-        <button class="btn btn-o btn-sm no-print" onclick="downloadPeopleCsv()">📥 生データCSV</button>
-      </div>
-      <div id="people-section"><p style="color:#6b7280;font-size:.85rem">読み込み中...</p></div>
-    </div>`;
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:10px">📊 評価結果一覧（自分×みんな）</h2>
+      <p style="font-size:.78rem;color:#6b7280;margin-bottom:10px">自分が評価した事業、または誰かが投票済みの事業を対象に表示しています。</p>
+      <div id="vote-section"><p style="color:#6b7280;font-size:.85rem">読み込み中...</p></div>
+    </div>
+    <button class="btn btn-o btn-full no-print" onclick="render('map')">← マップに戻る</button>
+    <button class="btn btn-o btn-full no-print" onclick="if(confirm('評価をすべてリセットしますか？')){localStorage.removeItem(LS_KEY);localStorage.removeItem(SUBMITTED_KEY);ratings={};render('map')}">🗑 評価をリセット</button>`;
   loadPeopleData();
-}
-
-function downloadCsv() {
-  const header = [LABELS.no_col,'事業名',LABELS.dept,'法的根拠','事業分類','行政評価',LABELS.budget_col,'評価結果'];
-  const rows = EVENTS.map(e => [
-    e.no, e.name, e.dept, e.root, e.cls, e.ev, e.budget, ratings[e.no] || ''
-  ]);
-  const csv = '﻿' + [header, ...rows].map(r => r.map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
-  a.download = LABELS.csv_filename;
-  a.click();
 }
 
 async function submitToSupabase() {
@@ -614,65 +639,162 @@ async function submitToSupabase() {
 }
 
 async function loadPeopleData() {
-  const section = document.getElementById('people-section');
-  if (!section) return;
   const { data, error } = await sb
     .from('ratings').select('event_no,rating').eq('municipality_id', MUNICIPALITY_ID);
   if (error) {
-    section.innerHTML = '<p style="color:#ef4444;font-size:.85rem">データの取得に失敗しました。</p>';
-    return;
-  }
-  if (!data || !data.length) {
-    section.innerHTML = '<p style="color:#6b7280;font-size:.85rem">まだ投票がありません。</p>';
+    const section = document.getElementById('vote-section');
+    if (section) section.innerHTML = '<p style="color:#ef4444;font-size:.85rem">データの取得に失敗しました。</p>';
     return;
   }
   const agg = {};
-  data.forEach(row => {
+  (data || []).forEach(row => {
     if (!agg[row.event_no]) agg[row.event_no] = {'続行':0,'廃止':0,'見直し':0};
     if (agg[row.event_no][row.rating] !== undefined) agg[row.event_no][row.rating]++;
   });
-  const totalK = data.filter(r=>r.rating==='続行').length;
-  const totalH = data.filter(r=>r.rating==='廃止').length;
-  const totalF = data.filter(r=>r.rating==='見直し').length;
-  const hasMyRating = Object.keys(ratings).length > 0;
-  const myTh = hasMyRating ? '<th>自分</th>' : '';
-  const tableRows = EVENTS.map(e => {
-    const c = agg[String(e.no)] || {'続行':0,'廃止':0,'見直し':0};
-    const total = c['続行']+c['廃止']+c['見直し'];
-    const minnaCell = total===0
-      ? '<span style="color:#9ca3af">-</span>'
-      : `<span class="pc pc-k">続${c['続行']}</span><span class="pc pc-h">廃${c['廃止']}</span><span class="pc pc-f">見${c['見直し']}</span>`;
-    const myTd = hasMyRating
-      ? `<td>${ratings[e.no]?`<span class="tag tev-${esc(ratings[e.no])}">${esc(ratings[e.no])}</span>`:''}</td>`
-      : '';
-    return `<tr><td>${esc(e.name)}</td>${myTd}<td>${minnaCell}</td><td>${evTagHtml(e.ev)}</td></tr>`;
-  }).join('');
-  section.innerHTML = `
-    <div class="kgrid" style="margin-bottom:12px">
-      <div class="kbox kk"><div class="klbl">続行票</div><div class="knum">${totalK}</div></div>
-      <div class="kbox kh"><div class="klbl">廃止票</div><div class="knum">${totalH}</div></div>
-      <div class="kbox kf"><div class="klbl">見直し票</div><div class="knum">${totalF}</div></div>
-      <div class="kbox ku"><div class="klbl">総投票数</div><div class="knum">${data.length}</div></div>
-    </div>
-    <div style="overflow-x:auto">
-    <table class="stbl">
-      <thead><tr><th>事業名</th>${myTh}<th>みんな</th><th>行政の評価</th></tr></thead>
-      <tbody>${tableRows}</tbody>
-    </table></div>`;
+  peopleAgg = agg;
+  // サマリー画面は投票セクションだけ差し替え（renderSummary経由だとloadPeopleDataを再度呼び無限ループになるため）。
+  // それ以外（マップ・ドリルダウン等）は画面全体を再描画し、ドリルダウンの「みんなの評価」列に反映する。
+  if (curScreen === 'summary') renderVoteSection();
+  else render(curScreen);
 }
 
+function setVoteFilter(v) { voteFilter = v; renderVoteSection(); }
+
+// 対象＝自分が評価した事業 ∪ 誰かが投票済みの事業。voteFilterで絞り込む
+function voteRows() {
+  if (!peopleAgg) return [];
+  return EVENTS.filter(e => {
+    const mine = ratings[e.no] || '';
+    const agg = peopleAgg[e.no];
+    const hasVotes = !!agg && (agg['続行'] + agg['廃止'] + agg['見直し'] > 0);
+    if (!mine && !hasVotes) return false;
+    if (voteFilter === '') return true;
+    if (voteFilter === '未評価') return !mine && hasVotes;
+    return mine === voteFilter;
+  }).sort((a, b) => b.budget - a.budget);
+}
+
+function myRatingCellHtml(r) {
+  return r ? `<span class="tag tev-${esc(r)}">${esc(r)}</span>` : '<span style="color:#9ca3af">未評価</span>';
+}
+function voteCellHtml(agg) {
+  const c = agg || {'続行':0,'廃止':0,'見直し':0};
+  const total = c['続行'] + c['廃止'] + c['見直し'];
+  if (!total) return '<span style="color:#9ca3af">-</span>';
+  return `<span class="pc pc-k">続${c['続行']}</span><span class="pc pc-h">廃${c['廃止']}</span><span class="pc pc-f">見${c['見直し']}</span>`;
+}
+// ドリルダウン表用：列幅が狭いため3つのバッジを縦積みにする版
+function voteCellStackHtml(agg) {
+  const c = agg || {'続行':0,'廃止':0,'見直し':0};
+  const total = c['続行'] + c['廃止'] + c['見直し'];
+  if (!total) return '<span style="color:#9ca3af;font-size:.72rem">-</span>';
+  return `<div class="vote-stack"><span class="pc pc-k">続${c['続行']}</span><span class="pc pc-h">廃${c['廃止']}</span><span class="pc pc-f">見${c['見直し']}</span></div>`;
+}
+function classifyStackHtml(e) {
+  return `<div class="vtag-stack">${rootTagHtml(e.root)}${ptypeTagHtml(e.ptype)}${evTagHtml(e.ev)}</div>`;
+}
+function voteCsvText(rows) {
+  const header = ['事業番号','事務事業名','施策',LABELS.dept,'金額','法定義務','提供形態','行政評価','自分の評価','みんなの投票'];
+  const csvRows = rows.map(e => {
+    const c = peopleAgg[e.no] || {'続行':0,'廃止':0,'見直し':0};
+    return [e.no, e.name, e.cls, e.dept, e.budget, e.root, PTYPE_LABEL[e.ptype] || e.ptype, e.ev, ratings[e.no] || '', `続${c['続行']}/廃${c['廃止']}/見${c['見直し']}`];
+  });
+  return '﻿' + [header, ...csvRows].map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
+}
+function downloadVoteCsv() {
+  const csv = voteCsvText(voteRows());
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
+  a.download = '湖西市_評価結果一覧.csv';
+  a.click();
+}
+
+// 透明性確保のための生データ出力：Supabaseに蓄積された全投票ログをそのまま書き出す（現在の絞り込みの影響を受けない）
 async function downloadPeopleCsv() {
   const { data, error } = await sb
     .from('ratings').select('id,municipality_id,event_no,rating,submitted_at')
     .eq('municipality_id', MUNICIPALITY_ID).order('submitted_at');
   if (error) { alert('取得エラー: ' + error.message); return; }
-  const header = ['id','municipality_id','event_no','rating','submitted_at'];
-  const csvRows = data.map(r => header.map(k => '"'+String(r[k]).replace(/"/g,'""')+'"').join(','));
+  const header = ['id', 'municipality_id', 'event_no', 'rating', 'submitted_at'];
+  const csvRows = (data || []).map(r => header.map(k => '"' + String(r[k]).replace(/"/g, '""') + '"').join(','));
   const csv = '﻿' + [header.join(','), ...csvRows].join('\n');
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
   a.download = MUNICIPALITY_ID + '_ratings.csv';
   a.click();
+}
+
+function renderVoteSection() {
+  const section = document.getElementById('vote-section');
+  if (!section) return;
+  if (!peopleAgg) { section.innerHTML = '<p style="color:#6b7280;font-size:.85rem">読み込み中...</p>'; return; }
+
+  const allData = Object.values(peopleAgg).reduce((a, c) => ({
+    '続行': a['続行'] + c['続行'], '廃止': a['廃止'] + c['廃止'], '見直し': a['見直し'] + c['見直し']
+  }), {'続行': 0, '廃止': 0, '見直し': 0});
+  const totalVotes = allData['続行'] + allData['廃止'] + allData['見直し'];
+
+  if (!totalVotes && !Object.values(ratings).some(r => r)) {
+    section.innerHTML = '<p style="color:#6b7280;font-size:.85rem">まだ評価・投票がありません。</p>';
+    return;
+  }
+
+  const filterOptions = ['', '続行', '廃止', '見直し', '未評価'];
+  const filterBtns = filterOptions.map(v => {
+    const label = v || '全事業';
+    return `<button class="stbtn${voteFilter === v ? ' active' : ''}" onclick="setVoteFilter('${esc(v)}')">${esc(label)}</button>`;
+  }).join('');
+
+  const rows = voteRows();
+
+  // ブラウザ表示用：6列に圧縮し、セル内で折り返す（横スクロール不要）
+  const compactRows = rows.map(e => `<tr>
+      <td><div class="evtd-name">${esc(e.name)}</div><div class="vno">No.${esc(e.no)}</div></td>
+      <td>${esc(e.cls)}<div class="vsub">${esc(e.dept)}</div></td>
+      <td>${fmt(e.budget)}千円</td>
+      <td>${classifyStackHtml(e)}</td>
+      <td>${myRatingCellHtml(ratings[e.no])}</td>
+      <td>${voteCellHtml(peopleAgg[e.no])}</td>
+    </tr>`).join('');
+
+  // 印刷・CSV用：完全版10列（画面には出さず@media printでのみ表示）
+  const printRows = rows.map(e => `<tr>
+      <td>${esc(e.no)}</td>
+      <td>${esc(e.name)}</td>
+      <td>${esc(e.cls)}</td>
+      <td>${esc(e.dept)}</td>
+      <td>${fmt(e.budget)}千円</td>
+      <td>${rootTagShortHtml(e.root)}</td>
+      <td>${ptypeTagHtml(e.ptype)}</td>
+      <td>${evTagShortHtml(e.ev)}</td>
+      <td>${myRatingCellHtml(ratings[e.no])}</td>
+      <td>${voteCellHtml(peopleAgg[e.no])}</td>
+    </tr>`).join('');
+
+  section.innerHTML = `
+    <div class="kgrid" style="margin-bottom:12px">
+      <div class="kbox kk"><div class="klbl">続行票</div><div class="knum">${allData['続行']}</div></div>
+      <div class="kbox kh"><div class="klbl">廃止票</div><div class="knum">${allData['廃止']}</div></div>
+      <div class="kbox kf"><div class="klbl">見直し票</div><div class="knum">${allData['見直し']}</div></div>
+      <div class="kbox ku"><div class="klbl">総投票数</div><div class="knum">${totalVotes}</div></div>
+    </div>
+    <div class="filterrow no-print">${filterBtns}</div>
+    <div class="bbtns no-print" style="margin-bottom:8px">
+      <button class="btn btn-o btn-sm" onclick="window.print()">🖨 印刷（全項目）</button>
+      <button class="btn btn-o btn-sm" onclick="downloadVoteCsv()">📥 CSVダウンロード（全項目）</button>
+      <button class="btn btn-o btn-sm" onclick="downloadPeopleCsv()">📥 生データCSV</button>
+    </div>
+    <div class="votetbl-wrap"><table class="votetbl">
+      <thead><tr><th>事務事業名</th><th>施策／担当課</th><th>金額</th><th>分類</th><th>自分の評価</th><th>みんなの投票</th></tr></thead>
+      <tbody>${compactRows}</tbody>
+    </table></div>
+    <div class="votetbl-print"><table class="evtbl">
+      <thead><tr>
+        <th>${esc(LABELS.no_col)}</th><th>事務事業名</th><th>施策</th><th>${esc(LABELS.dept)}</th><th>金額</th>
+        <th>法定義務</th><th>提供形態</th><th>行政評価</th><th>自分の評価</th><th>みんなの投票</th>
+      </tr></thead>
+      <tbody>${printRows}</tbody>
+    </table></div>`;
 }
 
 window.onload = load;
