@@ -693,10 +693,10 @@ function classifyStackHtml(e) {
   return `<div class="vtag-stack">${rootTagHtml(e.root)}${ptypeTagHtml(e.ptype)}${evTagHtml(e.ev)}</div>`;
 }
 function voteCsvText(rows) {
-  const header = ['事業番号','事務事業名',LABELS.cls,LABELS.dept,'金額','法定義務','提供形態','行政評価','自分の評価','みんなの投票'];
+  const header = ['事業番号','事務事業名',LABELS.cls,LABELS.dept,'金額','法定義務','提供形態','行政評価','自分の評価','続行','廃止','見直し'];
   const csvRows = rows.map(e => {
     const c = peopleAgg[e.no] || {'続行':0,'廃止':0,'見直し':0};
-    return [e.no, e.name, e.cls, e.dept, e.budget, e.root, PTYPE_LABEL[e.ptype] || e.ptype, e.ev, ratings[e.no] || '', `続${c['続行']}/廃${c['廃止']}/見${c['見直し']}`];
+    return [e.no, e.name, e.cls, e.dept, e.budget, e.root, PTYPE_LABEL[e.ptype] || e.ptype, e.ev, ratings[e.no] || '', c['続行'], c['廃止'], c['見直し']];
   });
   return '﻿' + [header, ...csvRows].map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
 }
