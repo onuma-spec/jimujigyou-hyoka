@@ -581,11 +581,6 @@ function goQueue(dir) {
 
 // ── ③サマリー・投票 ─────────────────────────────────────────────────────
 function renderSummary(app) {
-  const k = EVENTS.filter(e => ratings[e.no] === '続行');
-  const h = EVENTS.filter(e => ratings[e.no] === '廃止');
-  const f = EVENTS.filter(e => ratings[e.no] === '見直し');
-  const u = EVENTS.filter(e => !ratings[e.no]);
-
   app.innerHTML = `
     <div class="hd no-print">
       <div class="card-nav">
@@ -594,23 +589,13 @@ function renderSummary(app) {
       </div>
     </div>
     <div class="card">
-      <h2 style="font-size:1rem;font-weight:700;margin-bottom:12px">${esc(LABELS.summary_title)}</h2>
-      <div class="kgrid">
-        <div class="kbox kh"><div class="klbl">✕ 廃止</div><div class="knum">${h.length}</div></div>
-        <div class="kbox kf"><div class="klbl">△ 見直し</div><div class="knum">${f.length}</div></div>
-        <div class="kbox kk"><div class="klbl">✓ 続行</div><div class="knum">${k.length}</div></div>
-        <div class="kbox ku"><div class="klbl">未評価</div><div class="knum">${u.length}</div></div>
-      </div>
-      <p style="font-size:.78rem;color:#6b7280;margin-bottom:12px">※事業ごとの評価件数のみを表示しています（金額換算は行っていません）。</p>
-      <div class="no-print">
+      <h2 style="font-size:1rem;font-weight:700;margin-bottom:10px">${esc(LABELS.summary_title)}</h2>
+      <div class="no-print" style="margin-bottom:12px">
         ${localStorage.getItem(SUBMITTED_KEY)
           ? `<button class="btn btn-o btn-sm" disabled>✓ 投票済み</button>`
           : `<button id="submit-btn" class="btn btn-p btn-sm" onclick="submitToSupabase()">📤 投票する</button>`}
         <span style="font-size:.8rem;color:#6b7280;margin-left:10px">投票すると、みんなの評価に反映されます。<br>送信されるのは事業番号・評価結果（続行/廃止/見直し）・送信日時のみです。個人情報は一切収集しません。<br>実際の収集情報は下の📥 生データCSVから閲覧できます。</span>
       </div>
-    </div>
-    <div class="card">
-      <h2 style="font-size:1rem;font-weight:700;margin-bottom:10px">📊 評価結果一覧（自分×みんな）</h2>
       <p style="font-size:.78rem;color:#6b7280;margin-bottom:10px">自分が評価した事業、または誰かが投票済みの事業を対象に表示しています。</p>
       <div id="vote-section"><p style="color:#6b7280;font-size:.85rem">読み込み中...</p></div>
     </div>
@@ -693,7 +678,7 @@ function classifyStackHtml(e) {
   return `<div class="vtag-stack">${rootTagHtml(e.root)}${ptypeTagHtml(e.ptype)}${evTagHtml(e.ev)}</div>`;
 }
 function voteCsvText(rows) {
-  const header = ['事業番号','事務事業名','施策',LABELS.dept,'金額','法定義務','提供形態','行政評価','自分の評価','続行','廃止','見直し'];
+  const header = ['事業番号','事務事業名','施策',LABELS.dept,'金額','法定義務','提供形態','行政評価','自分の評価','続行票','廃止票','見直し票'];
   const csvRows = rows.map(e => {
     const c = peopleAgg[e.no] || {'続行':0,'廃止':0,'見直し':0};
     return [e.no, e.name, e.cls, e.dept, e.budget, e.root, PTYPE_LABEL[e.ptype] || e.ptype, e.ev, ratings[e.no] || '', c['続行'], c['廃止'], c['見直し']];
