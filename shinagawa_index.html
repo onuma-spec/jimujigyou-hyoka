@@ -590,10 +590,8 @@ function renderSummary(app) {
     <div class="card">
       <h2 style="font-size:1rem;font-weight:700;margin-bottom:10px">${esc(LABELS.summary_title)}</h2>
       <div class="no-print" style="margin-bottom:12px">
-        ${localStorage.getItem(SUBMITTED_KEY)
-          ? `<button class="btn btn-o btn-sm" disabled>✓ 投票済み</button>`
-          : `<button id="submit-btn" class="btn btn-p btn-sm" onclick="submitToSupabase()">📤 投票する</button>`}
-        <span style="font-size:.8rem;color:#6b7280;margin-left:10px">投票すると、みんなの評価に反映されます。<br>送信されるのは事業番号・評価結果（続行/廃止/見直し）・送信日時のみです。個人情報は一切収集しません。<br>実際の収集情報は下の📥 生データCSVから閲覧できます。</span>
+        <button id="submit-btn" class="btn btn-p btn-sm" onclick="submitToSupabase()">📤 投票する</button>
+        <span style="font-size:.8rem;color:#6b7280;margin-left:10px">投票すると、みんなの評価に反映されます。<br>送信されるのは事業番号・評価結果（続行/廃止/見直し）・送信日時のみです。個人情報は一切収集しません。<br>追加で評価した事業がある場合は、再度このボタンから投票できます（同じ事業を重複して送信することはありません）。<br>実際の収集情報は下の📥 生データCSVから閲覧できます。</span>
       </div>
       <p style="font-size:.78rem;color:#6b7280;margin-bottom:10px">自分が評価した事業、または誰かが投票済みの事業を対象に表示しています。</p>
       <div id="vote-section"><p style="color:#6b7280;font-size:.85rem">読み込み中...</p></div>
@@ -603,11 +601,19 @@ function renderSummary(app) {
   loadPeopleData();
 }
 
+function getSubmittedNos() {
+  try {
+    const v = JSON.parse(localStorage.getItem(SUBMITTED_KEY) || '[]');
+    return Array.isArray(v) ? v : [];
+  } catch (e) { return []; }
+}
+
 async function submitToSupabase() {
+  const already = new Set(getSubmittedNos());
   const rows = Object.entries(ratings)
-    .filter(([,r]) => r)
+    .filter(([no, r]) => r && !already.has(no))
     .map(([no, r]) => ({ municipality_id: MUNICIPALITY_ID, event_no: no, rating: r }));
-  if (!rows.length) { alert('評価済みの事業がありません。'); return; }
+  if (!rows.length) { alert('新しく評価した事業がありません。'); return; }
   const btn = document.getElementById('submit-btn');
   if (btn) { btn.disabled = true; btn.textContent = '送信中...'; }
   const { error } = await sb.from('ratings').insert(rows);
@@ -616,8 +622,10 @@ async function submitToSupabase() {
     if (btn) { btn.disabled = false; btn.textContent = '📤 投票する'; }
     return;
   }
-  localStorage.setItem(SUBMITTED_KEY, '1');
-  if (btn) { btn.textContent = '✓ 送信済み'; }
+  rows.forEach(r => already.add(r.event_no));
+  localStorage.setItem(SUBMITTED_KEY, JSON.stringify([...already]));
+  if (btn) { btn.disabled = false; btn.textContent = '📤 投票する'; }
+  alert(`${rows.length}件を送信しました。`);
   loadPeopleData();
 }
 
