@@ -30,12 +30,7 @@
     .btn-p{background:#1e40af;color:#fff}
     .note{font-size:.78rem;color:#9ca3af;text-align:center;margin-top:20px;line-height:1.7}
     .hidden{display:none}
-    .about h3{font-size:.9rem;font-weight:700;color:#1e40af;margin:18px 0 6px}
-    .about h3:first-of-type{margin-top:14px}
     .about p{font-size:.85rem;line-height:1.8;color:#374151;margin-bottom:4px}
-    .about dl.ver3-flow{margin:10px 0 20px 4px;font-size:.85rem;color:#374151}
-    .about dl.ver3-flow dt{font-weight:700;margin-top:8px}
-    .about dl.ver3-flow dd{margin-left:16px;color:#4b5563}
     .about .sign{text-align:right;font-size:.8rem;color:#6b7280;margin-top:14px}
   </style>
 </head>
@@ -72,30 +67,13 @@
 
   <div class="card about">
     <h2>🖋 事務事業優先度評価ツールについて</h2>
-    <p>先日、SNSのある投稿をきっかけに、AIを使った事業評価に関する記事を拝見しました。行政側の事業評価が充実していくのであれば、住民側からフィードバックできる仕組みが必要だと思い立ち、このツールの制作に至りました。</p>
-
-    <h3>バージョン1</h3>
-    <p>評価をその場限りのもので終わらせたくないと思い、記録して振り返れるようサマリー機能を持たせました。<br>
-    「正しい」評価ではなく、「住民各自の価値観」の表明と割り切って、事務事業評価シートを要約しました。</p>
-
-    <h3>バージョン2</h3>
-    <p>自分の評価をみんなと共有できる機能（データ送信・集計）を追加しました。<br>
-    いつも同じ視点で評価できるよう、「目的・事業内容」→「成果」→「廃止した場合の影響」という3段落構成のテンプレートに事務事業評価シートを要約しました。</p>
-
-    <h3>バージョン3</h3>
-    <p>全事業を評価するという前提を捨てました。<br>
-    実際に評価する事務事業の選定をサポートできるよう、「マップ画面」→「施策画面」→「評価画面」という導線を導入しました。</p>
-    <dl class="ver3-flow">
-      <dt>マップ画面</dt>
-      <dd>「法定義務の有無」で事務事業を絞り込み気になる「施策」を選択</dd>
-      <dt>施策画面</dt>
-      <dd>名称、金額、法定義務、提供形態でリスト化された事務事業から評価するものを選択</dd>
-      <dt>評価画面</dt>
-      <dd>バージョン2同様、事務事業評価シートをテンプレート表示</dd>
-    </dl>
-
-    <p>住民側の評価を集めることで、関心の高い（投票数の多い）事務事業について、行政へフィードバックするための根拠の一つとなれば幸いです。</p>
-
+    <p>メインの機能は次の2つです。</p>
+    <p><strong>評価する</strong>：事務事業を「続行・廃止・見直し」のどれかで評価し、ブラウザに記録する<br>
+    <strong>投票する</strong>：ブラウザに記録した評価を、サーバーに送ってみんなと共有する</p>
+    <p>2つの機能で、評価をその場限りのもので終わらせず、自分の評価をみんなの評価に集約し、関心の高い（投票数の多い）事務事業について、行政へフィードバックするための根拠の一つとなれば幸いです。</p>
+    <p>追伸<br>
+    本ツールは「VS Code × Claude Code」との対話で作成しました。<br>
+    伝えればできる、良い時代になりました。</p>
     <p class="sign">2026年7月　制作者</p>
   </div>
 </div>
@@ -219,4 +197,3 @@ function onMuniChange() {
 </script>
 </body>
 </html>
-

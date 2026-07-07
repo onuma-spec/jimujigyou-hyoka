@@ -39,6 +39,7 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;co
 .stbtn.active{background:#1e40af;color:#fff;border-color:#1e40af}
 .maphint{font-size:.82rem;color:#6b7280;line-height:1.6}
 .fresult{font-size:.95rem;font-weight:600;color:#1e40af;margin-bottom:8px}
+.sec-heading{font-size:.85rem;font-weight:700;color:#374151;margin-bottom:6px}
 
 .clsgrid-wrap{border:1px solid #eef0f2;border-radius:6px;padding:8px;max-height:35vh;overflow-y:auto}
 .clsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
@@ -358,7 +359,7 @@ function renderMap(app) {
   const filteredCount = EVENTS.filter(matchesFilter).length;
 
   const filterBtns = [''].concat(rootFilterOptions()).map(r => {
-    const label = r || '全事業';
+    const label = r || '全事務事業';
     return `<button class="stbtn${rootFilter===r?' active':''}" onclick="setRootFilter('${esc(r)}')">${esc(label)}</button>`;
   }).join('');
 
@@ -385,13 +386,16 @@ function renderMap(app) {
     </div>
     <div class="card">
       <div class="filterrow">${filterBtns}</div>
-      <p class="maphint">「法定義務なし」を選ぶと、住民の裁量判断が及ぶ事業だけに絞って施策別に確認できます。バーの長さと％は、絞り込み対象の中でその施策が占める規模を表します。</p>
-      <div class="fresult">${filteredCount}件・${(filteredTotal/100000).toFixed(1)}億円が対象（${esc(LABELS.cls)}${sorted.length}区分・クリックで事業を選んで評価）</div>
+      <p class="maphint">${esc(LABELS.cls)}を選ぶ→事務事業を選ぶ→評価する→投票する、という流れで進みます。まずは${esc(LABELS.cls)}のカードを選んでください。上部のボタンを使うと、法定義務の有無によって事業を絞り込めます（バーの長さと％は、絞り込み対象の中でその${esc(LABELS.cls)}が占める規模を表します）。</p>
+      <div class="fresult">${filteredCount}件・${(filteredTotal/100000).toFixed(1)}億円・${esc(LABELS.cls)}${sorted.length}区分　タップで選択</div>
+      <div class="sec-heading">${esc(LABELS.cls)}一覧</div>
       <div class="clsgrid-wrap"><div class="clsgrid">${cards}</div></div>
     </div>
     <button class="btn btn-o btn-full" onclick="render('summary')">📊 サマリー・投票を見る</button>
-    <div class="card" style="font-size:.75rem;color:#6b7280;line-height:1.5">
-      <strong>出典：</strong><a href="${esc(LABELS.source_url)}" target="_blank">${esc(LABELS.source_url)}</a>／${esc(LABELS.card_title)}／住民1人あたりコストは人口${fmt(LABELS.population)}人（<a href="https://www.digital.go.jp/resources/japandashboard/municipal-finance" target="_blank">デジタル庁 地方財政ダッシュボード</a>）で計算
+    <div class="card" style="font-size:.75rem;color:#6b7280;line-height:1.5;overflow-wrap:anywhere">
+      <strong>出典：</strong><a href="${esc(LABELS.source_url)}" target="_blank" style="overflow-wrap:anywhere">${esc(LABELS.source_url)}</a><br>
+      ${esc(LABELS.card_title)}<br>
+      住民1人あたりコストは人口${fmt(LABELS.population)}人（<a href="https://www.digital.go.jp/resources/japandashboard/municipal-finance" target="_blank">デジタル庁 地方財政ダッシュボード</a>）で計算
     </div>`;
 }
 
@@ -461,14 +465,14 @@ function renderClsDrill(app) {
         <button class="btn btn-o btn-sm" onclick="selectAllCls(false)">全解除</button>
         <span style="font-size:.8rem;color:#6b7280;align-self:center">${evs.length}件中 ${selected.size}件選択中</span>
       </div>
-      <p class="maphint" style="margin-bottom:10px">行政による今後の方向性（廃止方向・縮小など変化がある区分）を先頭に表示しています。すべて折りたたんでいます。気になる区分をタップして展開してください。</p>
+      <p class="maphint" style="margin-bottom:10px">タップして展開し、評価したい事務事業にチェックを入れて「選択した事務事業を評価する」を押してください（複数選択できます）。</p>
       ${sections}
     </div>
     <div class="sticky-spacer no-print"></div>
     <div class="sticky-actions no-print">
       <div class="sticky-inner">
         <button class="btn btn-o btn-full" onclick="render('summary')">📊 サマリー・投票を見る</button>
-        <button class="btn btn-p btn-full" ${selected.size ? '' : 'disabled'} onclick="startEvalQueue()">選択した事業を評価する（${selected.size}件）</button>
+        <button class="btn btn-p btn-full" ${selected.size ? '' : 'disabled'} onclick="startEvalQueue()">選択した事務事業を評価する（${selected.size}件）</button>
       </div>
     </div>`;
 }
@@ -546,6 +550,7 @@ function renderEval(app) {
       <div class="sticky-inner">
         <p class="ai-note">※目的・事業内容、成果、廃止した場合の影響の説明文は、評価シートを元にAIが自動生成しています。内容に違和感がある場合や詳細を確認したい場合は、下のリンクから評価シートをご確認ください。</p>
         <a class="btn btn-p btn-full" href="${(() => { const pdfUrl = e.pdf_url || LABELS.pdf_url || LABELS.source_url; return esc(pdfUrl); })()}#page=${e.pdf_page + 1}" target="_blank">📄 評価シートを確認（p.${e.pdf_page}）</a>
+        <p class="maphint" style="margin:8px 0">評価（続行/廃止/見直しを選択）するとサマリー・投票画面の自分の評価に反映されます。</p>
         <div class="rbtns">
           <button class="rbtn${r==='続行'?' ak':''}" onclick="rateQueue('続行')">✓ 続行<small>活動内容と予算に納得</small></button>
           <button class="rbtn${r==='廃止'?' ah':''}" onclick="rateQueue('廃止')">✕ 廃止<small>活動内容に納得できない</small></button>
@@ -591,13 +596,12 @@ function renderSummary(app) {
       <h2 style="font-size:1rem;font-weight:700;margin-bottom:10px">${esc(LABELS.summary_title)}</h2>
       <div class="no-print" style="margin-bottom:12px">
         <button id="submit-btn" class="btn btn-p btn-sm" onclick="submitToSupabase()">📤 投票する</button>
-        <span style="font-size:.8rem;color:#6b7280;margin-left:10px">投票すると、みんなの評価に反映されます。<br>送信されるのは事業番号・評価結果（続行/廃止/見直し）・送信日時のみです。個人情報は一切収集しません。<br>追加で評価した事業がある場合は、再度このボタンから投票できます（同じ事業を重複して送信することはありません）。<br>実際の収集情報は下の📥 生データCSVから閲覧できます。</span>
+        <span style="font-size:.8rem;color:#6b7280;margin-left:10px">投票すると、自分の評価がみんなの評価に反映されます。<br>送信されるのは事業番号・評価結果（続行/廃止/見直し）・送信日時のみです。個人情報は一切収集しません。<br>追加で評価した事業がある場合は、再度このボタンから投票できます（同じ事業を重複して送信することはありません）。<br>実際の収集情報は下の📥 生データCSVから閲覧できます。</span>
       </div>
-      <p style="font-size:.78rem;color:#6b7280;margin-bottom:10px">自分が評価した事業、または誰かが投票済みの事業を対象に表示しています。</p>
       <div id="vote-section"><p style="color:#6b7280;font-size:.85rem">読み込み中...</p></div>
     </div>
     <button class="btn btn-o btn-full no-print" onclick="render('map')">← マップに戻る</button>
-    <button class="btn btn-o btn-full no-print" onclick="if(confirm('評価をすべてリセットしますか？')){localStorage.removeItem(LS_KEY);localStorage.removeItem(SUBMITTED_KEY);ratings={};render('map')}">🗑 評価をリセット</button>`;
+    <button class="btn btn-o btn-full no-print" onclick="if(confirm('評価をすべてリセットしますか？')){localStorage.removeItem(LS_KEY);localStorage.removeItem(SUBMITTED_KEY);ratings={};render('map')}">🗑 自分の評価をリセット</button>`;
   loadPeopleData();
 }
 
@@ -732,7 +736,7 @@ function renderVoteSection() {
 
   const filterOptions = ['', '続行', '廃止', '見直し', '未評価'];
   const filterBtns = filterOptions.map(v => {
-    const label = v || '全事業';
+    const label = v || '全事務事業';
     return `<button class="stbtn${voteFilter === v ? ' active' : ''}" onclick="setVoteFilter('${esc(v)}')">${esc(label)}</button>`;
   }).join('');
 
@@ -763,6 +767,7 @@ function renderVoteSection() {
     </tr>`).join('');
 
   section.innerHTML = `
+    <div class="sec-heading">投票状況</div>
     <div class="kgrid" style="margin-bottom:12px">
       <div class="kbox kk"><div class="klbl">続行票</div><div class="knum">${allData['続行']}</div></div>
       <div class="kbox kh"><div class="klbl">廃止票</div><div class="knum">${allData['廃止']}</div></div>
@@ -775,14 +780,15 @@ function renderVoteSection() {
       <button class="btn btn-o btn-sm" onclick="downloadVoteCsv()">📥 CSVダウンロード（全項目）</button>
       <button class="btn btn-o btn-sm" onclick="downloadPeopleCsv()">📥 生データCSV</button>
     </div>
+    <p style="font-size:.78rem;color:#6b7280;margin-bottom:10px">自分が評価した事務事業、または誰かが投票済みの事務事業を対象に表示しています。上部のボタンを使うと、自分の評価によって表示する事務事業を絞り込めます。</p>
     <div class="votetbl-wrap"><table class="votetbl">
-      <thead><tr><th>事務事業名</th><th>施策／担当課</th><th>金額</th><th>分類</th><th>自分の評価</th><th>みんなの投票</th></tr></thead>
+      <thead><tr><th>事務事業名</th><th>施策／担当課</th><th>金額</th><th>分類</th><th>自分の評価</th><th>みんなの評価</th></tr></thead>
       <tbody>${compactRows}</tbody>
     </table></div>
     <div class="votetbl-print"><table class="evtbl">
       <thead><tr>
         <th>${esc(LABELS.no_col)}</th><th>事務事業名</th><th>施策</th><th>${esc(LABELS.dept)}</th><th>金額</th>
-        <th>法定義務</th><th>提供形態</th><th>行政評価</th><th>自分の評価</th><th>みんなの投票</th>
+        <th>法定義務</th><th>提供形態</th><th>行政評価</th><th>自分の評価</th><th>みんなの評価</th>
       </tr></thead>
       <tbody>${printRows}</tbody>
     </table></div>`;
