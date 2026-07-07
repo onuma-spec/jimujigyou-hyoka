@@ -66,15 +66,16 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;co
 .evtbl th{text-align:left;font-weight:600;color:#6b7280;font-size:.7rem;padding:4px 8px;border-bottom:1px solid #e5e7eb;white-space:nowrap;position:sticky;top:0;background:#fff;z-index:1}
 .evtbl td{padding:8px;border-bottom:1px solid #f3f4f6;vertical-align:middle;white-space:normal;word-break:break-word}
 .evtbl tr:last-child td{border-bottom:none}
-.evtd-chk{width:28px}
+.evtd-chk{width:32px;min-width:32px;max-width:32px}
 .evtd-chk input{width:16px;height:16px}
-.evtd-name{font-weight:600;color:#111827;cursor:pointer;width:110px;min-width:110px;max-width:110px}
-.evtd-budget{color:#374151;width:65px}
-.evtd-root{width:38px}
-.evtd-ptype{width:80px}
-.evtd-mine{width:80px}
-.evtd-vote{width:70px}
-.evtbl td.evtd-budget,.evtbl td.evtd-root,.evtbl td.evtd-ptype{white-space:nowrap}
+.evtd-name{font-weight:600;color:#111827;cursor:pointer;width:126px;min-width:126px;max-width:126px}
+.evtd-budget{color:#374151;width:65px;min-width:65px;max-width:65px}
+.evtd-root{width:70px;min-width:70px;max-width:70px;font-size:.7rem;font-weight:600;overflow:hidden}
+.evtd-ptype{width:100px;min-width:100px;max-width:100px;font-weight:600}
+.evtd-mine{width:80px;min-width:80px;max-width:80px}
+.evtd-vote{width:70px;min-width:70px;max-width:70px}
+.evtbl td.evtd-budget{white-space:nowrap}
+.evtbl th.evtd-root{white-space:normal}
 .vote-stack{display:flex;flex-direction:column;gap:2px;align-items:flex-start}
 
 /* サマリー画面：評価結果一覧（ブラウザ表示用の圧縮テーブル。列を減らしセル内で折り返す） */
@@ -111,6 +112,17 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;co
 .tptype-gray{background:#f3f4f6;color:#6b7280}
 .tptype-amber{background:#fef3c7;color:#92400e}
 .tptype-purple{background:#ede9fe;color:#6d28d9}
+/* ドリルダウン表の提供形態列：タグではなくフル文言のプレーンテキスト表示（色分けのみ引き継ぐ） */
+.ptype-plain-green{color:#0f766e}
+.ptype-plain-blue{color:#1d4ed8}
+.ptype-plain-gray{color:#6b7280}
+.ptype-plain-amber{color:#92400e}
+.ptype-plain-purple{color:#6d28d9}
+/* ドリルダウン表の法定義務列：列幅確保のためタグではなくプレーンテキスト表示 */
+.root-plain-法定義務あり{color:#1d4ed8}
+.root-plain-法定義務なし{color:#92400e}
+.root-plain-判断できない{color:#6b7280}
+.root-plain-データなし{color:#9ca3af}
 
 /* 評価カード（opt-inキュー） */
 .pbwrap{background:#e5e7eb;border-radius:4px;height:6px;margin-bottom:12px}
@@ -290,16 +302,27 @@ function rootTagShortHtml(root) {
 function evTagShortHtml(ev) {
   return `<span class="tag tev-${esc(ev)}">${esc(ev)}</span>`;
 }
+// ドリルダウン表用：法定義務をタグではなくプレーンテキストで表示（列幅確保のため2文字程度に折り返す）
+function rootPlainHtml(root) {
+  const short = root.startsWith('法定義務') ? root.replace('法定義務', '') : root;
+  return `<span class="root-plain-${esc(root)}">${esc(short)}</span>`;
+}
 function ptypeTagHtml(ptype) {
   const tier = PTYPE_TIER[ptype] || 'amber';
   const label = PTYPE_LABEL[ptype] || ptype;
   return `<span class="tag tptype-${tier}">${esc(label)}</span>`;
 }
-// ドリルダウン表用：短縮ラベル版
+// ドリルダウン表用：短縮ラベル版（現在は未使用。他画面からの参照用に残置）
 function ptypeTagShortHtml(ptype) {
   const tier = PTYPE_TIER[ptype] || 'amber';
   const label = PTYPE_LABEL_SHORT[ptype] || ptype;
   return `<span class="tag tptype-${tier}">${esc(label)}</span>`;
+}
+// ドリルダウン表用：フル文言をタグではなくプレーンテキストで表示（列幅に応じて折り返す）
+function ptypePlainHtml(ptype) {
+  const tier = PTYPE_TIER[ptype] || 'amber';
+  const label = PTYPE_LABEL[ptype] || ptype;
+  return `<span class="ptype-plain-${tier}">${esc(label)}</span>`;
 }
 function ratingTagHtml(r) {
   return r ? `<span class="tag tev-${esc(r)}">あなたの評価：${esc(r)}</span>` : '';
@@ -430,15 +453,18 @@ function renderClsDrill(app) {
       <td class="evtd-chk"><input type="checkbox" ${checked} onchange="toggleSel('${e.no}')"></td>
       <td class="evtd-name" onclick="toggleSel('${e.no}')">${esc(e.name)}</td>
       <td class="evtd-budget">${(e.budget/100000).toFixed(1)}億円</td>
-      <td class="evtd-root">${rootTagShortHtml(e.root)}</td>
-      <td class="evtd-ptype">${ptypeTagShortHtml(e.ptype)}</td>
+      <td class="evtd-root">${rootPlainHtml(e.root)}</td>
+      <td class="evtd-ptype">${ptypePlainHtml(e.ptype)}</td>
       <td class="evtd-mine">${myRatingCellHtml(ratings[e.no])}</td>
       <td class="evtd-vote">${voteCellStackHtml(peopleAgg && peopleAgg[e.no])}</td>
     </tr>`;
   };
 
   const evTableHtml = list => `<div class="evtbl-wrap"><table class="evtbl">
-    <thead><tr><th></th><th>事務事業名</th><th>金額</th><th>法定義務</th><th>提供形態</th><th>自分の評価</th><th>みんなの評価</th></tr></thead>
+    <thead><tr>
+      <th class="evtd-chk"></th><th class="evtd-name">事務事業名</th><th class="evtd-budget">金額</th>
+      <th class="evtd-root">法定義務</th><th class="evtd-ptype">提供形態</th><th class="evtd-mine">自分の評価</th><th class="evtd-vote">みんなの評価</th>
+    </tr></thead>
     <tbody>${list.map(evRowHtml).join('')}</tbody>
   </table></div>`;
 
@@ -599,6 +625,10 @@ function renderSummary(app) {
         <button id="submit-btn" class="btn btn-p btn-sm" onclick="submitToSupabase()">📤 投票する</button>
         <span style="font-size:.8rem;color:#6b7280;margin-left:10px">投票すると、自分の評価がみんなの評価に反映されます。<br>送信されるのは事業番号・評価結果（続行/廃止/見直し）・送信日時のみです。個人情報は一切収集しません。<br>追加で評価した事業がある場合は、再度このボタンから投票できます（同じ事業を重複して送信することはありません）。<br>実際の収集情報は下の📥 生データCSVから閲覧できます。</span>
       </div>
+      <div class="no-print" style="margin-bottom:12px;padding-top:12px;border-top:1px solid #eef0f2">
+        <button class="btn btn-o btn-sm" onclick="downloadAllEventsCsv()">📥 全事務事業データをCSVでダウンロード（${EVENTS.length}件）</button>
+        <span style="font-size:.8rem;color:#6b7280;margin-left:10px">評価対象の全事務事業を、目的・事業内容、成果、廃止した場合の影響も含めて一括ダウンロードできます。行政による公表はPDFのみのため、表計算ソフト等でご自身の分析にご活用ください。</span>
+      </div>
       <div id="vote-section"><p style="color:#6b7280;font-size:.85rem">読み込み中...</p></div>
     </div>
     <button class="btn btn-o btn-full no-print" onclick="render('map')">← マップに戻る</button>
@@ -702,6 +732,27 @@ function downloadVoteCsv() {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
   a.download = '富田林市_評価結果一覧.csv';
+  a.click();
+}
+
+// 自分で分析したい人向け：評価・投票の状況によらず全事務事業を出力（行政の公表がPDFのみのため）
+function allEventsCsvText() {
+  const header = ['事業番号','事務事業名',LABELS.cls,LABELS.dept,'金額(千円)','法定義務','提供形態','行政評価','目的・事業内容','成果','廃止した場合の影響'];
+  const csvRows = EVENTS.map(e => {
+    const impact = e.story_impact;
+    const hasImpact = impact && impact !== '判断できない';
+    const impactText = hasImpact
+      ? `この事業がなくなった場合、${impact}という問題が起きると想定されています。`
+      : '評価シートに記載されていません。';
+    return [e.no, e.name, e.cls, e.dept, e.budget, e.root, PTYPE_LABEL[e.ptype] || e.ptype, e.ev, e.story_p1, e.story_p2, impactText];
+  });
+  return '﻿' + [header, ...csvRows].map(r => r.map(v => '"' + String(v).replace(/"/g, '""') + '"').join(',')).join('\n');
+}
+function downloadAllEventsCsv() {
+  const csv = allEventsCsvText();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
+  a.download = '富田林市_事務事業データ一覧.csv';
   a.click();
 }
 
