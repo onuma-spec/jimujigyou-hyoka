@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>事務事業優先度評価ツール — このツールについて</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;color:#1f2937;min-height:100vh}
+    #app{max-width:640px;margin:0 auto;padding:20px 12px 40px}
+    .hd{background:#1e40af;color:#fff;padding:16px 18px;border-radius:8px;margin-bottom:20px}
+    .hd h1{font-size:1.15rem;font-weight:700}
+    .hd .sub{font-size:.8rem;opacity:.8;margin-top:4px}
+    .back{display:inline-block;font-size:.82rem;color:#1e40af;text-decoration:none;margin-bottom:16px}
+    .back:hover{text-decoration:underline}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:20px;margin-bottom:16px}
+    .card h2{font-size:1rem;font-weight:700;color:#1e40af;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .card p{font-size:.9rem;line-height:1.9;color:#374151;margin-bottom:12px}
+    .card p:last-child{margin-bottom:0}
+    .pain-list{list-style:none;margin:10px 0 14px;padding:0}
+    .pain-list li{
+      display:flex;align-items:center;gap:10px;
+      font-size:.86rem;color:#374151;
+      padding:9px 12px;margin-bottom:6px;
+      background:#f9fafb;border:1px solid #eef0f2;border-radius:6px;
+    }
+    .pain-list .num{
+      flex:none;width:20px;height:20px;border-radius:50%;
+      background:#1e40af;color:#fff;font-size:.72rem;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .pain-list .before{color:#6b7280;}
+    .pain-list .arrow{color:#9ca3af;flex:none;}
+    .pain-list .after{color:#1e40af;font-weight:600;}
+    .func-block{margin-bottom:16px;}
+    .func-block:last-child{margin-bottom:0;}
+    .func-title{font-size:.82rem;font-weight:700;color:#6b7280;margin-bottom:8px;}
+    .func-main{background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:14px;margin-bottom:10px;}
+    .func-item{display:flex;gap:10px;margin-bottom:12px;}
+    .func-item:last-child{margin-bottom:0;}
+    .func-num{
+      flex:none;width:20px;height:20px;border-radius:50%;margin-top:2px;
+      background:#1e40af;color:#fff;font-size:.72rem;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .func-name{font-size:.92rem;font-weight:700;color:#1e40af;margin-bottom:2px;}
+    .func-desc{font-size:.88rem;color:#374151;margin-bottom:0;}
+    ul.plain-list{margin:0;padding-left:1.1em;}
+    ul.plain-list li{font-size:.9rem;line-height:1.9;color:#374151;}
+    ol.steps{margin:0;padding-left:0;list-style:none;counter-reset:step;}
+    ol.steps li{
+      counter-increment:step;position:relative;
+      padding:10px 14px 10px 40px;margin-bottom:8px;
+      background:#f9fafb;border:1px solid #eef0f2;border-radius:6px;
+      font-size:.88rem;color:#374151;line-height:1.7;
+    }
+    ol.steps li::before{
+      content:counter(step);
+      position:absolute;left:12px;top:10px;
+      width:20px;height:20px;border-radius:50%;
+      background:#1e40af;color:#fff;font-size:.74rem;font-weight:700;
+      display:flex;align-items:center;justify-content:center;
+    }
+    ol.steps b{color:#1e40af;}
+    .info-badge{
+      display:inline-block;font-size:.72rem;color:#6b7280;background:#f3f4f6;
+      border:1px solid #e5e7eb;border-radius:999px;padding:3px 10px;margin-bottom:16px;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="hd">
+    <h1>🏛 事務事業優先度評価ツール</h1>
+    <div class="sub">このツールについて</div>
+  </div>
+
+  <a class="back" href="index.html">← 自治体を選ぶに戻る</a>
+  <br>
+  <span class="info-badge">このページは事務事業評価全国連盟主催の事務事業評価勉強会向けに作成されたオリジナルページです。</span>
+
+  <div class="card">
+    <h2>💡 なぜこのツールを作ろうと思ったか</h2>
+    <p>公表されている事務事業評価について住民からフィードバックしたいと考えましたが、自分で事務事業を評価したところ単純につらかったです。理由は3つあります。それぞれに対してツールでの工夫で応えました。</p>
+    <ul class="pain-list">
+      <li><span class="num">1</span><span class="before">理解するのがしんどい</span><span class="arrow">⇒</span><span class="after">評価シートを要約表示</span></li>
+      <li><span class="num">2</span><span class="before">べき論では評価できない</span><span class="arrow">⇒</span><span class="after">個々の価値観で優先度評価</span></li>
+      <li><span class="num">3</span><span class="before">事務事業の数が多い</span><span class="arrow">⇒</span><span class="after">選んだ事務事業だけ評価</span></li>
+    </ul>
+    <p>以上のように考え、このツールを作りました。</p>
+  </div>
+
+  <div class="card">
+    <h2>🛠 機能</h2>
+    <div class="func-main">
+      <div class="func-item">
+        <div class="func-num">1</div>
+        <div>
+          <p class="func-name">評価する機能</p>
+          <p class="func-desc">事務事業を「続行」「廃止」「見直し」のどれかで評価し、ブラウザに記録します。</p>
+        </div>
+      </div>
+      <div class="func-item">
+        <div class="func-num">2</div>
+        <div>
+          <p class="func-name">投票する機能</p>
+          <p class="func-desc">ブラウザに記録した評価を、サーバーに送ってみんなと共有します。</p>
+        </div>
+      </div>
+    </div>
+    <p>この2つの機能に以下の機能が付随しています。</p>
+
+    <div class="func-block">
+      <div class="func-title">評価する事務事業を見つけるための機能</div>
+      <ul class="plain-list">
+        <li>法定義務の有無、行政サービスの分野（施策）による絞り込み</li>
+        <li>行政による評価結果によるグルーピング</li>
+        <li>事務事業名・金額・提供形態を使って「何に」「いくら」「どんな形で」使ったかを一覧表示</li>
+      </ul>
+    </div>
+
+    <div class="func-block">
+      <div class="func-title">評価・投票結果を確認するための機能</div>
+      <ul class="plain-list">
+        <li>事務事業ごとに一覧表示</li>
+        <li>印刷、CSV出力</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📖 使い方</h2>
+    <ol class="steps">
+      <li><b>自治体選択画面</b>：都道府県→市区町村→「このツールを開く」をタップ。</li>
+      <li><b>マップ画面</b>：施策をタップ。タップ前に「法定義務なし」フィルタで事務事業を絞り込み可能。</li>
+      <li><b>施策画面</b>：タップして事務事業の一覧を展開→評価したい事務事業にチェック→「選択した事務事業を評価する」をタップ。</li>
+      <li><b>評価画面</b>：「続行」「廃止」「見直し」のいずれかをタップ。「評価シートを確認」から事務事業評価シートを確認可能。</li>
+      <li><b>施策画面</b>：「サマリー・投票を見る」をタップ。</li>
+      <li><b>サマリー画面</b>：「投票する」をタップ。印刷・CSV保存も可能。</li>
+    </ol>
+  </div>
+</div>
+</body>
+</html>
