@@ -532,7 +532,7 @@ function renderClsDrill(app) {
 
 function toggleSel(no) {
   if (selected.has(no)) selected.delete(no); else selected.add(no);
-  render('cls');
+  reRenderClsPreserveScroll();
 }
 function onEvToggle(detailsEl) {
   const key = detailsEl.getAttribute('data-evkey');
@@ -541,7 +541,27 @@ function onEvToggle(detailsEl) {
 function selectAllCls(all) {
   const evs = EVENTS.filter(e => (e.cls || 'データなし') === curCls && matchesFilter(e));
   selected = all ? new Set(evs.map(e => e.no)) : new Set();
+  reRenderClsPreserveScroll();
+}
+// チェックボックス操作で画面全体を再描画すると、内訳テーブル（.evtbl-wrap）が
+// 個別にスクロール領域を持つためスクロール位置が先頭に戻ってしまう。
+// 再描画前後でページ全体とテーブルごとのスクロール位置を保存・復元する。
+function reRenderClsPreserveScroll() {
+  const sy = window.scrollY;
+  const wrapScrolls = {};
+  document.querySelectorAll('.evsec').forEach(sec => {
+    const wrap = sec.querySelector('.evtbl-wrap');
+    if (wrap) wrapScrolls[sec.getAttribute('data-evkey')] = wrap.scrollTop;
+  });
   render('cls');
+  window.scrollTo(0, sy);
+  document.querySelectorAll('.evsec').forEach(sec => {
+    const key = sec.getAttribute('data-evkey');
+    if (key in wrapScrolls) {
+      const wrap = sec.querySelector('.evtbl-wrap');
+      if (wrap) wrap.scrollTop = wrapScrolls[key];
+    }
+  });
 }
 
 // ── ②個別評価（opt-inキュー） ───────────────────────────────────────────
@@ -615,7 +635,7 @@ function renderEval(app) {
         <div class="nav">
           <button class="btn btn-o btn-sm" onclick="goQueue(-1)" ${qCursor===0?'disabled':''}>◀ 前へ</button>
           <span class="cpos">${qCursor+1} / ${queue.length}</span>
-          <button class="btn btn-o btn-sm" onclick="goQueue(1)" ${qCursor===queue.length-1?'disabled':''}>次へ ▶</button>
+          <button class="btn btn-o btn-sm" onclick="goQueue(1)">次へ ▶</button>
         </div>
       </div>
     </div>`;
@@ -757,7 +777,10 @@ function rateQueue(val) {
   }
 }
 function goQueue(dir) {
-  qCursor += dir;
+  const next = qCursor + dir;
+  if (next < 0) return;
+  if (next >= queue.length) { render('cls'); return; }
+  qCursor = next;
   render('eval');
 }
 
