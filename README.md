@@ -11,7 +11,7 @@
 ## 公開URL
 https://onuma-spec.github.io/jimujigyou-hyoka/
 
-開くと都道府県→市区町村の2段階で自治体を選ぶトップページが表示されます。ツールの解説は[about.html](https://onuma-spec.github.io/jimujigyou-hyoka/about.html)を参照してください。
+ツールの解説は[about.html](https://onuma-spec.github.io/jimujigyou-hyoka/about.html)を参照してください。
 
 ## 導入自治体一覧
 
@@ -28,7 +28,7 @@ https://onuma-spec.github.io/jimujigyou-hyoka/
 ## 使い方
 1. トップページで都道府県→市区町村を選ぶ
 2. フィルター画面で担当部・法的根拠・行政評価方針・評価結果などで絞り込み
-3. カード画面で1事業ずつ、行政が公表した事務事業評価シートの内容をもとにした要約・タグ（担当部・法的根拠・行政評価方針など）を確認しながら「続行／廃止／見直し」を評価
+3. カード画面で1事業ずつ、行政が公表した事務事業評価シートの内容をもとにした要約・タグ（担当部・法的根拠・行政評価方針など）を確認しながら「続行・廃止・見直し」を評価
 4. サマリー画面で評価結果の一覧を確認・共有
 
 ![カード画面の例（埼玉県北本市版）](images/card_example.png)
