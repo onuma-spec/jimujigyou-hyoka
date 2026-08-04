@@ -11,6 +11,8 @@
 ## 公開URL
 https://onuma-spec.github.io/jimujigyou-hyoka/
 
+開くと都道府県→市区町村の2段階で自治体を選ぶトップページが表示されます。ツールの解説は[about.html](https://onuma-spec.github.io/jimujigyou-hyoka/about.html)を参照してください。
+
 ## 導入自治体一覧
 
 | 都道府県 | 自治体 | 年度 | 事業数 |
@@ -38,11 +40,6 @@ https://onuma-spec.github.io/jimujigyou-hyoka/
 ## 自分の自治体でも作ってみたい方へ
 
 このツールをベースに、任意の自治体版を自分で作れる制作キットを公開しています。→ [jimujigyou-hyoka-starter-kit](https://github.com/onuma-spec/jimujigyou-hyoka-starter-kit)
-
-## 構成
-- `index.html` — ハブページ。都道府県→市区町村の2段階ドロップダウンで自治体を選び、各評価ツールへ移動します
-- `about.html` — ツールの解説ページ
-- `{自治体名}_index.html` — 各自治体版の評価ツール本体（単一HTML。自治体一覧は上表を参照）
 
 ## ライセンス
 MIT License
