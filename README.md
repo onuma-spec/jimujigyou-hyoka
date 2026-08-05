@@ -24,6 +24,7 @@ https://onuma-spec.github.io/jimujigyou-hyoka/
 | 大阪府 | [富田林市](https://onuma-spec.github.io/jimujigyou-hyoka/tondabayashi_index.html) | 令和7年度 | 416件 |
 | 新潟県 | [聖籠町](https://onuma-spec.github.io/jimujigyou-hyoka/seiro_index.html) | 令和6年度 | 224件 |
 | 愛知県 | [一宮市](https://onuma-spec.github.io/jimujigyou-hyoka/ichinomiya_index.html) | 令和7年度 | 484件 |
+| 兵庫県 | [朝来市](https://onuma-spec.github.io/jimujigyou-hyoka/asago_index.html) | 令和7年度 | 447件 |
 
 ## 使い方
 1. トップページで都道府県→市区町村を選ぶ
