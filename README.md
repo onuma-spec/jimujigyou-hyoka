@@ -11,20 +11,7 @@
 ## 公開URL
 https://onuma-spec.github.io/jimujigyou-hyoka/
 
-ツールの解説は[about.html](https://onuma-spec.github.io/jimujigyou-hyoka/about.html)を参照してください。
-
-## 導入自治体一覧
-
-| 都道府県 | 自治体 | 年度 | 事業数 |
-|---|---|---|---|
-| 兵庫県 | [西宮市](https://onuma-spec.github.io/jimujigyou-hyoka/nishinomiya_index.html) | 令和7年度 | 450件 |
-| 埼玉県 | [北本市](https://onuma-spec.github.io/jimujigyou-hyoka/kitamoto_index.html) | 令和6年度 | 451件 |
-| 静岡県 | [湖西市](https://onuma-spec.github.io/jimujigyou-hyoka/kosai_index.html) | 令和7年度 | 142件 |
-| 東京都 | [品川区](https://onuma-spec.github.io/jimujigyou-hyoka/shinagawa_index.html) | 令和7年度 | 652件 |
-| 大阪府 | [富田林市](https://onuma-spec.github.io/jimujigyou-hyoka/tondabayashi_index.html) | 令和7年度 | 416件 |
-| 新潟県 | [聖籠町](https://onuma-spec.github.io/jimujigyou-hyoka/seiro_index.html) | 令和6年度 | 224件 |
-| 愛知県 | [一宮市](https://onuma-spec.github.io/jimujigyou-hyoka/ichinomiya_index.html) | 令和7年度 | 484件 |
-| 兵庫県 | [朝来市](https://onuma-spec.github.io/jimujigyou-hyoka/asago_index.html) | 令和7年度 | 447件 |
+ツールの解説は[about.html](https://onuma-spec.github.io/jimujigyou-hyoka/about.html)を参照してください。導入自治体の一覧は公開URLのトップページでご覧いただけます。
 
 ## 使い方
 1. トップページで都道府県→市区町村を選ぶ
