@@ -173,6 +173,13 @@ body{font-family:'Hiragino Sans','Noto Sans JP',sans-serif;background:#f3f4f6;co
 .vote-toggle-label input{width:15px;height:15px;cursor:pointer}
 .vote-result{margin-top:6px}
 .vote-result-note{font-size:.82rem;color:#9ca3af;margin-top:4px}
+.comment-list{max-height:180px;overflow-y:auto;border:1px solid #eef0f2;border-radius:6px;padding:6px 8px;margin-top:6px}
+.comment-item{padding:6px 0;border-bottom:1px dashed #e5e7eb}
+.comment-item:last-child{border-bottom:none}
+.comment-text{font-size:.85rem;color:#1f2937;line-height:1.6;white-space:pre-wrap;word-break:break-word;margin-bottom:4px}
+.comment-report-btn{font-size:.7rem;color:#9ca3af;background:none;border:none;cursor:pointer;padding:0}
+.comment-report-btn:hover{color:#ef4444;text-decoration:underline}
+.comment-warn{font-size:.75rem;color:#713f12;line-height:1.65;margin:8px 0;background:#fef9c3;border:1px solid #fde047;border-radius:6px;padding:8px 10px}
 .ind-block{margin-bottom:8px}
 .ind-block:last-child{margin-bottom:0}
 .ind-label{font-size:.72rem;font-weight:700;color:#6b7280;margin:6px 0 2px;letter-spacing:.03em}
@@ -247,6 +254,23 @@ const OLD_LS_KEY = 'tondabayashi7_ratings'; // 旧v2版の保存キー（リニ�
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbw9GZI7D2OkO3CRckjnTsQZEn5W7uFYmO61XRcW_NrVoa30EymIoxycN-y4SY-Ow9GL/exec';
 const MUNICIPALITY_ID = 'tondabayashi_r7';
 const SUBMITTED_KEY = MUNICIPALITY_ID + '_submitted';
+const SHOW_COMMENTS_KEY = LS_KEY + '_show_comments'; // 評価カードでコメントを表示するかどうかの個人設定
+const COMMENTS_SUBMITTED_KEY = MUNICIPALITY_ID + '_comments_submitted'; // コメントとして送信済みの事業番号一覧
+const COMMENT_MAX_LENGTH = 500; // GAS側のCOMMENT_MAX_LENGTHと一致させること
+// 評価カードのメモ欄・コメント投稿の送信前チェックと同じ4パターン（12_きっかけ収集ツールの実装を踏襲）。
+// GAS側（Code.gs）にも同じ正規表現でのサーバー側チェックを実装済み（直接API呼び出しでの素通りを防ぐため）。
+const COMMENT_PII_PATTERNS = [
+  { test: /0\d{1,4}-\d{1,4}-\d{3,4}/, label: '電話番号らしき数字列' },
+  { test: /[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}/, label: 'メールアドレスらしき文字列' },
+  { test: /https?:\/\/\S+/, label: 'URL' },
+  { test: /(私|僕|自分)の名前は|本名は/, label: '氏名を明示する表現' }
+];
+function findCommentPii(text) {
+  for (const p of COMMENT_PII_PATTERNS) {
+    if (p.test.test(text)) return p.label;
+  }
+  return null;
+}
 
 const ROOT_ORDER = ['法定義務あり','法定義務なし','判断できない','データなし'];
 const EV_PRIORITY = ['拡大','現状継続','改善（手段変更）','縮小','廃止方向','完了']; // ドリルダウンのグループ表示順（歳出削減につなげるため拡大→縮小→廃止の順）
@@ -300,14 +324,18 @@ let openEvKeys = null;    // ドリルダウンの行政評価セクションの
 let peopleAgg = null;     // Supabase集計結果 {no: {続行,廃止,見直し}}（取得前はnull）
 let voteFilter = '';      // 評価結果一覧のフィルタ：'' 全事業 / '続行'/'廃止'/'見直し' / '未評価'（自分は未評価・みんなは投票済み）
 let curScreen = 'map';    // 現在表示中の画面（loadPeopleData完了後の再描画先を追跡）
+let showComments = false; // 評価カードでみんなのコメントを見せるかどうか（既定OFF、投票結果トグルとは独立）
+let peopleComments = null; // コメント一覧 {no: [{id,comment,submitted_at},...]}（取得前はnull。通報3件以上はサーバー側で既に除外済み）
 
 function load() {
   try { ratings = JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch(e) {}
   try { memos = JSON.parse(localStorage.getItem(MEMO_KEY) || '{}'); } catch(e) {}
   try { showVotes = localStorage.getItem(SHOW_VOTES_KEY) === '1'; } catch(e) {}
+  try { showComments = localStorage.getItem(SHOW_COMMENTS_KEY) === '1'; } catch(e) {}
   showRenewalNoticeIfNeeded();
   render('map');
   if (LABELS.enable_voting !== false) loadPeopleData(); // ドリルダウンで「みんなの評価」を見せるため、投票前でも起動時に取得する
+  if (LABELS.enable_voting !== false) loadPeopleComments();
 }
 
 // 旧v2利用者向け：評価内容が引き継がれないことの一度きりの案内（v2の保存キーが残っている＝過去に利用した形跡がある場合のみ表示）
@@ -478,6 +506,107 @@ function voteResultHtml(no) {
   const total = c['続行'] + c['廃止'] + c['見直し'];
   if (!total) return '<p class="vote-result-note">まだ投票がありません。</p>';
   return `<div class="vote-result">${voteCellHtml(c)}</div>`;
+}
+
+function toggleShowComments(checked) {
+  showComments = checked;
+  try { localStorage.setItem(SHOW_COMMENTS_KEY, checked ? '1' : '0'); } catch(e) {}
+  render('eval');
+}
+// コメント機能は投票とは独立したバックエンド（GAS側のcomments/comment_reportsシート）を使う。
+// 通報が一定数（GAS側で判定）に達したコメントは、comment_list APIの時点で既に除外されて返ってくる。
+async function loadPeopleComments() {
+  if (LABELS.enable_voting === false) return;
+  try {
+    const res = await fetch(GAS_URL + '?action=comment_list&municipality_id=' + encodeURIComponent(MUNICIPALITY_ID));
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || '取得に失敗しました');
+    const map = {};
+    (json.comments || []).forEach(c => {
+      if (!map[c.event_no]) map[c.event_no] = [];
+      map[c.event_no].push(c);
+    });
+    peopleComments = map;
+  } catch (err) {
+    peopleComments = peopleComments || {}; // 失敗時も画面を壊さないよう空扱いにする
+  }
+  if (curScreen === 'eval') render('eval');
+}
+function commentListHtml(no) {
+  if (!peopleComments) return '<p class="vote-result-note">読み込み中...</p>';
+  const list = peopleComments[no] || [];
+  if (!list.length) return '<p class="vote-result-note">まだコメントがありません。</p>';
+  const items = list.map(c => `
+    <div class="comment-item">
+      <p class="comment-text">${esc(c.comment)}</p>
+      <button class="comment-report-btn no-print" onclick="reportComment(${Number(c.id)})">🚩 不適切として報告する</button>
+    </div>`).join('');
+  return `<div class="comment-list">${items}</div>`;
+}
+async function reportComment(id) {
+  if (!confirm('このコメントを不適切として報告しますか？')) return;
+  try {
+    const url = GAS_URL + '?action=comment_report'
+      + '&comment_id=' + encodeURIComponent(id)
+      + '&municipality_id=' + encodeURIComponent(MUNICIPALITY_ID);
+    const res = await fetch(url);
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.error || '送信に失敗しました');
+    alert('報告しました。');
+  } catch (err) {
+    alert('送信エラー: ' + err.message);
+  }
+}
+function getCommentsSubmittedNos() {
+  try {
+    const v = JSON.parse(localStorage.getItem(COMMENTS_SUBMITTED_KEY) || '[]');
+    return Array.isArray(v) ? v : [];
+  } catch (e) { return []; }
+}
+// 投票と同じ「まとめて送信」パターン：カードごとに即時公開せず、サマリー画面のボタンで
+// 未投稿かつ内容があるメモだけをまとめて送信する（見直す間を挟むための意図的な設計）。
+async function submitComments() {
+  if (LABELS.enable_voting === false) return;
+  const already = new Set(getCommentsSubmittedNos());
+  const pending = Object.entries(memos).filter(([no, text]) => text && text.trim() && !already.has(no));
+  if (!pending.length) { alert('新しく投稿できるメモがありません。'); return; }
+
+  const skipped = [];
+  const okItems = [];
+  pending.forEach(([no, text]) => {
+    const piiHit = findCommentPii(text);
+    if (piiHit) { skipped.push(`事業No.${no}（${piiHit}が含まれている可能性）`); return; }
+    if (text.length > COMMENT_MAX_LENGTH) { skipped.push(`事業No.${no}（${COMMENT_MAX_LENGTH}文字を超えています）`); return; }
+    okItems.push([no, text]);
+  });
+  if (!okItems.length) {
+    alert('投稿できるメモがありませんでした。\n' + skipped.join('\n'));
+    return;
+  }
+
+  const btn = document.getElementById('submit-comments-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '送信中...'; }
+  let sentCount = 0;
+  for (const [no, text] of okItems) {
+    try {
+      const url = GAS_URL + '?action=comment_insert'
+        + '&municipality_id=' + encodeURIComponent(MUNICIPALITY_ID)
+        + '&event_no=' + encodeURIComponent(no)
+        + '&comment=' + encodeURIComponent(text);
+      const res = await fetch(url);
+      const json = await res.json();
+      if (json.ok) { already.add(no); sentCount++; }
+      else { skipped.push(`事業No.${no}（送信エラー: ${json.error || '不明'}）`); }
+    } catch (err) {
+      skipped.push(`事業No.${no}（通信エラー）`);
+    }
+  }
+  localStorage.setItem(COMMENTS_SUBMITTED_KEY, JSON.stringify([...already]));
+  if (btn) { btn.disabled = false; btn.textContent = '💬 コメントを投稿する'; }
+  let msg = `${sentCount}件のコメントを投稿しました。`;
+  if (skipped.length) msg += '\n\n以下はスキップされました：\n' + skipped.join('\n');
+  alert(msg);
+  loadPeopleComments();
 }
 
 function render(screen) {
@@ -720,6 +849,8 @@ function renderEval(app) {
         <div class="story-label">👥 みんなの評価</div>
         <label class="vote-toggle-label no-print"><input type="checkbox" ${showVotes ? 'checked' : ''} onchange="toggleShowVotes(this.checked)"> 投票結果を表示する</label>
         ${showVotes ? voteResultHtml(e.no) : ''}
+        <label class="vote-toggle-label no-print" style="margin-top:8px"><input type="checkbox" ${showComments ? 'checked' : ''} onchange="toggleShowComments(this.checked)"> コメントを表示する</label>
+        ${showComments ? commentListHtml(e.no) : ''}
       </div>` : ''}
     </div>
     <div class="sticky-spacer tall no-print"></div>
@@ -923,6 +1054,11 @@ function renderSummary(app) {
       ${LABELS.enable_voting !== false ? `<div class="no-print" style="margin-bottom:12px">
         <button id="submit-btn" class="btn btn-p btn-sm" onclick="submitToSupabase()">📤 投票する</button>
         <span style="font-size:.8rem;color:#6b7280;margin-left:10px">投票すると、自分の評価がみんなの評価に反映されます。<br>送信されるのは事業番号・評価結果（続行/廃止/見直し）・送信日時のみです。個人情報は一切収集しません。<br>追加で評価した事業がある場合は、再度このボタンから投票できます（同じ事業を重複して送信することはありません）。<br>実際の収集情報は下の📥 生データCSVから閲覧できます。</span>
+      </div>
+      <div class="no-print" style="margin-bottom:12px">
+        <button id="submit-comments-btn" class="btn btn-p btn-sm" onclick="submitComments()">💬 コメントを投稿する</button>
+        <span style="font-size:.8rem;color:#6b7280;margin-left:10px">評価カードに書いたメモのうち、まだ投稿していないものをまとめて公開します。投票とは別に、いつでも投稿できます。</span>
+        <p class="comment-warn">コメントを投稿すると、書いた内容が匿名でみんなに公開されます。送信前に電話番号・メールアドレス・URL・氏名を明示する表現がないか自動でチェックしますが、完全ではありません。一度投稿すると取り消しは基本的にできません。内容をよくご確認の上、投稿してください。</p>
       </div>` : ''}
       <div class="no-print" style="margin-bottom:12px;padding-top:12px;border-top:1px solid #eef0f2">
         <button class="btn btn-o btn-sm" onclick="downloadAllEventsCsv()">📥 全事務事業データをCSVでダウンロード（${EVENTS.length}件）</button>
@@ -931,7 +1067,7 @@ function renderSummary(app) {
       ${LABELS.enable_voting !== false ? `<div id="vote-section"><p style="color:#6b7280;font-size:.85rem">読み込み中...</p></div>` : ''}
     </div>
     <button class="btn btn-o btn-full no-print" onclick="render('map')">← マップに戻る</button>
-    <button class="btn btn-o btn-full no-print" onclick="if(confirm('評価とメモをすべてリセットしますか？')){localStorage.removeItem(LS_KEY);localStorage.removeItem(SUBMITTED_KEY);localStorage.removeItem(MEMO_KEY);ratings={};memos={};render('map')}">🗑 自分の評価をリセット</button>`;
+    <button class="btn btn-o btn-full no-print" onclick="if(confirm('評価とメモをすべてリセットしますか？')){localStorage.removeItem(LS_KEY);localStorage.removeItem(SUBMITTED_KEY);localStorage.removeItem(MEMO_KEY);localStorage.removeItem(COMMENTS_SUBMITTED_KEY);ratings={};memos={};render('map')}">🗑 自分の評価をリセット</button>`;
   if (LABELS.enable_voting !== false) loadPeopleData();
 }
 
